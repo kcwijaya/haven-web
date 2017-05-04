@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+	<title>Haven - Log In or Sign Up</title>
+	<script
+	src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" 
+	integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" 
+	crossorigin="anonymous"></script>
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" 
+	integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" 
+	crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="../scripts/render_nav.js"></script>
+	<script type="text/javascript" src="../scripts/home.js"> </script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
+	<link rel="stylesheet" 
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" 
+	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" 
+	crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../stylesheets/main.css">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+	<script id="render-navbar" type="text/x-handlebars-template">
+		{{> navbar home="active" signin="true"}}
+	</script></head>
+<body>
+	<div id="nav-placeholder"> </div>
+	<div id="container" class="row">
+		<div style="margin-top: 10%;" class="col-md-5">
+			<h3> Connect your organization with spontaneous volunteers in the area. </h3> <br>
+
+			<p> <i class="fa fa-lg fa-pencil-square-o"> </i> Create detailed tasks to help recovery efforts after a crisis </p>
+
+			<p> <i class="fa fa-lg fa-link"> </i> Connect your  needs with people who are interested in helping </p>
+
+			<p><i class="fa fa-lg fa-list"> </i> Keep track of relief efforts in a centralized location</p>
+
+			
+		</div>
+		<div style="margin-top: 10%;" class="col-sm-1 right-vertical-line"> </div>
+		<div style="margin-top: 10%;" class="col-sm-1"> </div>
+
+		<div style="margin-top: 5%" class="col-md-5">
+			<h2> Sign Up</h2>
+			<p> Join us in helping our communities </p>
+			<form action="/signup" id="signup-form" method="post">
+				<div class="form-card">
+					<div class="form-group row">
+						<div id="first-container" class="col-md-6">
+							<input type="text" name="firstName" class="form-control" id="firstName" placeholder="First Name">
+							<div id="first-req" style="display: none" class="form-control-feedback">This field is required. </div>
+						</div>
+						<div id="last-container" class="col-md-6">
+							<input type="text" name="lastName" class="form-control" id="lastName" placeholder="Last Name">
+							<div id="last-req" style="display: none" class="form-control-feedback">This field is required. </div>
+						</div>
+					</div>
+					<div id="email-container" class="form-group">
+					    <input type="email" name="email" class="form-control" id="email" placeholder="Email">
+					    <div id="email-req" style="display: none" class="form-control-feedback">This field is required. </div>
+					    <small id="email-help" class="form-text text-muted">We'll never share your email with anyone else.</small>
+					</div>
+					<div id="org-container" class="form-group">
+					    <input type="text" name="organization" class="form-control" id="organization" placeholder="Your Organization">
+					    <div style="display: none" id="org-req" class="form-control-feedback">This field is required. </div>
+					</div>
+					<div class="row">
+						<div class="col-md-7"> 
+							<small style="font-size: 0.75rem" id="warning"> By clicking Create Account, you agree to our Terms and Conditions. </small>
+						</div>
+						<div class="col-md-3">
+							<button style="padding: 3px" id="create-account"  type="submit" class="btn btn-primary">Create Account</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+
+	<div id="footer-bigger">
+		<img src="../imgs/logo-full.png" id="logo-full"/>
+	</div>
+
+</body>
+</html>

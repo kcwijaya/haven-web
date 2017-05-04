@@ -1,0 +1,233 @@
+
+<script type="text/javascript" src="../scripts/create.js"></script>
+
+<script type="text/javascript" src="../bower_components/moment/min/moment.min.js"></script>
+  	<script type="text/javascript" src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+ 	 <link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
+ 	 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAej_Btkc_ko3TrAgYkLY52elkW6bahpgk&libraries=places&callback=initMap"
+    async defer></script>
+
+<script id="render-navbar" type="text/x-handlebars-template">
+	{{> navbar create="active"}}
+</script>
+
+
+<div id="container">
+	<div class="vertical-align-15 left-align">
+		<h2> Tell us more about your task. </h2>
+	</div>
+
+	<form id="task-form" class="templates left-align">
+		<h7 class="section-title"> General Information </h7>
+		<div class="form-card">
+			<div id="title-container" class="form-group">
+				<label for="title">Title</label>
+				<input required type="text" name="title" {{#if title }} value="{{title}}" {{/if}} class="form-control" id="title" placeholder="Enter title">
+				<div id="title-req" style="display: none" class="form-control-feedback">This field is required. </div>
+
+			</div>
+			<!--
+			<div class=" form-group">
+					<label for="location">Location</label>
+					<input required="true" type="text" name="location" {{#if location }} value="{{location}}" {{/if}} class="form-control" id="location" placeholder="Either type in location or put pin on map.">
+					 <div class="form-control-feedback">This field is required.</div>
+			</div>
+			-->
+			<div id="loc-container" class="form-group">
+				<label for="location"> Location </label>
+				<input id="location" class="form-control" type="text" placeholder="Search Location">
+				<div id="loc-req" style="display: none" class="form-control-feedback">This field is required. </div>
+			 <div style="height: 300px" class="form-group" id="map">
+
+			 </div>
+			 </div>
+			<div class="form-group"> 
+				<label for="description">Description</label>
+				<textarea class="form-control" name="description"  id="description" rows="10" placeholder="Describe your task.">{{#if description}} {{description}} {{/if}}</textarea>
+			</div>
+		</div>
+
+		<h7 class="section-title"> Task Requirements </h7>
+		<div class="form-card">
+			<div class="form-group">
+				<label for="instructions">Instructions</label>
+				<textarea class="form-control" name="instructions" id="instructions" rows="5" placeholder="Describe instructions for task.">{{#if instructions }} {{instructions}}{{/if}}</textarea>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-4">
+					<label for="severity">Severity of Impacted Region</label>
+					<select name="severity" class="form-control" id="severity">
+						<option value="Light" {{#equal severity 'light'}} selected {{/equal}}>Light</option>
+						<option value="Moderate" {{#equal severity 'moderate'}} selected {{/equal}} >Moderate</option>
+						<option value="Severe" {{#equal severity 'severe'}} selected {{/equal}}>Severe</option>
+					</select>
+				</div>
+
+				<div class="col-md-4">
+					<label for="time">Time of Day</label>
+					<select name="time" class="form-control" id="time">
+						<option value="Morning" selected>Morning</option>
+						<option value="Afternoon">Afternoon</option>
+						<option value="Night">Night</option>
+					</select>
+
+				</div>
+
+				<div class="col-md-4">
+					<label for="clock">Time</label>
+					<div class="container">
+						<input type='text'{{#if start_time }} value="{{start_time}}" {{/if}} class="form-control" id='clock' />
+					</div>
+				</select>
+
+			</div>
+
+		</div>
+		<div class="form-group">
+			<label for="disclaimer">Disclaimers</label>
+			<small id="disclaimerHelper" class="text-muted"> Select all that apply. </small>		
+			<div class="form-area" id="disclaimers"> 
+				<ul class="checkbox-grid">
+					{{#listnowrap disclaimers}}
+					<label class="form-check-label">
+						<input type="checkbox" name="{{name}}" value="{{value}}" />  {{label}}
+					</label>
+					{{/listnowrap}}
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<h7 class="section-title"> Skills </h7>
+	<small id="skillHelper" class="text-muted"> Select all that apply. </small>		
+
+	<div class="form-card">
+		<div class="row">
+			<div class="col-md-6 skill-column" id="skill-column-1"> {{#each skillGroupsOne}}
+				<div id="{{groupName}}" class="skill-group">
+					<label for="{{groupName}}">{{groupName}}</label>
+					<div class="form-control">
+						{{#each skills}}
+						<div class="form-check">
+							<label class="form-check-label">
+								<input type="checkbox" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
+								{{#if more}}
+								<label for={{moreID}}> : </label><input class="more-info" id="{{moreID}}" type='text' readonly />
+								{{/if}}
+							</label>
+						</div>	
+						{{/each}}
+					</div>
+				</div>
+				{{/each}}</div>
+				<div class="col-md-6 skill-column" id="skill-column-2">
+
+					{{#each skillGroupsTwo}}
+					<div id="{{groupName}}" class="skill-group">
+						<label for="{{groupName}}">{{groupName}}</label>
+						<div class="form-control">
+							{{#each skills}}
+							<div class="form-check">
+								<label class="form-check-label">
+									<input type="checkbox" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
+									{{#if more}}
+									<label for={{moreID}}> : </label><input class="more-info" id="{{moreID}}" type='text' readonly />
+									{{/if}}
+								</label>
+							</div>	
+							{{/each}}
+						</div>
+					</div>
+					{{/each}}
+				</div>	
+			</div>
+		</div>
+
+		{{#if volunteers}}
+		<h7 class="section-title"> Volunteers </h7>
+		<div class="form-card">
+				<div class="row">
+					<div class="col-md-6">
+						<label for="first">First Name</label>
+						<input required type="text" name="first" class="form-control" id="first" placeholder="Enter First Name">
+					</div>
+					<div class="col-md-6">
+						<label for="first">Last Name</label>
+						<input required type="text" name="last" class="form-control" id="last" placeholder="Enter Last Name">
+					</div>
+				</div>
+				<div>
+					<div class="row">
+						<div class="col-md-6">
+							<label for="first">Phone Number</label>
+							<input required type="text" name="phone" class="form-control" id="phone" placeholder="Enter Phone Number">
+						</div>
+						<div class="col-md-6">
+							<label for="first">Email</label>
+							<input required type="email" name="email" class="form-control" id="email" placeholder="Enter Email">
+						</div>
+					</div>
+					<button style="box-shadow: 0px 0px 0px; margin-top: 1%; float: right; margin-bottom: 2%" id="add-volunteer" class="btn-primary btn-group-mem btn ">Add Volunteer</button>
+				</div>
+				<div style="padding: 5%;">
+				<table id="volunteers" style="width: 100%;">
+					<thead>
+					<tr>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
+							</th>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number 
+							</th>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
+							</th>
+							<th></th>
+					</tr>
+					</thead>
+					<tbody>
+				{{#each volunteers}}
+					<tr style="background-color:white">
+						<td style="border: 1px solid #dddddd;"> {{first}}</td>
+						<td style="border: 1px solid #dddddd;"> {{last}} </td>
+						<td style="border: 1px solid #dddddd;"> {{phone}} </td>
+						<td style="border: 1px solid #dddddd;"> {{email}} </td>
+						<td style="text-align: center; border: 1px solid #dddddd;"> <i style="font-size: 25px" class="delete-button fa fa-trash"></i> </td>
+					</tr>
+				{{/each}}
+					</tbody>
+				</table>
+				</div>
+		</div>
+		{{/if}}
+
+		{{#if taskBtn}}
+			<div class="button-group">
+				<button style="width: 30%" id="save-changes" formaction="/SaveTask" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
+				<button style="width: 30%" id="save-review" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save and Review</button>
+			</div>
+		{{/if}}
+		
+
+		{{#if templateBtn}}
+		<div class="button-group">
+			<button style="width: 30%" id="save-changes" formaction="/SaveTask" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
+			<button style="width: 30%" id="save-template" formaction="/SaveTemplate" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save as Template</button>
+		</div>
+		{{/if}}
+
+		{{#if newBtn}}
+		<div class="button-group">
+			<button style="width: 20%" id="save-changes" formaction="/SaveTask" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
+			<button style="width: 20%" id="save-template" formaction="/SaveTemplate" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save as Template</button>
+			<button style="width: 20%" id="save-review" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save and Review</button>
+		</div>
+		{{/if}}
+
+	</form>
+</div>
+
+</body>
+</html>

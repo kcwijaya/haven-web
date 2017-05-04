@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+	<title>Haven - Log In or Sign Up</title>
+	
+	<script
+	src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" 
+	integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" 
+	crossorigin="anonymous"></script>
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" 
+	integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" 
+	crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="../scripts/render_nav.js"></script>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
+	<link rel="stylesheet" 
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" 
+	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" 
+	crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../stylesheets/main.css">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+	<script id="render-navbar" type="text/x-handlebars-template">
+		{{> navbar home="active" signin="true"}}
+	</script>
+
+	<script id="email-template" type="text/x-handlebars-template">
+		<p><b> We sent your code to: </b><br> {{email}} </p>
+	</script>
+</head>
+<body>
+	<div id="nav-placeholder"></div>
+
+	<div id="container" style="margin-left: 13%" class="vertical-align-25">
+		<div class="form-card row">
+			<h3> Enter Security Code </h3>
+			<hr>
+			<p> Please check your email for a message with your code. Note that that this verifies your email but not your identity with your organization, which will need to be done by an administrator in your organization. </p>
+			<form style="width: 100%">
+				<div class="row" style="width: 100%">
+					<div class="col-md-7">
+						<input type="text" style="width: 100%" name="code" class="form-control" id="code" placeholder="Enter code">
+					</div>
+					<div id="email-text" style="float: right;" class="col-md-5">
+					</div>
+				</div>
+			</form>
+			<div class="col-md-9"> </div>
+			<div style="float: right" class="col-md-3"> 
+				<button id="continue" style="padding: 2px;" onClick="window.location.href='/create'" type="submit" class="btn-group-mem btn btn-primary">Continue</button>
+				<button id="cancel" style="padding: 2px; background-color: 'white'; color: 'black';" onClick="window.location.href='/home'" type="submit" class="btn-group-mem btn btn-primary">Cancel</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="footer">
+		<img src="../imgs/logo-full.png" id="logo-full"/>
+	</div>
+
+</body>
+</html>

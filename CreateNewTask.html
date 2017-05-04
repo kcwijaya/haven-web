@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+	<title>Haven - New Task</title>
+	<script
+	src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" 
+	integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" 
+	crossorigin="anonymous"></script>
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" 
+	integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" 
+	crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
+	<script type="text/javascript" src="../scripts/render_nav.js"></script>
+	<script type="text/javascript" src="../handlebars/helpers.js"></script>
+	<script type="text/javascript" src="../scripts/create.js"></script>
+
+
+  	<script type="text/javascript" src="../bower_components/moment/min/moment.min.js"></script>
+  	<script type="text/javascript" src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+ 	 <link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
+	<link rel="stylesheet" 
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" 
+	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" 
+	crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../stylesheets/main.css">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+	<script id="render-disclaimers" type="text/x-handlebars-template">
+		<ul class="checkbox-grid">
+			{{#listnowrap disclaimers}}
+			<label class="form-check-label">
+				<input type="checkbox" name="{{name}}" value="{{value}}" />  {{label}}
+			</label>
+			{{/listnowrap}}
+		</ul>
+	</script>
+
+	<script id="render-navbar" type="text/x-handlebars-template">
+		{{> navbar create="active"}}
+	</script>
+
+	<script id="render-skill-group" type="text/x-handlebars-template">
+		{{#each skillGroups}}
+		<div id="{{groupName}}" class="skill-group">
+			<label for="{{groupName}}">{{groupName}}</label>
+			<div class="form-control">
+				{{#each skills}}
+				<div class="form-check">
+					<label class="form-check-label">
+						<input type="checkbox" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
+						{{#if more}}
+						<label for={{moreID}}> : </label><input class="more-info" id="{{moreID}}" type='text' readonly />
+						{{/if}}
+					</label>
+				</div>	
+				{{/each}}
+			</div>
+		</div>
+		{{/each}}
+	</script>
+
+</head>
+<body>
+	<div id="nav-placeholder">
+	</div>
+
+	<div id="container">
+		<div class="vertical-align-15 left-align">
+			<h2> Tell us more about your task. </h2>
+		</div>
+
+		<form id="task-form" class="templates left-align">
+			<h7 class="section-title"> General Information </h7>
+			<div class="form-card">
+				<div class="form-group">
+					<label for="title">Title</label>
+					<input type="text" name="title" class="form-control" id="title" placeholder="Enter title">
+				</div>
+				<div class="form-group">
+					<label for="location">Location</label>
+					<input type="text" name="location" class="form-control" id="location" placeholder="ex: 558 Mayfield Ave, Stanford, CA 94305">
+				</div>
+				<div class="form-group">
+					<label for="description">Description</label>
+					<textarea class="form-control" name="description" id="description" rows="10" placeholder="Describe your task."></textarea>
+				</div>
+			</div>
+
+			<h7 class="section-title"> Task Requirements </h7>
+			<div class="form-card">
+				<div class="form-group">
+					<label for="instructions">Instructions</label>
+					<textarea class="form-control" name="instructions" id="instructions" rows="5" placeholder="Describe instructions for task."></textarea>
+				</div>
+				<div class="form-group row">
+					<div class="col-md-4">
+						<label for="severity">Severity of Impacted Region</label>
+						<select name="severity" class="form-control" id="severity">
+							<option value="Light" selected>Light</option>
+							<option value="Moderate">Moderate</option>
+							<option value="Severe">Severe</option>
+						</select>
+					</div>
+
+					<div class="col-md-4">
+						<label for="time">Time of Day</label>
+						<select name="time" class="form-control" id="time">
+							<option value="Morning" selected>Morning</option>
+							<option value="Afternoon">Afternoon</option>
+							<option value="Night">Night</option>
+						</select>
+
+					</div>
+
+					<div class="col-md-4">
+						<label for="clock">Time</label>
+						<div class="container">
+						     <input type='text' class="form-control" id='clock' />
+						</div>
+						</select>
+
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label for="disclaimer">Disclaimers</label>
+					<small id="disclaimerHelper" class="text-muted"> Select all that apply. </small>		
+					<div class="form-area" id="disclaimers"> </div>
+				</div>
+			</div>
+
+			<h7 class="section-title"> Skills </h7>
+			<small id="skillHelper" class="text-muted"> Select all that apply. </small>		
+
+			<div class="form-card">
+				<div class="row">
+					<div class="col-md-6 skill-column" id="skill-column-1"> </div>
+					<div class="col-md-6 skill-column" id="skill-column-2"></div>	
+				</div>
+			</div>
+			
+			<div class="button-group">
+				<button id="save-changes" formaction="/SaveTask" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
+				<button id="save-template" formaction="/SaveTemplate" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save as Template</button>
+				<button id="save-review" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save and Review</button>
+			</div>
+		</form>
+	</div>
+	<div id="footer-bigger">
+		<img src="../imgs/logo-full.png" id="logo-full"/>
+
+	</div>
+
+</body>
+</html>

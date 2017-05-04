@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+	<title>Haven - Browse Tasks</title>
+	<script
+	src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
+	<link rel="stylesheet" type="text/css" href="../slick/slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="../slick/slick/slick-theme.css"/>
+	<script type="text/javascript" src="../slick/slick/slick.min.js"></script>
+
+
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
+
+
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+
+	<link rel="stylesheet" href="../stylesheets/main.css">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+	<script type="text/javascript" src="../scripts/tasks.js"></script>
+	<script type="text/javascript" src="../scripts/render_nav.js"></script>
+
+	<script id="render-navbar" type="text/x-handlebars-template">
+		{{> navbar task="active"}}
+	</script>
+
+	<script id="card-group" type="text/x-handlebars-template">
+		<h5> {{title}}
+			 	<i id={{listID}} style="margin-top: 1%; margin-left: 1%" class="fa fa-list" aria-hidden="true"></i>
+    	</h5>		
+		<div class="{{cardID}}">
+			{{#each cards}}
+			<div class="card">
+				<div class="card-block">
+					<p class="card-id" style="display: none">{{cardID}}</p>
+					<h4 class="card-title">{{cardTitle}}</h4>
+					<p class="card-text"> {{cardText}}</p>
+				</div>
+			</div>	
+			{{/each}}
+		</div>
+	</script>
+
+	<script id="card-list" type="text/x-handlebars-template">
+		<h5> {{title}}  
+				<i id={{boxID}} style="margin-top: 1%; margin-left: 1%" class="fa fa-th" aria-hidden="true"></i>
+    	</h5>
+		 
+		
+		<div class="{{cardID}}">
+			<table id="{{cardID}}" style="width: 100%; border-collapse: collapse;" class="card-list">
+				<thead>
+				<tr>
+						<th style="display: none"> </th>
+						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Name </th>
+						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Description 
+						</th>
+				</tr>
+				</thead>
+				<tbody>
+			{{#each cards}}
+				<tr>
+					<td style="display: none"> {{cardID}} </td>
+					<td style="border: 1px solid #dddddd;"> {{cardTitle}}</td>
+					<td style="border: 1px solid #dddddd;"> {{cardText}} </td>
+				</tr>
+			{{/each}}
+				</tbody>
+			</table>
+		</div>
+
+	</script>
+
+</head>
+<body>
+
+	<div id="nav-placeholder"> </div>
+	
+	<div class="vertical-align-25 center-text">
+		<h2 style="margin-bottom: 5%"> Browse Tasks</h2>
+		<hr class="mid-size-line" />
+	</div>
+
+	<div id="task-group" class="task-item-group"> </div>
+
+	<div id="footer-bigger">
+		<img src="../imgs/logo-full.png" id="logo-full"/>
+	</div>
+	
+
+</body>
+</html>

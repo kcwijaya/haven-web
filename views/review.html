@@ -1,0 +1,101 @@
+		<script type="text/javascript" src="../scripts/create.js"></script>
+
+
+	<div class="vertical-align-15 left-align">
+		<h2> Review the information you provided. </h2>
+	</div>
+
+	<div style="width: 90%" class="form-card left-align">
+		<h7> Title </h7>
+		<div id="title" {{#if title}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> {{title}} </div>
+
+		<h7> Location </h7>
+		<div id="location-words" {{#if location}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> </div>
+		<div style="margin-top: 1%; height: 300px" id="location-map"> </div>
+		<h7> Description </h7>
+		<div id="description" {{#if description}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{description}} </div>
+
+		<h7> Instructions </h7>
+		<div id="instructions" {{#if instructions}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{instructions}} </div>
+
+		<div class="row" >
+			<div class="col-md-4">
+				<h7> Severity of Impacted Region </h7>
+				<div id="severity" class="text-placeholder">{{severity}} </div>
+			</div>
+			<div class="col-md-3">
+				<h7> Time of Day </h7>
+				<div id="time" class="text-placeholder"> {{time}}</div>
+			</div>
+
+			<div class="col-md-5">
+				<h7> Date and Time </h7>
+				<div id="clock-text" style="height: 25px" class="text-placeholder"> {{clock}}</div>
+			</div>
+		</div>
+
+		<h7> Disclaimers </h7>
+		<div id="disclaimers-text" {{#if disclaimers}} {{else}} style="height:100px" {{/if}} class="text-placeholder"> 
+			{{#if disclaimers}}
+			{{#list disclaimers}}
+				<p>{{name}}</p>
+			{{/list}}
+			{{/if}}
+		</div>
+
+		<h7> Skills </h7>
+		<div id="skills-text" {{#if skills}} {{else}} style="height:100px" {{/if}}  class="text-placeholder">
+		{{#if skills}}
+			{{#each skills}}
+				<h6> <b>{{groupName}} </b></h6>
+				{{#list skills}}
+					<p> {{name}}
+
+					 {{#if extra}}
+					 	: {{extra}}
+					 {{/if}}
+
+					 </p>
+				{{/list}}
+			{{/each}}
+		{{/if}}
+		 </div>	
+
+		 <h7> Volunteers </h7>
+		<div id="volunteer-text" style="padding: 5%" {{#if volunteers}} {{else}} style="height:100px" {{/if}}  class="text-placeholder">
+		{{#if volunteers}}
+				<table id="volunteers" style="width: 100%;">
+					<thead>
+					<tr>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
+							</th>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number 
+							</th>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
+							</th>
+					</tr>
+					</thead>
+					<tbody>
+				{{#each volunteers}}
+					<tr style="background-color:white">
+						<td style="border: 1px solid #dddddd;"> {{first}}</td>
+						<td style="border: 1px solid #dddddd;"> {{last}} </td>
+						<td style="border: 1px solid #dddddd;"> {{phone}} </td>
+						<td style="border: 1px solid #dddddd;"> {{email}} </td>
+					</tr>
+				{{/each}}
+					</tbody>
+				</table>
+		{{/if}}
+		 </div>	
+		 
+	</div>
+
+	<div style="margin-left: 15%">
+		<button style="width: 40%" id="edit-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Make Changes</button>
+
+	<button style="width: 40%" id="post-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Post Task</button>
+	</div>
+
+	

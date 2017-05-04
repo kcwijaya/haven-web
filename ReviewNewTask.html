@@ -1,0 +1,56 @@
+	<div class="vertical-align-15 left-align">
+		<h2> Review the information you provided. </h2>
+	</div>
+
+	<div style="width: 90%" class="form-card left-align">
+		<h7> Title </h7>
+		<div id="title" class="text-placeholder"> {{title}} </div>
+
+		<h7> Location </h7>
+		<div id="location" class="text-placeholder"> {{location}}</div>
+
+		<h7> Description </h7>
+		<div id="description" class="text-placeholder">{{description}} </div>
+
+		<h7> Instructions </h7>
+		<div id="instructions" class="text-placeholder">{{instructions}} </div>
+
+		<div class="row" >
+			<div class="col-md-4">
+				<h7> Severity of Impacted Region </h7>
+				<div id="severity" class="text-placeholder">{{severity}} </div>
+			</div>
+			<div class="col-md-4">
+				<h7> Time of Day </h7>
+				<div id="time" class="text-placeholder"> {{time}}</div>
+			</div>
+
+			<div class="col-md-4">
+				<h7> Time </h7>
+				<div id="clock" class="text-placeholder"> {{clock}}</div>
+			</div>
+		</div>
+
+		<h7> Disclaimers </h7>
+		<div id="disclaimers" class="text-placeholder"> 
+			{{#list disclaimers}}
+				<p>{{name}}</p>
+			{{/list}}
+		</div>
+
+		<h7> Skills </h7>
+		<div id="skills" class="text-placeholder">
+		{{#each skills}}
+			<h3> {{groupName}} </h3>
+			{{#list skills}}
+				<p> {{name}}
+				 {{#if extra}}
+				    {{extra}}
+				 {{/if}}
+				 </p>
+			{{/list}}
+		{{/list}}
+		 </div>	
+	</div>
+
+	<button id="post-task" formaction="/SaveTemplate" type="submit" class="left-align btn-post btn-group-mem btn btn-primary btn-lg">Post Task</button>

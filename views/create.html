@@ -1,0 +1,37 @@
+
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+	<!-- Add the slick-theme.css if you want default styling -->
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
+	<script type="text/javascript" src="../scripts/main.js"></script>
+
+	<script id="render-navbar" type="text/x-handlebars-template">
+		{{> navbar create="active" }}
+	</script></head>
+
+<script id="card-group" type="text/x-handlebars-template">
+	<h5> {{title}} <i class="fa fa-search" aria-hidden="true"></i>
+		<i class="fa fa-list" aria-hidden="true"></i>
+	</h5>
+	<div class="templates">
+		{{#each cards}}
+		<div class="card">
+			<div class="card-block">
+				<h4 class="card-title">{{cardTitle}}</h4>
+				<p class="card-text"> {{cardText}}</p>
+			</div>
+		</div>	
+		{{/each}}
+	</div>
+</script>
+
+<div class="vertical-align-25 center-text">
+	<h2> Let's get your task ready. </h2>
+	<button id="createNewTask" type="button" style="margin-top: 1%" class="btn btn-primary btn-lg">Create New Task</button>
+	<h5 style="margin-top: 2%"> or </h5>
+	<hr class="mid-size-line" />
+</div>
+
+<div id="template-group" class="task-item-group"> </div>
+<div id="edit-group" class="task-item-group"> </div>

@@ -1,0 +1,77 @@
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
+	<link rel="stylesheet" type="text/css" href="../slick/slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="../slick/slick/slick-theme.css"/>
+	<script type="text/javascript" src="../slick/slick/slick.min.js"></script>
+
+
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
+	<script type="text/javascript" src="../scripts/templates.js"></script>
+
+	<script id="render-navbar" type="text/x-handlebars-template">
+		{{> navbar browse="active"}}
+	</script>
+
+	<script id="card-group" type="text/x-handlebars-template">
+		<h5> {{title}}
+			 	<i id={{listID}} style="margin-top: 1%; margin-left: 1%" class="fa fa-list" aria-hidden="true"></i>
+    	</h5>		
+		<div class="{{cardID}}">
+			{{#each cards}}
+			<div class="card">
+				<div class="card-block">
+					<h4 class="card-title">{{cardTitle}}</h4>
+					<p class="card-text"> {{cardText}}</p>
+				</div>
+			</div>	
+			{{/each}}
+		</div>
+	</script>
+
+	<script id="card-list" type="text/x-handlebars-template">
+		<h5> {{title}}  
+				<i id={{boxID}} style="margin-top: 1%; margin-left: 1%" class="fa fa-th" aria-hidden="true"></i>
+    	</h5>
+		 
+		
+		<div class="{{cardID}}">
+			<table id="{{cardID}}" style="width: 100%; border-collapse: collapse;" class="card-list">
+				<thead>
+				<tr>
+						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Name </th>
+						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Description 
+						</th>
+				</tr>
+				</thead>
+				<tbody>
+			{{#each cards}}
+				<tr>
+					<td style="border: 1px solid #dddddd;"> {{cardTitle}}</td>
+					<td style="border: 1px solid #dddddd;"> {{cardText}} </td>
+				</tr>
+			{{/each}}
+				</tbody>
+			</table>
+		</div>
+
+	</script>
+
+</head>
+<body>
+
+	<div id="nav-placeholder"> </div>
+	
+	<div class="vertical-align-25 center-text">
+		<h2> Browse Templates</h2>
+	</div>
+
+	<div id="template-group" class="task-item-group"> </div>
+
+	<div id="footer-bigger">
+		<img src="../imgs/logo-full.png" id="logo-full"/>
+	</div>
+	
+
+</body>
+</html>
