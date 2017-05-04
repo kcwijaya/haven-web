@@ -92,6 +92,7 @@ function initMap()
  	}
  	else
  	{
+ 		/*
 		navigator.geolocation.getCurrentPosition(function(pos){
 			lat = pos.coords.latitude;
 			long = pos.coords.longitude
@@ -100,6 +101,8 @@ function initMap()
 
 			makeMap(lat, long);
 		});
+		*/
+		makeMap(37.424107,  -122.166077);
 	}
 }
 
