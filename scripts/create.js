@@ -84,7 +84,7 @@ function initMap()
  		var geocoder = new google.maps.Geocoder();
         geocoder.geocode({'address': val}, function(results, status) {
           if (status === 'OK') {
-          	makeMap(results.location.lat, results.location, lng);
+          	makeMap(results.location.geometry.lat, results.location.geometry.lng);
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
@@ -281,7 +281,7 @@ $(document).on('click', '#save-review', function(e){
 		 var geocoder = new google.maps.Geocoder();
 		 geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
-          	location = {address: address, lat: results.location.lat, long: results.location.lng};
+          	location = {address: address, lat: results.geometry.location.lat, long: results.geometry.location.lng};
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
