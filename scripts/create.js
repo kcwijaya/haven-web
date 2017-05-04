@@ -83,8 +83,8 @@ function initMap()
  	{
  		var geocoder = new google.maps.Geocoder();
         geocoder.geocode({'address': val}, function(results, status) {
-          if (status === 'OK') {
-          	makeMap(results.location.geometry.lat, results.location.geometry.lng);
+          if (status === 'OK' && results.length > 0) {
+          	makeMap(results[0].location.geometry.lat, results[0].location.geometry.lng);
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
@@ -280,8 +280,8 @@ $(document).on('click', '#save-review', function(e){
 	{
 		 var geocoder = new google.maps.Geocoder();
 		 geocoder.geocode({'address': address}, function(results, status) {
-          if (status === 'OK') {
-          	location = {address: address, lat: results.geometry.location.lat, long: results.geometry.location.lng};
+          if (status === 'OK' && results.length > 0) {
+          	location = {address: address, lat: results[0].geometry.location.lat, long: results[0].geometry.location.lng};
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
