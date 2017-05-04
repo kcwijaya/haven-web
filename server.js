@@ -337,6 +337,9 @@ app.get('/create/new', function(req, res) {
   var id = req.query.id;
   console.log("ID: " + id);
 
+  if (typeof req.query.taskBtn == 'undefined' && typeof req.query.templateBtn == 'undefined'){
+    req.query.newBtn = true;
+  }
   req.query.pageTitle = 'Haven - Create';
   req.query = getCreateForm(req.query);
   /*
