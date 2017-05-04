@@ -102,7 +102,7 @@ function initMap()
 			makeMap(lat, long);
 		});
 		*/
-		makeMap(37.424107,  -122.166077);
+		makeMap(37.429987,  -122.173330);
 	}
 }
 
