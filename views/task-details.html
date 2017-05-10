@@ -10,98 +10,121 @@
 		<h2> View your task. </h2>
 	</div>
 
-	<div style="width: 90%" class="form-card left-align">
-		<h7> Title </h7>
-		<div id="title" {{#if title}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> {{title}} </div>
+	<div style="margin-top: 2%; width: 90%" class="form-card left-align">
+		<div class="form-input-group">
+			<h4 class="user-input-h"> Title </h4>
+			<div id="title" class="text-placeholder">
+				<h5 class="user-input"> {{title}}</h5> 
+			</div>
+		</div>
 
-		<h7> Location </h7>
-		<div id="location" {{#if location}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> {{location}}</div>
+		<div class="form-input-group">
+			<h4 class="user-input-h">  Location </h4>
+			<div id="location" class="text-placeholder"> 
+				<h5 class="user-input">{{location}}</h5>
+			</div>
+		</div>
 
-		<h7> Description </h7>
-		<div id="description" {{#if description}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{description}} </div>
+		<div class="form-input-group">
+			<h4 class="user-input-h"> Description </h4>
+			<div id="description" class="text-placeholder">
+			<h5 class="user-input">{{description}}</h5>
+			</div>
+		</div>
 
-		<h7> Instructions </h7>
-		<div id="instructions" {{#if instructions}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{instructions}} </div>
+		<div class="form-input-group">
+			<h4 class="user-input-h">  Instructions </h4>
+			<div id="instructions" class="text-placeholder">	
+				<h5 class="user-input"> {{instructions}} </h5>
+			</div>
+		</div>
 
-		<div class="row" >
+		<div style="margin-bottom: 1%;" class="row">
 			<div class="col-md-4">
-				<h7> Severity of Impacted Region </h7>
-				<div id="severity" {{#if severity}} {{else}} style="height:25px" {{/if}} class="text-placeholder">{{severity}} </div>
+				<h4 class="user-input-h"> Severity of Impacted Region </h4>
+				<div id="severity"  {{#unless severity}} style="padding: 3%" {{/unless}} class="text-placeholder">
+					<h5 class="user-input"> {{severity}}</h5>
+				</div>
 			</div>
-			<div class="col-md-3">
-				<h7> Time of Day </h7>
-				<div id="time" {{#if time}} {{else}} style="height:25px" {{/if}} class="text-placeholder"> {{time}}</div>
+			<div class="col-md-4">
+				<h4 class="user-input-h"> Time of Day </h4>
+				<div id="time" {{#unless time}} style="padding: 3%" {{/unless}} class="text-placeholder"> <h5 class="user-input"> {{time}} </h5></div>
 			</div>
 
-			<div class="col-md-5">
-				<h7> Date and Time </h7>
-				<div id="clock-text" style="height: 25px" class="text-placeholder"> {{clock}}</div>
+			<div class="col-md-4">
+				<h4 class="user-input-h"> Date and Time </h4>
+				<div id="clock-text" {{#unless clock}} style="padding: 3%" {{/unless}}  class="text-placeholder"> <h5 class="user-input"> {{clock}}</h5></div>
 			</div>
 		</div>
 
-		<h7> Disclaimers </h7>
-		<div id="disclaimers-text" {{#if disclaimers}} {{else}} style="height:100px" {{/if}} class="text-placeholder"> 
-			{{#if disclaimers}}
-			{{#list disclaimers}}
-				<p>{{name}}</p>
-			{{/list}}
-			{{/if}}
-		</div>
-
-		<h7> Skills </h7>
-		<div id="skills-text" {{#if skills}} {{else}} style="height:100px" {{/if}}  class="text-placeholder">
-		{{#if skills}}
-			{{#each skills}}
-				<h6><u><b> {{groupName}}</b> </u></h6>
-				{{#list skills}}
-					<p> {{name}}
-
-					 {{#if extra}}
-					 	: {{extra}}
-					 {{/if}}
-
-					 </p>
+		<div class="form-input-group">
+			<h4 class="user-input-h"> Disclaimers </h4>
+			<div id="disclaimers-text" class="text-placeholder"> 
+				{{#if disclaimers}}
+				{{#list disclaimers}}
+					<p>{{name}}</p>
 				{{/list}}
-			{{/each}}
-		{{/if}}
-		 </div>	
+				{{/if}}
+			</div>
+		</div>
 
+		<div class="form-input-group">
+			<h4 class="user-input-h">  Skills </h4>
+			<div id="skills-text" class="text-placeholder">
+			{{#if skills}}
+				{{#each skills}}
+					<h6><u><b> {{groupName}}</b> </u></h6>
+					{{#list skills}}
+						<p> {{name}}
 
-		<h7> Volunteers </h7>
-		<div id="volunteer-text" style="padding: 5%" {{#if volunteers}} {{else}} style="height:100px" {{/if}}  class="text-placeholder">
-		{{#if volunteers}}
-				<table id="volunteers" style="width: 100%;">
-					<thead>
-					<tr>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
-							</th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number 
-							</th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
-							</th>
-					</tr>
-					</thead>
-					<tbody>
-				{{#each volunteers}}
-					<tr style="background-color:white">
-						<td style="border: 1px solid #dddddd;"> {{first}}</td>
-						<td style="border: 1px solid #dddddd;"> {{last}} </td>
-						<td style="border: 1px solid #dddddd;"> {{phone}} </td>
-						<td style="border: 1px solid #dddddd;"> {{email}} </td>
-					</tr>
+						 {{#if extra}}
+						 	: {{extra}}
+						 {{/if}}
+
+						 </p>
+					{{/list}}
 				{{/each}}
-					</tbody>
-				</table>
-		{{/if}}
-		 </div>	
-	</div>
+			{{/if}}
+			 </div>	
+		</div>
 
+
+		<div class="form-input-group">
+			<h4 class="user-input-h">  Volunteers </h4>
+			<div id="volunteer-text" style="padding: 0" class="text-placeholder">
+			{{#if volunteers}}
+					<table id="volunteers" style="width: 100%;">
+						<thead>
+						<tr>
+							<th style="color: white; background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
+							<th style="color: white; background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
+							</th>
+							<th style="color: white; background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number 
+							</th>
+							<th style="color: white; background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
+							</th>
+						</tr>
+						</thead>
+						<tbody>
+					{{#each volunteers}}
+						<tr style="background-color:white">
+							<td style="border: 1px solid #dddddd;"> {{first}}</td>
+							<td style="border: 1px solid #dddddd;"> {{last}} </td>
+							<td style="border: 1px solid #dddddd;"> {{phone}} </td>
+							<td style="border: 1px solid #dddddd;"> {{email}} </td>
+						</tr>
+					{{/each}}
+						</tbody>
+					</table>
+			{{/if}}
+			 </div>	
+		</div>
+	</div>
 
 
 	<div>
 	<center>
-		<button style="width: 40%" id="edit-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Make Changes</button>
+		<button style="width: 10%" id="edit-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Edit Task</button>
 	</center>
 	</div>
 

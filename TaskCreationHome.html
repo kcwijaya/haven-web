@@ -8,23 +8,17 @@
 	crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
-
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
 	<link rel="stylesheet" type="text/css" href="../slick/slick/slick.css"/>
 	<link rel="stylesheet" type="text/css" href="../slick/slick/slick-theme.css"/>
 	<script type="text/javascript" src="../slick/slick/slick.min.js"></script>
 
-
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
 	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-
-
-
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-
 
 	<link rel="stylesheet" href="../stylesheets/main.css">
 	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
@@ -36,16 +30,9 @@
 	</script>
 
 	<script id="card-group" type="text/x-handlebars-template">
-		<h5> {{title}}
-			 	<i id={{listID}} style="margin-top: 1%; margin-left: 1%" class="fa fa-list" aria-hidden="true"></i>
+		<h5 style="font-size: 1.7rem"> {{title}}
+			 <i id={{listID}} style="margin-top: 1%; margin-left: 1%" class="fa fa-list" aria-hidden="true"></i>
     	</h5>
-
-    	<!--
-		 <div style="margin-bottom: 2%" class="input-group">
-      		<input type="text" style="width: 60%" class="form-control" placeholder="Search">
-       		 <button id={{searchID}}  style="box-shadow: 0px 0px 0px" class="btn btn-primary btn-default" type="button">	<i style="margin-top: 1%; margin-left: 1%" class="fa fa-search" aria-hidden="true"></i> </button>
-   		</div>
-		-->
 		
 		<div class="{{cardID}}">
 			{{#each cards}}
@@ -61,19 +48,19 @@
 	</script>
 
 	<script id="card-list" type="text/x-handlebars-template">
-		<h5> {{title}}  
+		<h5 style="font-size: 1.7rem"> {{title}}  
 				<i id={{boxID}} style="margin-top: 1%; margin-left: 1%" class="fa fa-th" aria-hidden="true"></i>
     	</h5>
 		 
 		
 		<div class="{{cardID}}">
-			<table id="{{cardID}}" style="width: 100%; border-collapse: collapse;" class="card-list">
+			<table id="{{cardID}}" style="width: 100%; border-collapse: collapse;" class="hover card-list">
 				<thead>
 				<tr>
-						<th style="display: none"> </th>
-						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Name </th>
-						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Description 
-						</th>
+					<th style="display: none"> </th>
+					<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Name </th>
+					<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Description 
+					</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -96,8 +83,8 @@
 	<div id="nav-placeholder"> </div>
 	
 	<div class="vertical-align-25 center-text">
-		<h2> Let's get your task ready. </h2>
-		<button id="createNewTask" type="button" style="margin-top: 1%" class="btn btn-primary btn-lg">Create New Task</button>
+		<h2 style="font-size: 2.5rem"> Let's get your task ready. </h2>
+		<button id="createNewTask" type="button" style="font-size: 1.7rem; margin-top: 1%" class="btn btn-primary btn-lg">Create New Task</button>
 		<h5 style="margin-top: 2%"> or </h5>
 		<hr class="mid-size-line" />
 	</div>
@@ -105,7 +92,7 @@
 	<div id="template-group" class="task-item-group"> </div>
 	<div id="edit-group" class="task-item-group"> </div>
 
-	<div id="footer-bigger">
+	<div id="footer">
 		<img src="../imgs/logo-full.png" id="logo-full"/>
 	</div>
 	

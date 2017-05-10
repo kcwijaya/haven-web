@@ -12,7 +12,7 @@ $(document).ready(function(){
 				<li class="nav-item">
 					<a class="nav-link {{home}}" href="/home">Home </a>
 				</li>
-				{{#unless hide}}
+				{{#unless signin}}
 				<li class="nav-item">
 					<a class="nav-link {{task}}" href="/tasks">Task List</a>
 				</li>

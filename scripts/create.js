@@ -3,6 +3,7 @@ var task;
 var map;
 var markers;
 var volunteerTable;
+
 function makeMap(lat, long)
 {
 	map = new google.maps.Map(document.getElementById('map'), {
@@ -83,8 +84,8 @@ function initMap()
  	{
  		var geocoder = new google.maps.Geocoder();
         geocoder.geocode({'address': val}, function(results, status) {
-          if (status === 'OK' && results.length > 0) {
-          	makeMap(results[0].location.geometry.lat(), results[0].location.geometry.lng());
+          if (status === 'OK') {
+          	makeMap(results.location.lat, results.location, lng);
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
@@ -92,7 +93,6 @@ function initMap()
  	}
  	else
  	{
- 		/*
 		navigator.geolocation.getCurrentPosition(function(pos){
 			lat = pos.coords.latitude;
 			long = pos.coords.longitude
@@ -101,8 +101,6 @@ function initMap()
 
 			makeMap(lat, long);
 		});
-		*/
-		makeMap(37.429987,  -122.173330);
 	}
 }
 
@@ -165,6 +163,7 @@ function makeForm()
 
 	 $('#clock').datetimepicker(
 	 {
+	 	allowInputToggle: true, 
 	 	sideBySide: true
 	 });
 
@@ -219,7 +218,31 @@ $(document).ready(function(){
 
 	if (typeof document.getElementById('volunteers')!= 'undefined')
 	{
-		volunteerTable = $('#volunteers').DataTable();
+		volunteerTable = $('#volunteers').DataTable({
+			dom: 'Bfrtip',
+			buttons: [
+            {
+                extend:    'copyHtml5',
+                text:      '<i class="fa fa-files-o"></i>',
+                titleAttr: 'Copy'
+            },
+            {
+                extend:    'excelHtml5',
+                text:      '<i class="fa fa-file-excel-o"></i>',
+                titleAttr: 'Excel'
+            },
+            {
+                extend:    'csvHtml5',
+                text:      '<i class="fa fa-file-text-o"></i>',
+                titleAttr: 'CSV'
+            },
+            {
+                extend:    'pdfHtml5',
+                text:      '<i class="fa fa-file-pdf-o"></i>',
+                titleAttr: 'PDF'
+            }
+        ]
+		});
 	}
 
   $("input[type=checkbox]").change(function () {
@@ -280,8 +303,8 @@ $(document).on('click', '#save-review', function(e){
 	{
 		 var geocoder = new google.maps.Geocoder();
 		 geocoder.geocode({'address': address}, function(results, status) {
-          if (status === 'OK' && results.length > 0) {
-          	location = {address: address, lat: results[0].geometry.location.lat(), long: results[0].geometry.location.lng()};
+          if (status === 'OK') {
+          	location = {address: address, lat: results.location.lat, long: results.location.lng};
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
@@ -392,8 +415,23 @@ $(document).on('click', '#save-review', function(e){
 });
 
 $(document).on('click', '.delete-button', function(e){
-	volunteerTable.row($(this).parents('tr')).remove().draw();
+	if (confirm("Are you sure you want to delete this volunteer?")){
+		volunteerTable.row($(this).parents('tr')).remove().draw();
+	}
 });
+
+function validatePhone(phone)  
+{  
+  var re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  return re.test(phone);
+}  
+
+function validateEmail(email)  
+{  
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}  
+
 
 $(document).on('click', '#add-volunteer', function(e){
 	e.preventDefault();
@@ -401,6 +439,82 @@ $(document).on('click', '#add-volunteer', function(e){
 	var last = $("#last").val();
 	var phone = $("#phone" ).val();
 	var email = $("#email").val();
+
+	var failed = false;
+
+	if (first == "")
+	{
+		failed = true;
+		$("#first-req").show();
+		$("#first-container").addClass('has-danger');
+	}
+	else
+	{
+		$("#first-req").hide();
+		$("#first-container").removeClass('has-danger');
+
+	}
+
+	if (last == "")
+	{
+		failed = true;
+		$("#last-req").show();
+		$("#last-container").addClass('has-danger');
+
+	}
+	else
+	{
+		$("#last-req").hide();
+		$("#last-container").removeClass('has-danger');
+	}
+
+	if (phone == "")
+	{
+		failed = true;
+		$("#phone-req").show();
+		$("#phone-container").addClass('has-danger');
+	}
+	else if (!validatePhone(phone))
+	{
+		failed = true;
+		$("#phone-req").hide();
+		$("#phone-val").show();
+		$("#phone-container").addClass('has-danger');
+	}
+	else 
+	{
+		$("#phone-req").hide();
+		$("#phone-val").hide();
+		$("#phone-container").removeClass('has-danger');
+	}
+
+	if (email == "")
+	{
+		failed = true;
+		$("#email-req").show();
+		$("#email-container").addClass('has-danger');
+	}
+	else if (!validateEmail(email))
+	{
+		failed = true;
+		$('#email-req').hide();
+		$('#email-val').show();
+		$("#email-container").addClass('has-danger');
+	}
+	else
+	{
+		$('#email-req').hide();
+		$('#email-val').hide();
+		$("#email-container").removeClass('has-danger');
+	}
+
+	if (failed) return;
+
+	
+
+	var digits = phone.match(/\d/g);
+	phone = digits.join("");
+	phone = text.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
 
 	var add = volunteerTable.row.add([first, last, phone, email, '<center><i style="font-size: 25px" class="delete-button fa fa-trash"></i></center>']).draw().node();
 	$(add).css('background-color', 'white');
@@ -447,4 +561,5 @@ $(document).on('click', '#post-task', function(e){
 		}
 	});
 });
+
 

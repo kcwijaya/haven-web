@@ -8,12 +8,16 @@ function makeTaskGroup(hb, slick)
   $('#task-group').html("");
   $('#task-group').append(template(taskContext));
 
+  var numRows = taskContext.cards.length/5;
   if (slick)
   {
     $('.tasks').slick({
       slidesToShow: 3, 
       slidesToScroll: 3,
-      dots: true
+      dots: true,
+      rows: numRows,
+      focusOnSelect: true,
+      variableWidth: true
     });
   }
 }
@@ -29,6 +33,16 @@ $(document).ready(function(){
     cardID: 'tasks',
     template: true,
     cards: [
+      {cardTitle: "Katrina Food Station", cardText: "Distributing food at a resource distribution center after Hurricane Katrina"},
+      {cardTitle: "Civilian Evacuation", cardText: "Evacuating citizens in aftermath of bombing in shopping center"},
+      {cardTitle: "Driving Resources", cardText: "Driving resources to Habitat for Humanity location in east side of town"},
+      {cardTitle: "House Construction", cardText: "Rebuilding the four exterior walls of a home located a few miles north"},
+      {cardTitle: "Search & Rescue, Fire", cardText: "Search and rescue operation after forest fire"},
+      {cardTitle: "Katrina Food Station", cardText: "Distributing food at a resource distribution center after Hurricane Katrina"},
+      {cardTitle: "Civilian Evacuation", cardText: "Evacuating citizens in aftermath of bombing in shopping center"},
+      {cardTitle: "Driving Resources", cardText: "Driving resources to Habitat for Humanity location in east side of town"},
+      {cardTitle: "House Construction", cardText: "Rebuilding the four exterior walls of a home located a few miles north"},
+      {cardTitle: "Search & Rescue, Fire", cardText: "Search and rescue operation after forest fire"},
       {cardTitle: "Katrina Food Station", cardText: "Distributing food at a resource distribution center after Hurricane Katrina"},
       {cardTitle: "Civilian Evacuation", cardText: "Evacuating citizens in aftermath of bombing in shopping center"},
       {cardTitle: "Driving Resources", cardText: "Driving resources to Habitat for Humanity location in east side of town"},

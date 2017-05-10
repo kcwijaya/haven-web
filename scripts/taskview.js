@@ -1,14 +1,14 @@
 $(document).ready(function (){
 	$('#edit-task').click(function(e){
-		var title = $('#title').text();
-		var description = $('#description').text();
+		var title = $('#title').text().trim();
+		var description = $('#description').text().trim();
 		var volunteers = [];
 		$("#volunteers tbody tr").each(function(){
 			var cells = $(this).find("td");
 			var data = [];
 
 			cells.each(function() {
-				data.push($(this).text());
+				data.push($(this).text().trim());
 			});
 
 			volunteers.push({

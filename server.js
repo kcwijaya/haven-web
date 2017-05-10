@@ -131,22 +131,7 @@ app.get('/tasks/view', function(req, res){
 
 
 app.get('/hello', function(req, res){
-  this.backend.CustomCode.invokeCustomCodeJSONRequest('TestNoLogon/names?id="yyoo"', "GET", null, 
-    function(statusCode, data){
-      console.log("First");
-      console.log(statusCode);
-      console.log(data);
-      res.status(statusCode);
-      res.send(data);
-    },
-    function(statusCode, data)
-    {
-      console.log("Second");
-      console.log(statusCode);
-      console.log(data);
-      res.status(statusCode);
-      res.send(data);
-    });
+  res.sendFile(__dirname + '/hello.html');
 });
 
 app.get('/create', function(req, res) {
@@ -337,9 +322,6 @@ app.get('/create/new', function(req, res) {
   var id = req.query.id;
   console.log("ID: " + id);
 
-  if (typeof req.query.taskBtn == 'undefined' && typeof req.query.templateBtn == 'undefined'){
-    req.query.newBtn = true;
-  }
   req.query.pageTitle = 'Haven - Create';
   req.query = getCreateForm(req.query);
   /*

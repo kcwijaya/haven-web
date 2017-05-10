@@ -11,12 +11,16 @@ function makeTemplateGroup(hb, slick)
 
   $('#template-group').append(template(templateContext));
 
+  var numRows = templateContext.cards.length/5;
   if (slick)
   {
     $('.templates').slick({
       slidesToShow: 3, 
       slidesToScroll: 3,
-      dots: true
+      dots: true,
+      rows: numRows,
+      focusOnSelect: true,
+      variableWidth: true
     });
   }
 }
@@ -29,18 +33,26 @@ function makeCardGroups(hb, slick)
   $('#template-group').append(template(templateContext));
   $('#edit-group').append(template(editContext));
 
+  var taskRows = editContext.cards.length/5;
+  var templateRows = templateContext.cards.length/5;
   if (slick)
   {
     $('.templates').slick({
       slidesToShow: 3, 
       slidesToScroll: 3,
-      dots: true
+      dots: true,
+      rows: templateRows,
+      focusOnSelect: true,
+      variableWidth: true
     });
 
     $('.edits').slick({
       slidesToShow: 3, 
       slidesToScroll: 3,
-      dots: true
+      dots: true,
+      rows: taskRows, 
+      focusOnSelect: true,
+      variableWidth: true
     });
   }
 }
@@ -55,12 +67,17 @@ function makeEditGroup(hb, slick)
 
   $('#edit-group').append(template(editContext));
 
+
+  var numRows = editContext.cards.length/5;
   if (slick)
   {
     $('.edits').slick({
       slidesToShow: 3, 
       slidesToScroll: 3,
-      dots: true
+      dots: true,
+      rows: numRows,
+      focusOnSelect: true,
+      variableWidth: true
     });
   }
 }

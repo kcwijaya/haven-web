@@ -10,12 +10,16 @@ function makeTemplateGroup(hb, slick)
 
   $('#template-group').append(template(templateContext));
 
+  var numRows = templateContext.cards.length/5;
   if (slick)
   {
     $('.templates').slick({
       slidesToShow: 3, 
       slidesToScroll: 3,
-      dots: true
+      dots: true,
+      rows: numRows,
+      focusOnSelect: true,
+      variableWidth: true
     });
   }
 }
@@ -37,7 +41,11 @@ $(document).ready(function(){
       {cardTitle: "Medical Attention", cardText: "First aid required only. Needs to know CPR."},
       {cardTitle: "SAR, Outdoors", cardText: "Search and rescue operation, outdoors, dangerous"},
       {cardTitle: "SAR, Indoors", cardText: "Search and rescue operation, indoors, potentially hazardous."},
-
+{cardTitle: "Evacuation Plan", cardText: "Plan with skills for a general evacuation scenario"},
+      {cardTitle: "Resource Station", cardText: "Distribution station for food, water, blankets, etc"},
+      {cardTitle: "Medical Attention", cardText: "First aid required only. Needs to know CPR."},
+      {cardTitle: "SAR, Outdoors", cardText: "Search and rescue operation, outdoors, dangerous"},
+      {cardTitle: "SAR, Indoors", cardText: "Search and rescue operation, indoors, potentially hazardous."},
     ]
   };
 
@@ -46,8 +54,8 @@ $(document).ready(function(){
 
 });
 
-$(document).on('templates', '#tasks tbody tr', function (){
-  var task = $('#tasks').DataTable().row(this).data();
+$(document).on('click', '#templates tbody tr', function (){
+  var task = $('#templates').DataTable().row(this).data();
   var params = $.param({
     title: task[0], 
     description: task[1],
