@@ -87,7 +87,7 @@ body
 {
 	color: #828282;
 	margin-top: 3%;
-	font-size: 1.7rem;
+	font-size: 1.5rem;
 }
 .center-text
 {
@@ -165,13 +165,13 @@ body
 
 .user-input
 {
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 }
 
 .user-input-h
 {
 	font-weight: bold;
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 }
 
 .form-input-group
@@ -250,7 +250,7 @@ th
 {
 	background-color: #F7F7F7;
 	border: solid 1px #E0E0E0;
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 }
 
 .form-checkbox
@@ -289,7 +289,7 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
 
 label
 {
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 }
 
 .text-placeholder
@@ -327,7 +327,7 @@ label
 }
 #logo-full
 {
-	width: 12rem;
+	width: 10rem;
 	border-radius: 0;
 }
 
