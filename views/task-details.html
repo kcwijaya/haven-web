@@ -106,28 +106,32 @@
 			<h6 class="user-input-h">  Volunteers </h6>
 			<div id="volunteer-text" style="padding: 0" class="text-placeholder">
 			{{#if volunteers}}
-					<table id="volunteers" style="width: 100%;">
-						<thead>
-						<tr>
-							<th style="color: white; background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
-							<th style="color: white; background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
+				<table id="volunteers" style="width: 100%;">
+					<thead>
+					<tr>
+							<th style="display: none"> </th>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
 							</th>
-							<th style="color: white; background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number 
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number 
 							</th>
-							<th style="color: white; background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
 							</th>
-						</tr>
-						</thead>
-						<tbody>
-					{{#each volunteers}}
+					</tr>
+					</thead>
+					<tbody>
+				{{#each volunteers}}
 						<tr style="background-color:white">
+							<td style="display: none"> {{id}}</td>
+
 							<td style="border: 1px solid #dddddd;"> {{first_name}}</td>
 							<td style="border: 1px solid #dddddd;"> {{last_name}} </td>
 							<td style="border: 1px solid #dddddd;"> {{phone_number}} </td>
 							<td style="border: 1px solid #dddddd;"> {{email}} </td>
 						</tr>
 					{{/each}}
-						</tbody>
+					</tbody>
+				</table>
 					</table>
 			{{else}}
 				<p style="margin-left: 1%"> There are currently no volunteers signed up. </p>

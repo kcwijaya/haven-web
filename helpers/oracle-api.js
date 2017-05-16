@@ -153,6 +153,29 @@ exports.deleteTaskDisclaimer = function(token, taskID, disclaimerID, callback){
 	request(options, callback);
 }
 
+exports.getTaskVolunteers = function(token, userID, taskID, callback){
+		var options = {
+		uri: host + "/users/tasks/" + userID,
+		headers: {
+			'task_id': taskID
+		},			
+		auth: {
+			'bearer': token
+		},
+		method: 'POST'
+	}
+
+	request(options, callback);
+}
+
+exports.getTaskVolunteers = function(token, id, callback){
+	request.get(host + "/tasks/users/" + id, {
+		'auth': {
+			'bearer': token
+		}
+	}, callback);
+}
+
 exports.getTaskSkills = function(token, id, callback){
 	request.get(host + "/tasks/skills/" + id, {
 		'auth': {

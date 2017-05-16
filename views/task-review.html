@@ -96,6 +96,7 @@
 				<table id="volunteers" style="width: 100%;">
 					<thead>
 					<tr>
+							<th style="display: none"> </th>
 							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
 							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
 							</th>
@@ -108,6 +109,8 @@
 					<tbody>
 				{{#each volunteers}}
 						<tr style="background-color:white">
+							<td style="display: none"> {{id}}</td>
+
 							<td style="border: 1px solid #dddddd;"> {{first_name}}</td>
 							<td style="border: 1px solid #dddddd;"> {{last_name}} </td>
 							<td style="border: 1px solid #dddddd;"> {{phone_number}} </td>
