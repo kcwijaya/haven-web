@@ -185,7 +185,16 @@ app.get('/tasks/view', function(req, res){
       }
 
       var task = parser.parseOneTask(body);
-      res.render('task-details', task);
+
+      api.getTaskVolunteers(getAccessToken(), req.query.id, 
+        function(error, response, body)
+        {
+          body = JSON.parse(body);
+          task.volunteers = body.items;
+          res.render('task-details', task);
+
+        }
+      )
     }
     );
 });
@@ -228,7 +237,26 @@ app.post('/save-task', function(req, res){
           res.status(404).send("Not Found");
         }
 
-        apihelper.startWithGettingSkillsTask(getAccessTokenObj(), task, res);
+        if (typeof task.volunteers != 'undefined' && task.volunteers.length > 0)
+        {
+          var addedVolunteers = 0;
+          for (i=0; i < task.volunteers.length; i++)
+          {
+            api.addTaskVolunteer(getAccessToken(), task.volunteers[i].id, task.id, 
+              function(error, response, body){
+                addedVolunteers++;
+                if (addedVolunteers == task.volunteers.length)
+                {
+                  apihelper.startWithGettingSkillsTask(getAccessTokenObj(), task, res);
+                }
+              }
+            );
+          }
+        }
+        else
+        {
+          apihelper.startWithGettingSkillsTask(getAccessTokenObj(), task, res);
+        }
       }
   );
 });
@@ -414,13 +442,20 @@ app.get('/tasks/edit', function(req, res) {
       }
 
       var task = parser.parseOneTask(body);
-
-      getFields(task, function(result){
-        console.log("RESULT: " + JSON.stringify(result));
-        result.taskBtn = true;
-        result.pageTitle = "Haven - Edit Task";
-        res.render('task-create', result);
-      });
+      api.getTaskVolunteers(getAccessToken(), taskID, 
+        function(error, response, body)
+        {
+          body = JSON.parse(body);
+          task.volunteers = body.items;
+          getFields(task, function(result){
+            console.log("RESULT: " + JSON.stringify(result));
+            result.taskBtn = true;
+            result.pageTitle = "Haven - Edit Task";
+            res.render('task-create', result);
+          });
+        }
+      );
+     
 
     }
     );

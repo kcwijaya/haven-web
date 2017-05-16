@@ -164,7 +164,12 @@
 		{{#if volunteers}}
 		<h7 class="section-title"> Volunteers </h7>
 		<div class="form-card">
-			<form id = "volunteer-form">
+			<div style="padding: 5%;">
+
+			<h4> Add Volunteers </h4>
+			<table id="users" style="width: 100%; height: 80%"></table>
+			</div>
+			<!-- <form id = "volunteer-form">
 				<div class="row"  style="margin-bottom: 1%">
 					<div id="first-container" class="col-md-6">
 						<label for="first">First Name</label>
@@ -200,11 +205,13 @@
 					</div>
 					<button style="box-shadow: 0px 0px 0px; margin-top: 1%; float: right; margin-bottom: 2%" id="add-volunteer" class="btn-primary btn-group-mem btn ">Add Volunteer</button>
 				</div>
-			</form>
+			</form> -->
 				<div style="padding: 5%;">
+				<h4> Current Volunteers </h4>
 				<table id="volunteers" style="width: 100%;">
 					<thead>
 					<tr>
+							<th style="display: none"></th>
 							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
 							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
 							</th>
@@ -218,9 +225,10 @@
 					<tbody>
 				{{#each volunteers}}
 					<tr style="background-color:white">
-						<td style="border: 1px solid #dddddd;"> {{first}}</td>
-						<td style="border: 1px solid #dddddd;"> {{last}} </td>
-						<td style="border: 1px solid #dddddd;"> {{phone}} </td>
+						<td style="display: none">{{id}}</td>
+						<td style="border: 1px solid #dddddd;"> {{first_name}}</td>
+						<td style="border: 1px solid #dddddd;"> {{last_name}} </td>
+						<td style="border: 1px solid #dddddd;"> {{phone_number}} </td>
 						<td style="border: 1px solid #dddddd;"> {{email}} </td>
 						<td style="text-align: center; border: 1px solid #dddddd;"> <i style="font-size: 25px" class="delete-button fa fa-trash"></i> </td>
 					</tr>
@@ -232,18 +240,14 @@
 		{{/if}}
 
 		{{#if taskBtn}}
-			<div>
-				<center>
-				<button style="width: 30%" id="save-review-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Review</button>
-				</center>
+			<div style="margin-left: 35%">
+				<button style="width: 35%" id="save-review-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Review</button>
 			</div>
 		{{/if}}
 
 		{{#if newBtn}}
-		<div class="button-group">
-			<center>
-			<button style="width: 20%" id="save-review" type="submit" class="btn-group-mem btn btn-primary btn-lg">Review</button>
-			</center>
+		<div style="margin-left: 35%">
+			<button style="width: 35%" id="save-review" type="submit" class="btn-group-mem btn btn-primary btn-lg">Review</button>
 		</div>
 		{{/if}}
 

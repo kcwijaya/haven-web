@@ -3,6 +3,7 @@ var task;
 var map;
 var markers;
 var volunteerTable;
+var userTable;
 var pressed;
 
 function makeMap(lat, long)
@@ -268,6 +269,7 @@ function getTemplateSkills(id)
 		type: "GET",
 		url: "/templates/skills?" + params,
 		success: function (res){
+			console.log(res);
 			for (i = 0; i < res.length; i++)
 			{
 				$("#" + res[i].id).prop('checked', true);
@@ -286,6 +288,7 @@ function getTemplateDisclaimers(id)
 		type: "GET",
 		url: "/templates/disclaimers?" + params,
 		success: function (res){
+			console.log(res);
 			for (i = 0; i < res.length; i++)
 			{
 				$("#" + res[i].id).prop('checked', true);
@@ -304,6 +307,8 @@ function getTaskSkills(id)
 		type: "GET",
 		url: "/tasks/skills?" + params,
 		success: function (res){
+			console.log("SKILLS: " );
+			console.log(res);
 			for (i = 0; i < res.length; i++)
 			{
 				$("#" + res[i].id).prop('checked', true);
@@ -322,6 +327,8 @@ function getTaskDisclaimers(id)
 		type: "GET",
 		url: "/tasks/disclaimers?" + params,
 		success: function (res){
+			console.log("DISCLAIMERS: " );
+			console.log(res);
 			for (i = 0; i < res.length; i++)
 			{
 				$("#" + res[i].id).prop('checked', true);
@@ -330,15 +337,67 @@ function getTaskDisclaimers(id)
 	});
 }
 
+function getUsers(id)
+{
+	$.ajax({
+		type: "GET",
+		url: "/users/all",
+		success: function(res){
+			console.log("USERS: ");
+			console.log(res);
+			userTable = $("#users").DataTable({
+				'data': res,
+				'columns': [
+					{
+						'title': '',
+						'data': 'id',
+						'visible': false
+					},
+					{ 
+						'title': 'First Name',
+					 	'data': 'first_name'
+					}, 
+					{ 
+						'title': 'Last Name',
+						'data': 'last_name'
+					}, 
+					{ 
+						'title': 'Phone Number',
+						'data': 'phone_number'
+					},
+					{ 
+						'title': 'Email',
+						'data': 'email'
+					}, 
+					{ 
+						'title': ''
+					}
+				],
+				'columnDefs': [
+					{
+						"targets": 5,
+						"render": function (data, type, full, meta){
+							return '<center><i style="font-size:25px" class="add-volunteer fa fa-plus-square"></i>'
+						},
+						"orderable": false
+					}
+				]
+			})
+		}
+	})
+}
+
 $(document).ready(function(){
 	var taskID = $('#taskID').text();
 	var templateID = $('#templateID').text();
 
 	if (typeof taskID != 'undefined' && taskID != '')
 	{
+		console.log("Populating task details...");
 		taskID = parseInt(taskID);
 		getTaskSkills(taskID);
 		getTaskDisclaimers(taskID);
+		getUsers();
 	}
 	
 	if (typeof templateID != 'undefined' && templateID != '')
@@ -365,29 +424,12 @@ $(document).ready(function(){
 	if (typeof document.getElementById('volunteers')!= 'undefined')
 	{
 		volunteerTable = $('#volunteers').DataTable({
-			dom: 'Bfrtip',
-			buttons: [
-            {
-                extend:    'copyHtml5',
-                text:      '<i class="fa fa-files-o"></i>',
-                titleAttr: 'Copy'
-            },
-            {
-                extend:    'excelHtml5',
-                text:      '<i class="fa fa-file-excel-o"></i>',
-                titleAttr: 'Excel'
-            },
-            {
-                extend:    'csvHtml5',
-                text:      '<i class="fa fa-file-text-o"></i>',
-                titleAttr: 'CSV'
-            },
-            {
-                extend:    'pdfHtml5',
-                text:      '<i class="fa fa-file-pdf-o"></i>',
-                titleAttr: 'PDF'
-            }
-        ]
+			'columnDefs': [
+			{
+				'targets': 5,
+				'orderable': false
+			}
+			]
 		});
 	}
 
@@ -520,7 +562,7 @@ $(document).on('click', '#save-review-task', function(e){
 		for (i = 0; i < volunteers.length; i++)
 		{
 			volunteer = volunteers[i];
-			volunteerO.push({first: volunteer[0], last: volunteer[1], phone: volunteer[2], email: volunteer[3]});
+			volunteerO.push({id: volunteer[0], first_name: volunteer[1], last_name: volunteer[2], phone_number: volunteer[3], email: volunteer[4]});
 		}
 	}
 
@@ -738,7 +780,7 @@ $(document).on('click', '#save-review', function(e){
 		for (i = 0; i < volunteers.length; i++)
 		{
 			volunteer = volunteers[i];
-			volunteerO.push({first: volunteer[0], last: volunteer[1], phone: volunteer[2], email: volunteer[3]});
+			volunteerO.push({id: volunteer[0], first_name: volunteer[1], last_name: volunteer[2], phone_number: volunteer[3], email: volunteer[4]});
 		}
 	}
 
@@ -865,93 +907,31 @@ function validateEmail(email)
 }  
 
 
-$(document).on('click', '#add-volunteer', function(e){
-	e.preventDefault();
-	var first = $("#first").val();
-	var last = $("#last").val();
-	var phone = $("#phone" ).val();
-	var email = $("#email").val();
+$(document).on('click', '.add-volunteer', function(e){
+	var vol = userTable.row($(this).parents('tr')).data();
+	console.log(vol);
 
-	var failed = false;
+	var currVolunteers = volunteerTable.data();
+	console.log(currVolunteers);
 
-	if (first == "")
+	for (i = 0; i < currVolunteers.length; i++)
 	{
-		failed = true;
-		$("#first-req").show();
-		$("#first-container").addClass('has-danger');
+		if (parseInt(currVolunteers[i][0]) == vol['id'])
+		{
+			alert(vol['first_name'] + " " + vol['last_name'] + " is already signed up.");
+			return;
+		}
 	}
-	else
-	{
-		$("#first-req").hide();
-		$("#first-container").removeClass('has-danger');
-
-	}
-
-	if (last == "")
-	{
-		failed = true;
-		$("#last-req").show();
-		$("#last-container").addClass('has-danger');
-
-	}
-	else
-	{
-		$("#last-req").hide();
-		$("#last-container").removeClass('has-danger');
-	}
-
-	if (phone == "")
-	{
-		failed = true;
-		$("#phone-req").show();
-		$("#phone-container").addClass('has-danger');
-	}
-	else if (!validatePhone(phone))
-	{
-		failed = true;
-		$("#phone-req").hide();
-		$("#phone-val").show();
-		$("#phone-container").addClass('has-danger');
-	}
-	else 
-	{
-		$("#phone-req").hide();
-		$("#phone-val").hide();
-		$("#phone-container").removeClass('has-danger');
-	}
-
-	if (email == "")
-	{
-		failed = true;
-		$("#email-req").show();
-		$("#email-container").addClass('has-danger');
-	}
-	else if (!validateEmail(email))
-	{
-		failed = true;
-		$('#email-req').hide();
-		$('#email-val').show();
-		$("#email-container").addClass('has-danger');
-	}
-	else
-	{
-		$('#email-req').hide();
-		$('#email-val').hide();
-		$("#email-container").removeClass('has-danger');
-	}
-
-	if (failed) return;
-
-	var digits = phone.match(/\d/g);
-	phone = digits.join("");
-	phone = text.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-
-	var add = volunteerTable.row.add([first, last, phone, email, '<center><i style="font-size: 25px" class="delete-button fa fa-trash"></i></center>']).draw().node();
+	var add = volunteerTable.row.add([vol['id'], vol['first_name'], vol['last_name'], vol['phone_number'], vol['email'], '<center><i style="font-size: 25px" class="delete-button fa fa-trash"></i></center>']).draw().node();
 	$(add).css('background-color', 'white');
 	var cells = $(add).find("td");
 	cells.each(function(){
 		$(this).css('border', '1px solid #dddddd');
 	});
+
+	$(cells[0]).css('display', 'none');
+	alert(vol['first_name'] + " " + vol['last_name'] + " has been added.");
+
 });
 
 $(document).on('click', '#review-template', function(e){
