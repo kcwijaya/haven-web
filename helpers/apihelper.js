@@ -89,7 +89,7 @@ exports.startWithAddingSkillsTask = function(token, task, res)
     for (j = 0; j < task.skills.length; j++)
     {
       console.log("Adding skill: " + task.skills[j]);
-      api.addTaskSkill(getAccessToken(token), task.id, task.skills[j].id,
+      api.addTaskSkill(getAccessToken(token), task.id, task.skills[j],
         function(error, response, addedSkills){
           console.log("Finished adding skill: " + task.skills[skillsToAdd]);
           skillsToAdd++;
