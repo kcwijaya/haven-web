@@ -204,7 +204,6 @@ function makeForm()
 	$("#description").val(task.description);
 	$("#instructions").val(task.instructions);
 	$("#severity").val(task.severity);
-	$("#time").val(task.time);
 	$("#clock").data("DateTimePicker").date(task.start_time);
 
 
@@ -508,7 +507,6 @@ $(document).on('click', '#save-review-task', function(e){
 	var description = $("#description").val();
 	var instructions = $("#instructions").val();
 	var severity = $("#severity option:selected" ).text();
-	var time = $("#time option:selected").text();
 	var clock = $("#clock-input").val();
 	var num_volunteers = $("#num_volunteers").val();
 
@@ -597,7 +595,6 @@ $(document).on('click', '#save-review-task', function(e){
 				description: description,
 				instructions: instructions,
 				severity: severity,
-				time: time,
 				start_time: clock,
 				num_volunteers: num_volunteers,
 				disclaimers: disc,
@@ -653,7 +650,6 @@ $(document).on('click', '#save-review-task', function(e){
 				description: description,
 				instructions: instructions,
 				severity: severity,
-				time: time,
 				start_time: clock,
 				num_volunteers: num_volunteers,
 				disclaimers: disc,
@@ -726,7 +722,6 @@ $(document).on('click', '#save-review', function(e){
 	var description = $("#description").val();
 	var instructions = $("#instructions").val();
 	var severity = $("#severity option:selected" ).text();
-	var time = $("#time option:selected").text();
 	var clock = $("#clock-input").val();
 	var num_volunteers = $("#num_volunteers").val();
 
@@ -815,7 +810,6 @@ $(document).on('click', '#save-review', function(e){
 				description: description,
 				instructions: instructions,
 				severity: severity,
-				time: time,
 				start_time: clock,
 				num_volunteers: num_volunteers,
 				disclaimers: disc,
@@ -868,7 +862,6 @@ $(document).on('click', '#save-review', function(e){
 				description: description,
 				instructions: instructions,
 				severity: severity,
-				time: time,
 				start_time: clock,
 				num_volunteers: num_volunteers,
 				disclaimers: disc,

@@ -20,13 +20,6 @@
 		<h7> Description </h7>
 		<div id="description" {{#if description}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> {{description}} </div>
 
-				<br>
-
-
-		<h7> Number of Volunteers</h7>
-		<div id="num_volunteers" {{#if num_volunters}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{num_volunteers}} </div>
-
-
 		<br>
 
 		<h7> Instructions </h7>
@@ -40,8 +33,9 @@
 				<div id="severity" class="text-placeholder">{{severity}} </div>
 			</div>
 			<div class="col-md-3">
-				<h7> Time of Day </h7>
-				<div id="time" class="text-placeholder"> {{time}}</div>
+				
+		<h7> Number of Volunteers</h7>
+		<div id="num_volunteers" {{#if num_volunters}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{num_volunteers}}</div>
 			</div>
 
 			<div class="col-md-5">
@@ -49,7 +43,6 @@
 				<div id="clock-text" class="text-placeholder"> {{start_time}}</div>
 			</div>
 		</div>
-
 				<br>
 
 

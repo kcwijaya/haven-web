@@ -449,6 +449,7 @@ app.get('/tasks/edit', function(req, res) {
           getFields(task, function(result){
             console.log("RESULT: " + JSON.stringify(result));
             result.taskBtn = true;
+            result.oldTask = true;
             result.pageTitle = "Haven - Edit Task";
             res.render('task-create', result);
           });
