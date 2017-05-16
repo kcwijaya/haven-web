@@ -12,7 +12,7 @@
 
 	<h5 id="id" style="display: none"> {{id}} </h5>
 
-	<div style="margin-top: 2%; width: 80%" class="form-card left-align">
+	<div style="margin-top: 2%; width: 90%" class="form-card left-align">
 		<div class="form-input-group">
 			<h6 class="user-input-h"> Title </h6>
 			<div id="title" class="text-placeholder">
@@ -73,6 +73,8 @@
 				{{#list disclaimers}}
 					<p>{{name}}</p>
 				{{/list}}
+				{{else}}
+				<p style="margin-left: 1%"> There are currenly no disclaimers. </p>
 				{{/if}}
 			</div>
 		</div>
@@ -93,6 +95,8 @@
 						 </p>
 					{{/list}}
 				{{/each}}
+			{{else}}
+			<p style="margin-left: 1%"> There are currenly no required skills. </p>
 			{{/if}}
 			 </div>	
 		</div>
@@ -126,8 +130,9 @@
 						</tbody>
 					</table>
 			{{else}}
-			<p style="margin-left: 1%"> There are currently no volunteers signed up. </p>			{{/if}}
+				<p style="margin-left: 1%"> There are currently no volunteers signed up. </p>
 
+			{{/if}}
 			 </div>	
 		</div>
 	</div>
