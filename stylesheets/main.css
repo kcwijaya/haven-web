@@ -18,10 +18,28 @@ body
 	padding-right: 1%;
 }
 
+
+
 .input-group-addon:hover
 {
 	cursor: pointer;
 }
+
+.add-volunteer:hover
+{
+	cursor: pointer;
+	color: #33cccc;
+}
+#users
+{
+	border: 1px solid #dddddd;;
+}
+
+#users td
+{
+	border: 1px solid #dddddd;;
+}
+
 
 .form-check-label:hover
 {
@@ -165,14 +183,14 @@ body
 	cursor: pointer;
 }
 
-.user-input
-{
-	margin-left: 1%;
-}
-
 .user-input-h
 {
 	font-weight: bold;
+}
+
+.user-input
+{
+	margin-left: 1%;
 }
 
 .form-input-group
