@@ -7,19 +7,28 @@
  	 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
 	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAej_Btkc_ko3TrAgYkLY52elkW6bahpgk&libraries=places&callback=initMap"
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAej_Btkc_ko3TrAgYkLY52elkW6bahpgk&libraries=places"
     async defer></script>
 <script type="text/javascript" src="../scripts/create.js"></script>
 
+{{#if newBtn}}
 <script id="render-navbar" type="text/x-handlebars-template">
 	{{> navbar create="active"}}
 </script>
+{{/if}}
 
+{{#if taskBtn}}
+<script id="render-navbar" type="text/x-handlebars-template">
+	{{> navbar task="active"}}
+</script>
+{{/if}}
 
 <div id="container">
 	<div class="vertical-align-15 left-align">
 		<h2> Tell us more about your task. </h2>
 	</div>
+
+	<p id="taskID" style="display: none">{{id}}</p>
 
 	<form id="task-form" class="templates left-align">
 		<h7 class="section-title"> General Information </h7>
@@ -32,7 +41,7 @@
 			</div>
 			<div id="loc-container" class="form-group">
 				<label for="location"> Location </label>
-				<input id="location" class="form-control" type="text" placeholder="Search Location">
+				<input id="location" class="form-control" value="{{location}}" type="text" placeholder="Search Location">
 				<div id="loc-req" style="display: none" class="form-control-feedback">This field is required. </div>
 			 <div style="background-image: url('../imgs/loading_spinner.gif'); background-repeat: no-repeat; background-position: center;
  height: 300px" class="form-group" id="map">
@@ -55,9 +64,9 @@
 				<div class="col-md-4">
 					<label for="severity">Severity of Impacted Region</label>
 					<select name="severity" class="form-control" id="severity">
-						<option value="Light" {{#equal severity 'light'}} selected {{/equal}}>Light</option>
-						<option value="Moderate" {{#equal severity 'moderate'}} selected {{/equal}} >Moderate</option>
-						<option value="Severe" {{#equal severity 'severe'}} selected {{/equal}}>Severe</option>
+						<option value="Light" {{#equal severity 'Light'}} selected {{/equal}}>Light</option>
+						<option value="Moderate" {{#equal severity 'Moderate'}} selected {{/equal}} >Moderate</option>
+						<option value="Severe" {{#equal severity 'Severe'}} selected {{/equal}}>Severe</option>
 					</select>
 				</div>
 
@@ -74,13 +83,21 @@
 				<div class="col-md-4">
 					<label for="clock">Time</label>
 					<div id="clock" class="container input-group">
-						<input type='text'{{#if start_time}} value="{{start_time}}" {{/if}} class="form-control" />
+						<input type='text' {{#if clock}} value="{{clock}}" {{/if}} id="clock-input" class="form-control" />
 						<span class="input-group-addon">
                         	<span class="fa fa-calendar"></span>
                     	</span>
 					</div>
 				</div>
 		</div>
+
+		<div class="form-group">
+				<div id="volunteer-container" class="form-group">
+					<label for="num_volunteers">Number of Volunteers</label>
+					<input required type="number" name="num_volunteers" {{#if num_volunteers}} value="{{num_volunteers}}" {{/if}} class="form-control" id="num_volunteers">
+				</div>
+		</div>
+
 		<div class="form-group">
 			<label for="disclaimer">Disclaimers</label>
 			<small id="disclaimerHelper" class="text-muted"> Select all that apply. </small>		
@@ -88,7 +105,7 @@
 				<ul class="checkbox-grid">
 					{{#listnowrap disclaimers}}
 					<label class="form-check-label">
-						<input class="form-checkbox" type="checkbox" name="{{name}}" value="{{value}}" />  {{label}}
+						<input class="form-checkbox" type="checkbox" name="{{name}}" id="{{name}}" value="{{value}}" />  {{label}}
 					</label>
 					{{/listnowrap}}
 				</ul>
@@ -108,7 +125,7 @@
 						{{#each skills}}
 						<div class="form-check">
 							<label class="form-check-label">
-								<input class="form-checkbox" type="checkbox" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
+								<input class="form-checkbox" type="checkbox" id="{{name}}" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
 							{{#if more}}
 									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' readonly />
 								{{/if}}
@@ -128,10 +145,7 @@
 							{{#each skills}}
 							<div class="form-check">
 								<label class="form-check-label">
-									<input class="form-checkbox" type="checkbox" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
-									{{#unless value}} 
-										Custom Language
-									{{/unless}}
+									<input class="form-checkbox" type="checkbox" id="{{name}}" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
 								{{#if more}}
 									</br>
 									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' readonly />
@@ -218,25 +232,18 @@
 		{{/if}}
 
 		{{#if taskBtn}}
-			<div class="button-group">
-				<button style="width: 30%" id="save-changes" formaction="/SaveTask" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
-				<button style="width: 30%" id="save-review" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save and Review</button>
+			<div>
+				<center>
+				<button style="width: 30%" id="save-review-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Review</button>
+				</center>
 			</div>
-		{{/if}}
-		
-
-		{{#if templateBtn}}
-		<div class="button-group">
-			<button style="width: 30%" id="save-changes" formaction="/SaveTask" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
-			<button style="width: 30%" id="save-template" formaction="/SaveTemplate" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save as Template</button>
-		</div>
 		{{/if}}
 
 		{{#if newBtn}}
 		<div class="button-group">
-			<button style="width: 20%" id="save-changes" formaction="/SaveTask" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
-			<button style="width: 20%" id="save-template" formaction="/SaveTemplate" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save as Template</button>
-			<button style="width: 20%" id="save-review" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save and Review</button>
+			<center>
+			<button style="width: 20%" id="save-review" type="submit" class="btn-group-mem btn btn-primary btn-lg">Review</button>
+			</center>
 		</div>
 		{{/if}}
 

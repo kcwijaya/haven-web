@@ -11,14 +11,13 @@ function makeTemplateGroup(hb, slick)
 
   $('#template-group').append(template(templateContext));
 
-  var numRows = templateContext.cards.length/5;
   if (slick)
   {
     $('.templates').slick({
       slidesToShow: 3, 
-      slidesToScroll: 3,
+      slidesToScroll: 1,
       dots: true,
-      rows: numRows,
+      rows: 2,
       focusOnSelect: true,
       variableWidth: true
     });
@@ -33,24 +32,22 @@ function makeCardGroups(hb, slick)
   $('#template-group').append(template(templateContext));
   $('#edit-group').append(template(editContext));
 
-  var taskRows = editContext.cards.length/5;
-  var templateRows = templateContext.cards.length/5;
   if (slick)
   {
     $('.templates').slick({
       slidesToShow: 3, 
-      slidesToScroll: 3,
+      slidesToScroll: 1,
       dots: true,
-      rows: templateRows,
+      rows: 2,
       focusOnSelect: true,
       variableWidth: true
     });
 
     $('.edits').slick({
       slidesToShow: 3, 
-      slidesToScroll: 3,
+      slidesToScroll: 1,
       dots: true,
-      rows: taskRows, 
+      rows: 2, 
       focusOnSelect: true,
       variableWidth: true
     });
@@ -68,14 +65,13 @@ function makeEditGroup(hb, slick)
   $('#edit-group').append(template(editContext));
 
 
-  var numRows = editContext.cards.length/5;
   if (slick)
   {
     $('.edits').slick({
       slidesToShow: 3, 
       slidesToScroll: 3,
       dots: true,
-      rows: numRows,
+      rows: 2,
       focusOnSelect: true,
       variableWidth: true
     });
@@ -102,13 +98,6 @@ $(document).ready(function(){
     boxID: 'template-box',
     cardID: 'templates',
     template: true,
-    cards: [
-      {cardTitle: "Evacuation Plan", cardText: "Plan with skills for a general evacuation scenario"},
-      {cardTitle: "Resource Station", cardText: "Distribution station for food, water, blankets, etc"},
-      {cardTitle: "Medical Attention", cardText: "First aid required only. Needs to know CPR."},
-      {cardTitle: "SAR, Outdoors", cardText: "Search and rescue operation, outdoors, dangerous"},
-      {cardTitle: "SAR, Indoors", cardText: "Search and rescue operation, indoors, potentially hazardous."},
-    ]
   };
 
   editContext =
@@ -118,42 +107,46 @@ $(document).ready(function(){
     listID: 'edit-list',
     inputID: 'edit-input',
     boxID: 'edit-box',
-    cardID: 'edits',
-    cards: [
-    
-      {cardTitle: "Katrina Food Station", cardText: "Distributing food at a resource distribution center after Hurricane Katrina"},
-      {cardTitle: "Civilian Evacuation", cardText: "Evacuating citizens in aftermath of bombing in shopping center"},
-      {cardTitle: "Driving Resources", cardText: "Driving resources to Habitat for Humanity location in east side of town"},
-      {cardTitle: "House Construction", cardText: "Rebuilding the four exterior walls of a home located a few miles north"},
-      {cardTitle: "Search & Rescue, Fire", cardText: "Search and rescue operation after forest fire"},
-    ]
+    cardID: 'edits'
   };
 
-  //editContext.cards = cards;
-  makeCardGroups('#card-group', true);
-  /*
-  $.ajax({
+   $.ajax({
       type: "GET",
       url: "/tasks/all",
       success: function (res){
-        console.log(res);
-        cards = [];
+        editCards = [];
         for (i = 0; i < res.length; i++)
         {
-          cards.push({
+          editCards.push({
             cardID: res[i].id,
             cardTitle: res[i].title,
             cardText: res[i].description
           });
         }
 
-        editContext.cards = cards;
-        makeCardGroups('#card-group', true);
-      }
+        editContext.cards = editCards;
 
-    */
-    
-  });
+        $.ajax({
+          type: "GET",
+          url: "/templates/all",
+          success: function (res){
+            templateCards = [];
+            for (i = 0; i < res.length; i++)
+            {
+              templateCards.push({
+                cardID: res[i].id,
+                cardTitle: res[i].title,
+                cardText: res[i].description
+              });
+            }
+
+            templateContext.cards = templateCards;
+            makeCardGroups('#card-group', true);
+          }
+        });
+      }
+     });
+});
 
 
 $(document).on('click', '#template-search', function(){
@@ -191,30 +184,53 @@ $(document).on('click', '#edit-search', function(){
   }
 });
 
-$(document).on('click', '.card', function (){
+$(document).on('click', '.templates .card', function (){
   var title = $(this).find('.card-title').text();
   var description = $(this).find('.card-text').text();
   var id = $(this).find('.card-id').text();
   var params = $.param({
     id: id, 
-    title: title,
-    description: description,
-    newBtn: true
+    type: 'template'
   });
 
-  window.location.href = '/templates/view?' + params;
+  window.location.href = '/create/new?' + params;
 });
 
-$(document).on('click', 'tbody tr', function (){
+
+
+$(document).on('click', '#templates tbody tr', function (){
   var id = $(this).closest('table').attr('id');
   var task = $('#' + id).DataTable().row(this).data();
   var params = $.param({
     id: task[0],
-    title: task[1], 
-    description: task[2],
-    newBtn: true
+    type: 'template'
   });
-  window.location.href = '/templates/view?' + params;
+  window.location.href = '/create/new?' + params;
+
+});
+
+$(document).on('click', '.edits .card', function (){
+  var title = $(this).find('.card-title').text();
+  var description = $(this).find('.card-text').text();
+  var id = $(this).find('.card-id').text();
+  var params = $.param({
+    id: id, 
+    type: 'task'
+  });
+
+  window.location.href = '/create/new?' + params;
+});
+
+
+
+$(document).on('click', '#edits tbody tr', function (){
+  var id = $(this).closest('table').attr('id');
+  var task = $('#' + id).DataTable().row(this).data();
+  var params = $.param({
+    id: task[0],
+    type: 'task'
+  });
+  window.location.href = '/create/new?' + params;
 
 });
 			

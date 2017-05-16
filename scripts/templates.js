@@ -15,9 +15,9 @@ function makeTemplateGroup(hb, slick)
   {
     $('.templates').slick({
       slidesToShow: 3, 
-      slidesToScroll: 3,
+      slidesToScroll: 1,
       dots: true,
-      rows: numRows,
+      rows: 3,
       focusOnSelect: true,
       variableWidth: true
     });
@@ -34,67 +34,54 @@ $(document).ready(function(){
     inputID: 'template-input',
     boxID: 'template-box',
     cardID: 'templates',
-    template: true,
-    cards: [
-      {cardTitle: "Evacuation Plan", cardText: "Plan with skills for a general evacuation scenario"},
-      {cardTitle: "Resource Station", cardText: "Distribution station for food, water, blankets, etc"},
-      {cardTitle: "Medical Attention", cardText: "First aid required only. Needs to know CPR."},
-      {cardTitle: "SAR, Outdoors", cardText: "Search and rescue operation, outdoors, dangerous"},
-      {cardTitle: "SAR, Indoors", cardText: "Search and rescue operation, indoors, potentially hazardous."},
-{cardTitle: "Evacuation Plan", cardText: "Plan with skills for a general evacuation scenario"},
-      {cardTitle: "Resource Station", cardText: "Distribution station for food, water, blankets, etc"},
-      {cardTitle: "Medical Attention", cardText: "First aid required only. Needs to know CPR."},
-      {cardTitle: "SAR, Outdoors", cardText: "Search and rescue operation, outdoors, dangerous"},
-      {cardTitle: "SAR, Indoors", cardText: "Search and rescue operation, indoors, potentially hazardous."},
-    ]
+    template: true
   };
 
-  makeTemplateGroup('#card-group', true);
+  $.ajax({
+      type: "GET",
+      url: '/templates/all',
+      success: function (res){
+        console.log("MAKING THE CARDS....");
+        cards = [];
+        for (i = 0; i < res.length; i++)
+        {
+          cards.push({
+            cardID: res[i].id,
+            cardTitle: res[i].title,
+            cardText: res[i].description
+          });
+        }
+
+        templateContext.cards = cards;
+        makeTemplateGroup('#card-group', true);
+      }
+  });
+
   
 
+});
+
+$(document).on('click', '#createNewTemplate', function(){
+    window.location.href='/templates/new';
 });
 
 $(document).on('click', '#templates tbody tr', function (){
   var task = $('#templates').DataTable().row(this).data();
   var params = $.param({
-    title: task[0], 
-    description: task[1],
-    templateBtn: true
+    id: task[0], 
   });
-  window.location.href = '/templates/view?' + params;
-  /*
-  $.ajax({
-      type: "GET",
-      url: "/tasks/view",
-      data: task,
-      success: function (res){
-        console.log(res);
-        
-      }
-    });
-    */
+  window.location.href = '/templates/edit?' + params;
+
 });
 
 $(document).on('click', '.card', function (){
-  var title = $(this).find('.card-title').text();
-  var text = $(this).find('.card-text').text();
+  var id = $(this).find('.card-id').text();
   var params = $.param({
-    title: title,
-    description: text,
-    templateBtn: true
+    id: id
   });
-  window.location.href = '/templates/view?' + params;
-  /*
-  $.ajax({
-      type: "GET",
-      url: "/tasks/view",
-      data: task,
-      success: function (res){
-        console.log(res);
-        
-      }
-    });
-    */
+
+  window.location.href = '/templates/edit?' + params;
+
 });
 
 $(document).on('click', '#template-list', function(){

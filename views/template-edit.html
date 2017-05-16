@@ -1,0 +1,122 @@
+
+
+<script type="text/javascript" src="../bower_components/moment/min/moment.min.js"></script>
+  	<script type="text/javascript" src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+ 	 <link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
+ 	 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAej_Btkc_ko3TrAgYkLY52elkW6bahpgk&libraries=places"
+    async defer></script>
+<script type="text/javascript" src="../scripts/create.js"></script>
+
+<script id="render-navbar" type="text/x-handlebars-template">
+	{{> navbar template="active"}}
+</script>
+
+
+<div id="container">
+	<div class="vertical-align-15 left-align">
+		<h2> Tell us more about your task. </h2>
+	</div>
+
+	<p style="display: none" id="templateID">{{id}}</p>
+
+	<form id="task-form" class="templates left-align">
+		<h7 class="section-title"> General Information </h7>
+		<div class="form-card">
+			<div id="title-container" class="form-group">
+				<label for="title">Title</label>
+				<input required type="text" name="title" {{#if title}} value="{{title}}" {{/if}} class="form-control" id="title" placeholder="Enter title">
+				<div id="title-req" style="display: none" class="form-control-feedback">This field is required. </div>
+
+			</div>
+			<div class="form-group"> 
+				<label for="description">Description</label>
+				<textarea class="form-control" name="description"  id="description" rows="10" placeholder="Describe your task.">{{#if description}} {{description}} {{/if}}</textarea>
+			</div>
+		</div>
+
+		<h7 class="section-title"> Task Requirements </h7>
+		<div class="form-card">
+			<div class="form-group">
+				<label for="instructions">Instructions</label>
+				<textarea class="form-control" name="instructions" id="instructions" rows="5" placeholder="Describe instructions for task.">{{#if instructions }} {{instructions}}{{/if}}</textarea>
+			</div>
+			<div class="form-group">
+				<div id="volunteer-container" class="form-group">
+					<label for="title">Number of Volunteers</label>
+					<input required type="text" name="title" {{#if num_volunteers}} value="{{num_volunteers}}" {{/if}} class="form-control" id="num_volunteers">
+				</div>
+			</div>
+		<div class="form-group">
+			<label for="disclaimer">Disclaimers</label>
+			<small id="disclaimerHelper" class="text-muted"> Select all that apply. </small>		
+			<div class="form-area" id="disclaimers"> 
+				<ul class="checkbox-grid">
+					{{#listnowrap disclaimers}}
+					<label class="form-check-label">
+						<input class="form-checkbox" id="{{name}}" type="checkbox" name="{{name}}" value="{{value}}" />  {{label}}
+					</label>
+					{{/listnowrap}}
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<h7 class="section-title"> Skills </h7>
+	<small id="skillHelper" class="text-muted"> Select all that apply. </small>		
+
+	<div class="form-card">
+		<div class="row">
+			<div class="col-md-6 skill-column" id="skill-column-1"> {{#each skillGroupsOne}}
+				<div id="{{groupName}}" class="skill-group">
+					<label for="{{groupName}}">{{groupName}}</label>
+					<div class="form-control">
+						{{#each skills}}
+						<div class="form-check">
+							<label class="form-check-label">
+								<input class="form-checkbox" type="checkbox" id="{{name}}" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
+							{{#if more}}
+									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' readonly />
+								{{/if}}
+							</label>
+								
+						</div>	
+						{{/each}}
+					</div>
+				</div>
+				{{/each}}</div>
+				<div class="col-md-6 skill-column" id="skill-column-2">
+
+					{{#each skillGroupsTwo}}
+					<div id="{{groupName}}" class="skill-group">
+						<label for="{{groupName}}">{{groupName}}</label>
+						<div class="form-control">
+							{{#each skills}}
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-checkbox" type="checkbox" id="{{name}}" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
+									{{#if more}}
+									</br>
+									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' readonly />
+								{{/if}}
+								</label>
+								
+							</div>	
+							{{/each}}
+						</div>
+					</div>
+					{{/each}}
+				</div>	
+			</div>
+		</div>
+
+		<div>
+		<center>
+			<button style="width: 50%" id="review-template" formaction="/SaveTask" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
+		</center>
+		</div>
+	</form>
+</div>

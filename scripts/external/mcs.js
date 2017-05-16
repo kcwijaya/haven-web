@@ -500,11 +500,8 @@ function BrowserPlatform(manager, logger, utils) {
   this.isCordova = false;
 
   this.invokeService = function (request) {
-    console.log("\n URL AFTER: " + request.url);
     var url = request.url;
 
-      console.log("###### REQUEST ######## ");
-  console.log(request);
     
     if(this.isBrowser){
       url = url + (queryRegex.test(url) ? "&" : "?" ) + "_=" + new Date().getTime();
@@ -517,7 +514,6 @@ function BrowserPlatform(manager, logger, utils) {
       var xhr = new XMLHttpRequest();
       xhr.open(request.method, url);
 
-      console.log(request);
 
       for (var key in request.headers) {
         if (request.headers.hasOwnProperty(key)) {
@@ -530,23 +526,16 @@ function BrowserPlatform(manager, logger, utils) {
       xhr.responseType = request.responseType || 'json';
 
 
-      console.log(xhr.responseType);
 
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           
           var response = xhr.responseType == '' || xhr.responseType == 'text' ? xhr.responseText : xhr.response;
-          console.log("#### XHR #####");
-          console.log(xhr);
-          console.log ("\n #### RESPONSE #### \n");
-          console.log(xhr.response);
-          console.log ("\n ### NEXT ## \n");
-          console.log(xhr.responseText);
+         
 
 
           var headers = xhr.responseHeaders || utils.parseHeaders(xhr.getAllResponseHeaders());
           var netResponse = new NetworkResponse(xhr.status, response, headers);
-          console.log("netResponse: " + JSON.stringify(netResponse));
 
           if(manager._config.logHTTP){
             var object = {
@@ -2682,15 +2671,12 @@ function CustomCode(backend, utils, platform) {
 
       var headers = _backend.getHttpHeaders();
 
-      console.log("#### HEADERS #####");
-      console.log(headers);
 
       headers[utils.HEADERS.CONTENT_TYPE] = 'application/json';
 
       var customData = data ? JSON.stringify(data) : null;
 
-      console.log("URL BEFORE: " + _backend.getCustomCodeUrl(path));
-
+     
       return platform.invokeService({
         method: method,
         url: _backend.getCustomCodeUrl(path),
@@ -2707,8 +2693,7 @@ function CustomCode(backend, utils, platform) {
     }
 
     function invokeServiceSuccess(response) {
-      console.log("Success");
-      console.log(response);
+
       if (successCallback) {
         successCallback(response.statusCode, response.data, response.headers);
       }
@@ -2716,8 +2701,7 @@ function CustomCode(backend, utils, platform) {
     }
 
     function invokeServiceError(response) {
-      console.log("Error");
-      console.log(response);
+
       if (errorCallback) {
         errorCallback(response.statusCode, response.data);
       } else {
@@ -3053,11 +3037,8 @@ function MobileBackend(manager, name, config, platform, utils, logger, persisten
    */
   this.setAuthenticationType = function(type) {
 
-    console.log("AUTHENTICATION: " + type);
 
     var authType = utils.validateConfiguration(type);
-
-    console.log(authType);
 
     _this.authorization = null;
 
@@ -3101,7 +3082,6 @@ function MobileBackend(manager, name, config, platform, utils, logger, persisten
       _authenticationType = authType;
     }
 
-    console.log(_this.authorization);
     return _this.authorization;
   };
 

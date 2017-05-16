@@ -136,6 +136,11 @@ body
 	height: 15rem;
 }
 
+.card-title
+{
+	color: #33cccc;
+}
+
 .card:hover
 {
 	border-color: #33cccc;

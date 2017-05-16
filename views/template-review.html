@@ -1,0 +1,65 @@
+<script type="text/javascript" src="../scripts/create.js"></script>
+
+
+	<div class="vertical-align-15 left-align">
+		<h2> Review the information you provided. </h2>
+	</div>
+
+	<p id="templateID" style="display: none">{{id}}</p>
+	<div style="width: 90%" class="form-card left-align">
+		<h7> Title </h7>
+		<div id="title" {{#if title}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> {{title}} </div>
+
+		<br>
+
+		<h7> Description </h7>
+		<div id="description" {{#if description}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{description}} </div>
+		<br>
+
+		<h7> Instructions </h7>
+		<div id="instructions" {{#if instructions}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{instructions}} </div>
+		<br>
+
+		<h7> Number of Volunteers</h7>
+		<div id="num_volunteers" {{#if num_volunters}} {{else}} style="height: 40px" {{/if}}class="text-placeholder">{{num_volunteers}} </div>
+
+		<br>
+
+		<h7> Disclaimers </h7>
+		<div id="disclaimers-text" {{#if disclaimers}} {{else}} style="height:100px" {{/if}} class="text-placeholder"> 
+			{{#if disclaimers}}
+			{{#list disclaimers}}
+				<p>{{name}}</p>
+			{{/list}}
+			{{/if}}
+		</div>
+		<br>
+
+		<h7> Skills </h7>
+		<div id="skills-text" {{#if skills}} {{else}} style="height:100px" {{/if}}  class="text-placeholder">
+		{{#if skills}}
+			{{#each skills}}
+				<p> <b>{{groupName}} </b></p>
+				{{#list skills}}
+					<p> {{name}}
+
+					 {{#if extra}}
+					 	: {{extra}}
+					 {{/if}}
+
+					 </p>
+				{{/list}}
+			{{/each}}
+		{{/if}}
+		 </div>	
+	</div>
+		<br>
+
+	<div style="margin-left: 15%">
+		<button style="width: 40%" id="edit-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Make Changes</button>
+		<button style="width: 40%" id="save-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Template</button>
+	</div>
+
+
+
+	

@@ -8,14 +8,13 @@ function makeTaskGroup(hb, slick)
   $('#task-group').html("");
   $('#task-group').append(template(taskContext));
 
-  var numRows = taskContext.cards.length/5;
   if (slick)
   {
     $('.tasks').slick({
       slidesToShow: 3, 
-      slidesToScroll: 3,
+      slidesToScroll: 1,
       dots: true,
-      rows: numRows,
+      rows: 3,
       focusOnSelect: true,
       variableWidth: true
     });
@@ -32,33 +31,13 @@ $(document).ready(function(){
     boxID: 'task-box',
     cardID: 'tasks',
     template: true,
-    cards: [
-      {cardTitle: "Katrina Food Station", cardText: "Distributing food at a resource distribution center after Hurricane Katrina"},
-      {cardTitle: "Civilian Evacuation", cardText: "Evacuating citizens in aftermath of bombing in shopping center"},
-      {cardTitle: "Driving Resources", cardText: "Driving resources to Habitat for Humanity location in east side of town"},
-      {cardTitle: "House Construction", cardText: "Rebuilding the four exterior walls of a home located a few miles north"},
-      {cardTitle: "Search & Rescue, Fire", cardText: "Search and rescue operation after forest fire"},
-      {cardTitle: "Katrina Food Station", cardText: "Distributing food at a resource distribution center after Hurricane Katrina"},
-      {cardTitle: "Civilian Evacuation", cardText: "Evacuating citizens in aftermath of bombing in shopping center"},
-      {cardTitle: "Driving Resources", cardText: "Driving resources to Habitat for Humanity location in east side of town"},
-      {cardTitle: "House Construction", cardText: "Rebuilding the four exterior walls of a home located a few miles north"},
-      {cardTitle: "Search & Rescue, Fire", cardText: "Search and rescue operation after forest fire"},
-      {cardTitle: "Katrina Food Station", cardText: "Distributing food at a resource distribution center after Hurricane Katrina"},
-      {cardTitle: "Civilian Evacuation", cardText: "Evacuating citizens in aftermath of bombing in shopping center"},
-      {cardTitle: "Driving Resources", cardText: "Driving resources to Habitat for Humanity location in east side of town"},
-      {cardTitle: "House Construction", cardText: "Rebuilding the four exterior walls of a home located a few miles north"},
-      {cardTitle: "Search & Rescue, Fire", cardText: "Search and rescue operation after forest fire"},
-    ]
   };
-
-  makeTaskGroup('#card-group', true);
-
-  /*
+  
   $.ajax({
       type: "GET",
       url: "/tasks/all",
       success: function (res){
-        console.log(res);
+        console.log("MAKING THE CARDS....");
         cards = [];
         for (i = 0; i < res.length; i++)
         {
@@ -69,13 +48,13 @@ $(document).ready(function(){
           });
         }
 
+        console.log(cards);
         taskContext.cards = cards;
+
+        console.log(taskContext);
         makeTaskGroup('#card-group', true);
       }
   });
-
-  */
-  
 });
 
   $('#example tbody').on('click', 'tr', function () {
@@ -88,9 +67,6 @@ $(document).on('click', '#tasks tbody tr', function (){
   var task = $('#tasks').DataTable().row(this).data();
   var params = $.param({
     id: task[0],
-    title: task[1], 
-    description: task[2],
-    taskBtn: true
   });
   window.location.href = '/tasks/view?' + params;
 });

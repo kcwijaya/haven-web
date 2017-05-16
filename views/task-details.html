@@ -10,6 +10,8 @@
 		<h2> View your task. </h2>
 	</div>
 
+	<h5 id="id" style="display: none"> {{id}} </h5>
+
 	<div style="margin-top: 2%; width: 90%" class="form-card left-align">
 		<div class="form-input-group">
 			<h4 class="user-input-h"> Title </h4>
@@ -54,6 +56,13 @@
 			<div class="col-md-4">
 				<h4 class="user-input-h"> Date and Time </h4>
 				<div id="clock-text" {{#unless clock}} style="padding: 3%" {{/unless}}  class="text-placeholder"> <h5 class="user-input"> {{clock}}</h5></div>
+			</div>
+		</div>
+
+		<div class="form-input-group">
+			<h4 class="user-input-h">  Number of Volunteers </h4>
+			<div id="num_volunteers" class="text-placeholder">	
+				<h5 class="user-input"> {{num_volunteers}} </h5>
 			</div>
 		</div>
 
@@ -124,7 +133,7 @@
 
 	<div>
 	<center>
-		<button style="width: 10%" id="edit-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Edit Task</button>
+		<button style="width: 20%" id="edit-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Edit Task</button>
 	</center>
 	</div>
 

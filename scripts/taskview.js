@@ -1,7 +1,6 @@
 $(document).ready(function (){
 	$('#edit-task').click(function(e){
-		var title = $('#title').text().trim();
-		var description = $('#description').text().trim();
+		var id = $('#id').text().trim();
 		var volunteers = [];
 		$("#volunteers tbody tr").each(function(){
 			var cells = $(this).find("td");
@@ -19,12 +18,9 @@ $(document).ready(function (){
 			});
 		});
 		var params = $.param({
-			title: title,
-			description: description,
-			volunteers: volunteers,
-			taskBtn: true
-
+			id: id,
+			volunteers: volunteers
 		});
-		window.location.href = "/create/new?" + params;
+		window.location.href = "/tasks/edit?" + params;
 	});
 });

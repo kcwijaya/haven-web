@@ -3,13 +3,25 @@ var task;
 var map;
 var markers;
 var volunteerTable;
+var pressed;
 
 function makeMap(lat, long)
 {
-	map = new google.maps.Map(document.getElementById('map'), {
+	if (lat != 0 && long != 0)
+	{
+		map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: lat, lng: long},
           zoom: 5
-     	});
+     	});	
+	}
+	else
+	{
+		map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: lat, lng: long},
+          zoom: 0
+     	});	
+	}
+	
 
      	var input = document.getElementById('location');
         var searchBox = new google.maps.places.SearchBox(input);
@@ -71,21 +83,37 @@ function makeMap(lat, long)
     		fillSearchBox(event.latLng, map);
   		});
 }
+
 function initMap()
 {
+	console.log("Init Pressed: " + pressed);
+	if (pressed == true)
+	{
+		pressed = false;
+		return;
+	}
 
  	var lat = 0;
  	var long = 0;
 
  	var input = document.getElementById('location');
- 	var val = input.value;
+ 	var val = '';
+ 	if (input == null)
+ 	{
+ 		val = '';
+ 	}
+ 	else
+ 	{
+ 	    val = input.value;
+ 	}
 
  	if (val != null && typeof val != 'undefined' && val != '')
  	{
  		var geocoder = new google.maps.Geocoder();
         geocoder.geocode({'address': val}, function(results, status) {
           if (status === 'OK') {
-          	makeMap(results.location.lat, results.location, lng);
+          	console.log(results);
+          	makeMap(results[0].geometry.location.lat(), results[0].geometry.location.lng());
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
@@ -93,30 +121,23 @@ function initMap()
  	}
  	else
  	{
-		navigator.geolocation.getCurrentPosition(function(pos){
-			lat = pos.coords.latitude;
-			long = pos.coords.longitude
-			console.log(lat);
-			console.log(long);
-
-			makeMap(lat, long);
-		});
+		makeMap(0, 0);
 	}
 }
 
 function updateMap()
 {
 	var reviewMap = new google.maps.Map(document.getElementById('location-map'), {
-          center: {lat: task.location.lat, lng: task.location.long},
+          center: {lat: task.latitude, lng: task.longitude},
           zoom: 5,
           disableDefaultUI: true,
           draggable: false, 
           zoomControl: false, 
      });
 
-	placeMarker({lat: task.location.lat, lng: task.location.long}, reviewMap);
+	placeMarker({lat: task.latitude, lng: task.longitude}, reviewMap);
 
-	$("#location-words").text(task.location.address);
+	$("#location-words").text(task.location);
 }
 
 function placeMarker(location, currMap){
@@ -161,6 +182,7 @@ function makeForm()
 
 	$("#container").html(formSource);
 
+
 	 $('#clock').datetimepicker(
 	 {
 	 	allowInputToggle: true, 
@@ -169,20 +191,22 @@ function makeForm()
 
 
 	$("#title").val(task.title);
-	$("#location").val(task.location.address);
+	$("#location").val(task.location);
 
-	makeMap(task.location.lat, task.location.long);
+
+	makeMap(task.latitude, task.longitude);
 
 	$("#description").val(task.description);
 	$("#instructions").val(task.instructions);
 	$("#severity").val(task.severity);
 	$("#time").val(task.time);
-	$("#clock").data("DateTimePicker").date(task.clock);
+	$("#clock").data("DateTimePicker").date(task.start_time);
 
 
+	console.log(task);
 	for (i = 0; i < task.disclaimers.length; i++)
 	{
-		$("input[type=checkbox][value='" + task.disclaimers[i].name + "']").prop("checked",true);
+		$("#" + task.disclaimers[i].id).prop("checked",true);
 	}
 
 	for (i = 0; i < task.skills.length; i++)
@@ -190,9 +214,9 @@ function makeForm()
 		var skillSet = task.skills[i].skills;
 		for (j = 0; j < skillSet.length; j++)
 		{
-		$("input[type=checkbox][value='" + skillSet[j].name + "']").prop("checked",true);
+		$("#" + skillSet[j].id).prop("checked",true);
 	
-		var moreInfo = $("input[type=checkbox][value='" + skillSet[j].name + "']").parent().find('input[type=text]');
+		var moreInfo = $("#" + skillSet[j].id).parent().find('input[type=text]');
 		if (typeof skillSet[j].extra != 'undefined' && skillSet[j].extra != null)
 		{
 			moreInfo.val(skillSet[j].extra);
@@ -201,7 +225,129 @@ function makeForm()
 	}
 }
 
+function makeTemplateForm()
+{
+	console.log(formSource);
+
+	$("#container").html(formSource);
+
+	$("#title").val(task.title);
+
+	$("#description").val(task.description);
+	$("#instructions").val(task.instructions);
+
+	console.log(task);
+	for (i = 0; i < task.disclaimers.length; i++)
+	{
+		$("#" + task.disclaimers[i].id).prop("checked",true);
+	}
+
+	for (i = 0; i < task.skills.length; i++)
+	{
+		var skillSet = task.skills[i].skills;
+		for (j = 0; j < skillSet.length; j++)
+		{
+		$("#" + skillSet[j].id).prop("checked",true);
+	
+		var moreInfo = $("#" + skillSet[j].id).parent().find('input[type=text]');
+		if (typeof skillSet[j].extra != 'undefined' && skillSet[j].extra != null)
+		{
+			moreInfo.val(skillSet[j].extra);
+		}
+	}
+	}
+}
+
+function getTemplateSkills(id)
+{
+  var params = $.param({
+    id: parseInt(id),
+  });
+
+	$.ajax({
+		type: "GET",
+		url: "/templates/skills?" + params,
+		success: function (res){
+			for (i = 0; i < res.length; i++)
+			{
+				$("#" + res[i].id).prop('checked', true);
+			}
+		}
+	});
+}
+
+function getTemplateDisclaimers(id)
+{
+  var params = $.param({
+    id: parseInt(id),
+  });
+
+	$.ajax({
+		type: "GET",
+		url: "/templates/disclaimers?" + params,
+		success: function (res){
+			for (i = 0; i < res.length; i++)
+			{
+				$("#" + res[i].id).prop('checked', true);
+			}
+		}
+	});
+}
+
+function getTaskSkills(id)
+{
+  var params = $.param({
+    id: parseInt(id),
+  });
+
+	$.ajax({
+		type: "GET",
+		url: "/tasks/skills?" + params,
+		success: function (res){
+			for (i = 0; i < res.length; i++)
+			{
+				$("#" + res[i].id).prop('checked', true);
+			}
+		}
+	});
+}
+
+function getTaskDisclaimers(id)
+{
+  var params = $.param({
+    id: parseInt(id),
+  });
+
+	$.ajax({
+		type: "GET",
+		url: "/tasks/disclaimers?" + params,
+		success: function (res){
+			for (i = 0; i < res.length; i++)
+			{
+				$("#" + res[i].id).prop('checked', true);
+			}
+		}
+	});
+}
+
 $(document).ready(function(){
+	var taskID = $('#taskID').text();
+	var templateID = $('#templateID').text();
+
+	if (typeof taskID != 'undefined' && taskID != '')
+	{
+		taskID = parseInt(taskID);
+		getTaskSkills(taskID);
+		getTaskDisclaimers(taskID);
+	}
+	
+	if (typeof templateID != 'undefined' && templateID != '')
+	{
+		templateID = parseInt(templateID);
+		getTemplateSkills(templateID);
+		getTemplateDisclaimers(templateID);
+	}
+
 	markers = [];
 	 $('#clock').datetimepicker(
 	 {
@@ -247,25 +393,31 @@ $(document).ready(function(){
 
   $("input[type=checkbox]").change(function () {
   	$(this).parent().find('input[type=text]').attr('readonly', !this.checked);
-  })
+  })  
 
-
+  initMap();
 
 });
-
 
 $(document).on('click', '#edit-task', function(e){
 		e.preventDefault();
 		makeForm();
-	});
+ });
+
+$(document).on('click', '#edit-template', function(e){
+		e.preventDefault();
+		makeTemplateForm();
+ });
+
 
 $(document).on('change', "input[type=checkbox]", function () {
   		$(this).parent().find('input[type=text]').attr('readonly', !this.checked);
 });
 
-$(document).on('click', '#save-review', function(e){
+$(document).on('click', '#save-review-task', function(e){
 	formSource = $('#container').html();
 	e.preventDefault();
+	var id = $("#taskID").text();
 	var title = $("#title").val();
 	var address = $("#location").val();
 
@@ -298,33 +450,22 @@ $(document).on('click', '#save-review', function(e){
 		return;
 	}
 
-	var location = {}
-	if (markers.length == 0)
-	{
-		 var geocoder = new google.maps.Geocoder();
-		 geocoder.geocode({'address': address}, function(results, status) {
-          if (status === 'OK') {
-          	location = {address: address, lat: results.location.lat, long: results.location.lng};
-          } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-          }
-        });
-	}
-	else 
-	{
-		location = {address: address, lat: markers[0].position.lat(), long: markers[0].position.lng() }
-	}
+	var location;
+	var latitude;
+	var longitude;
 
-
-	if (title == null || title == "" || location == null || location == "")
-	{
-		return;
-	}
+	
 	var description = $("#description").val();
 	var instructions = $("#instructions").val();
 	var severity = $("#severity option:selected" ).text();
 	var time = $("#time option:selected").text();
-	var clock = $("#clock").data("DateTimePicker").date();
+	var clock = $("#clock-input").val();
+	var num_volunteers = $("#num_volunteers").val();
+
+	if (num_volunteers != '')
+	{
+		num_volunteers = parseInt(num_volunteers);
+	}
 
 	if (clock == null)
 	{
@@ -337,8 +478,9 @@ $(document).on('click', '#save-review', function(e){
 
 	var disc = [];
 	$('#disclaimers input:checked').each(function() {
-		disclaimer = {};
+		var disclaimer = {};
 		disclaimer.name = $(this).attr('value');
+		disclaimer.id = parseInt($(this).attr('name'));
 		disc.push(disclaimer);
 	});
 
@@ -346,19 +488,23 @@ $(document).on('click', '#save-review', function(e){
 	$('.skill-column div').each(function () {
 		var skillGroup = {};
 		skillGroup.groupName = $(this).attr('id');
-		skillGroup.skills = []
+		skillGroup.skills = [];
+
 		$(this).find('input:checked').each(function (){
 			var skill = {};
 			skill.name = $(this).attr('value');
+			skill.id = parseInt($(this).attr('name'));
 			var moreInfo = $(this).parent().find('input[type=text]');
 			if (typeof moreInfo != 'undefined')
 			{
-				console.log(skill.name);
 				skill.extra = moreInfo.val();
-				console.log(skill.extra);
 			}
+			if (skill.name != '')
+			{
 			skillGroup.skills.push(skill);
-		})
+			}
+		});
+
 		if (typeof skillGroup.groupName != 'undefined' && skillGroup.skills.length > 0)
 		{
 			skills.push(skillGroup);
@@ -378,40 +524,326 @@ $(document).on('click', '#save-review', function(e){
 		}
 	}
 
-	task = {
-		title: title,
-		location: location,
-		description: description,
-		instructions: instructions,
-		severity: severity,
-		time: time,
-		clock: clock,
-		disclaimers: disc,
-		skills: skills,
-		newBtn: true
-	}
-
-	if (volunteerO.length > 0)
+	console.log(markers);
+	if (markers.length == 0)
 	{
-		task.volunteers = volunteerO;
+		 var geocoder = new google.maps.Geocoder();
+		 geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+          	location = address;
+          	latitude = results[0].geometry.location.lat();
+          	longitude = results[0].geometry.location.lng();
+
+          	if (title == null || title == "" || location == null || location == "")
+			{
+				return;
+			}
+
+			task = {
+				title: title,
+				location: location,
+				latitude: latitude,
+				longitude: longitude,
+				description: description,
+				instructions: instructions,
+				severity: severity,
+				time: time,
+				start_time: clock,
+				num_volunteers: num_volunteers,
+				disclaimers: disc,
+				skills: skills,
+				newBtn: true,
+				id: id
+			}
+
+
+
+			if (volunteerO.length > 0)
+			{
+				task.volunteers = volunteerO;
+			}
+
+			console.log(task);
+
+			$.ajax({
+				type: "POST",
+				url: "/review-task",
+				data: task,
+				success: function (res){
+					console.log(res);
+					pressed = true;
+					$('#container').html(res);
+					updateMap();
+				}
+			});
+
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+	}
+	else 
+	{
+		console.log(markers);
+
+		location = address;
+		latitude = markers[0].position.lat();
+		longitude = markers[0].position.lng();
+
+		if (title == null || title == "" || location == null || location == "")
+			{
+				return;
+			}
+
+			task = {
+				title: title,
+				location: location,
+				latitude: latitude,
+				longitude: longitude,
+				description: description,
+				instructions: instructions,
+				severity: severity,
+				time: time,
+				start_time: clock,
+				num_volunteers: num_volunteers,
+				disclaimers: disc,
+				skills: skills,
+				id: id,
+				newBtn: true
+			}
+
+			if (volunteerO.length > 0)
+			{
+				task.volunteers = volunteerO;
+			}
+
+			console.log(task);
+
+			$.ajax({
+				type: "POST",
+				url: "/review-task",
+				data: task,
+				success: function (res){
+					pressed = true;
+					$('#container').html(res);
+					updateMap();
+				}
+			});
+	}
+});
+
+$(document).on('click', '#save-review', function(e){
+	formSource = $('#container').html();
+	e.preventDefault();
+	var id = $("#taskID").text();
+	var title = $("#title").val();
+	var address = $("#location").val();
+
+	if (title == '' || typeof title == 'undefined')
+	{
+		$("#title-req").show();
+		$("#title-container").addClass('has-danger');
+	}
+	else
+	{
+		$("#title-req").hide();
+		$('#title-container').removeClass('has-danger');
+	}
+
+	if (address == '' || typeof address == 'undefined')
+	{
+		$("#loc-req").show();
+		$("#loc-container").addClass('has-danger');
+	}
+	else
+	{
+		$("#loc-req").hide();
+		$('#loc-container').removeClass('has-danger');
 	}
 
 
+	if (address == '')
+	{
+		initMap();
+		return;
+	}
 
-	console.log(task);
+	var location;
+	var latitude;
+	var longitude;
 
-	$.ajax({
-		type: "POST",
-		url: "/review",
-		data: task,
-		success: function (res){
-			console.log(res);
-			$('#container').html(res);
+	
+	var description = $("#description").val();
+	var instructions = $("#instructions").val();
+	var severity = $("#severity option:selected" ).text();
+	var time = $("#time option:selected").text();
+	var clock = $("#clock-input").val();
+	var num_volunteers = $("#num_volunteers").val();
 
-			updateMap();
+	if (num_volunteers != '')
+	{
+		num_volunteers = parseInt(num_volunteers);
+	}
+
+	if (clock == null)
+	{
+		clock = "";
+	}
+	else
+	{
+		clock =	clock.toString();
+	}
+
+	var disc = [];
+	$('#disclaimers input:checked').each(function() {
+		var disclaimer = {};
+		disclaimer.name = $(this).attr('value');
+		disclaimer.id = parseInt($(this).attr('name'));
+		disc.push(disclaimer);
+	});
+
+	var skills = [];
+	$('.skill-column div').each(function () {
+		var skillGroup = {};
+		skillGroup.groupName = $(this).attr('id');
+		skillGroup.skills = [];
+
+		$(this).find('input:checked').each(function (){
+			var skill = {};
+			skill.name = $(this).attr('value');
+			skill.id = parseInt($(this).attr('name'));
+			var moreInfo = $(this).parent().find('input[type=text]');
+			if (typeof moreInfo != 'undefined')
+			{
+				skill.extra = moreInfo.val();
+			}
+			if (skill.name != '')
+			{
+			skillGroup.skills.push(skill);
+			}
+		});
+
+		if (typeof skillGroup.groupName != 'undefined' && skillGroup.skills.length > 0)
+		{
+			skills.push(skillGroup);
 		}
 	});
 
+	var volunteerE = document.getElementById('volunteers');
+	var volunteers = []
+	var volunteerO = []
+	if (volunteerE != null && typeof volunteerE != 'undefined')
+	{
+		volunteers = volunteerTable.rows().data().toArray();
+		for (i = 0; i < volunteers.length; i++)
+		{
+			volunteer = volunteers[i];
+			volunteerO.push({first: volunteer[0], last: volunteer[1], phone: volunteer[2], email: volunteer[3]});
+		}
+	}
+
+	console.log(markers);
+	if (markers.length == 0)
+	{
+		 var geocoder = new google.maps.Geocoder();
+		 geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+          	location = address;
+          	latitude = results[0].geometry.location.lat();
+          	longitude = results[0].geometry.location.lng();
+
+          	if (title == null || title == "" || location == null || location == "")
+			{
+				return;
+			}
+
+			task = {
+				title: title,
+				location: location,
+				latitude: latitude,
+				longitude: longitude,
+				description: description,
+				instructions: instructions,
+				severity: severity,
+				time: time,
+				start_time: clock,
+				num_volunteers: num_volunteers,
+				disclaimers: disc,
+				skills: skills,
+				newBtn: true
+			}
+
+			if (volunteerO.length > 0)
+			{
+				task.volunteers = volunteerO;
+			}
+
+			console.log(task);
+
+			$.ajax({
+				type: "POST",
+				url: "/review-new",
+				data: task,
+				success: function (res){
+					console.log(res);
+					pressed = true;
+					$('#container').html(res);
+					updateMap();
+				}
+			});
+
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+	}
+	else 
+	{
+		console.log(markers);
+
+		location = address;
+		latitude = markers[0].position.lat();
+		longitude = markers[0].position.lng();
+
+		if (title == null || title == "" || location == null || location == "")
+			{
+				return;
+			}
+
+			task = {
+				title: title,
+				location: location,
+				latitude: latitude,
+				longitude: longitude,
+				description: description,
+				instructions: instructions,
+				severity: severity,
+				time: time,
+				start_time: clock,
+				num_volunteers: num_volunteers,
+				disclaimers: disc,
+				skills: skills,
+				newBtn: true
+			}
+
+			if (volunteerO.length > 0)
+			{
+				task.volunteers = volunteerO;
+			}
+
+			console.log(task);
+
+			$.ajax({
+				type: "POST",
+				url: "/review-new",
+				data: task,
+				success: function (res){
+					pressed = true;
+					$('#container').html(res);
+					updateMap();
+				}
+			});
+	}
 });
 
 $(document).on('click', '.delete-button', function(e){
@@ -510,8 +942,6 @@ $(document).on('click', '#add-volunteer', function(e){
 
 	if (failed) return;
 
-	
-
 	var digits = phone.match(/\d/g);
 	phone = digits.join("");
 	phone = text.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
@@ -524,20 +954,95 @@ $(document).on('click', '#add-volunteer', function(e){
 	});
 });
 
-$(document).on('click', '#save-changes', function(e){
+$(document).on('click', '#review-template', function(e){
+	formSource = $('#container').html();
 	e.preventDefault();
+	var id = $("#templateID").text();
+	var title = $("#title").val();
+
+	if (title == '' || typeof title == 'undefined')
+	{
+		$("#title-req").show();
+		$("#title-container").addClass('has-danger');
+	}
+	else
+	{
+		$("#title-req").hide();
+		$('#title-container').removeClass('has-danger');
+	}
+	
+	var description = $("#description").val();
+	var instructions = $("#instructions").val();
+	var num_volunteers = $("#num_volunteers").val();
+
+	if (num_volunteers != '')
+	{
+		num_volunteers = parseInt(num_volunteers);
+	}
+
+	var disc = [];
+	$('#disclaimers input:checked').each(function() {
+		var disclaimer = {};
+		disclaimer.name = $(this).attr('value');
+		disclaimer.id = parseInt($(this).attr('name'));
+		disc.push(disclaimer);
+	});
+
+	var skills = [];
+	$('.skill-column div').each(function () {
+		var skillGroup = {};
+		skillGroup.groupName = $(this).attr('id');
+		skillGroup.skills = [];
+
+		$(this).find('input:checked').each(function (){
+			var skill = {};
+			skill.name = $(this).attr('value');
+			skill.id = parseInt($(this).attr('name'));
+			var moreInfo = $(this).parent().find('input[type=text]');
+			if (typeof moreInfo != 'undefined')
+			{
+				skill.extra = moreInfo.val();
+			}
+			if (skill.name != '')
+			{
+			skillGroup.skills.push(skill);
+			}
+		});
+
+		if (typeof skillGroup.groupName != 'undefined' && skillGroup.skills.length > 0)
+		{
+			skills.push(skillGroup);
+		}
+	});
+		
+	task = {
+		title: title,
+		description: description,
+		instructions: instructions,
+		num_volunteers: num_volunteers,
+		disclaimers: disc,
+		skills: skills,
+	}
+
+	console.log(task);
+	if (typeof id != 'undefined' && id != '')
+	{
+		task.id = parseInt(id);
+	}
+
 	$.ajax({
 		type: "POST",
-		url: "/save-changes", 
+		url: "/review-template", 
 		data: task, 
 		success: function (res){
-			console.log(res);
+			$('#container').html(res);
 		}
 	});
 });
 
 $(document).on('click', '#save-template', function(e){
 	e.preventDefault();
+
 	$.ajax({
 		type: "POST",
 		url: "/save-template", 
@@ -550,9 +1055,68 @@ $(document).on('click', '#save-template', function(e){
 });
 
 $(document).on('click', '#post-task', function(e){
+	var skills = [];
+	for (i = 0; i < task.skills.length; i++)
+	{
+		var skillGroup = task.skills[i];
+		for (j = 0; j < skillGroup.skills.length; j++)
+		{
+			skills.push(parseInt(skillGroup.skills[j].id));
+		}
+	}
+
+	task.skills = skills;
+
+	var disclaimers = [];
+	for (i = 0; i < task.disclaimers.length; i++)
+	{
+		disclaimers.push(parseInt(task.disclaimers[i].id));
+	}
+
+	task.disclaimers = disclaimers;
+
 	console.log(task);
+
 	$.ajax({
 		type: "POST",
+		url: "/post-task", 
+		data: task, 
+		success: function (res){
+			console.log(res);
+			window.location.href = '/tasks';
+		}
+	});
+});
+
+$(document).on('click', '#save-task', function(e){
+	var id = $('#taskID').text();
+	task.id = id;
+
+	console.log(task.id);
+	var skills = [];
+	for (i = 0; i < task.skills.length; i++)
+	{
+		var skillGroup = task.skills[i];
+		for (j = 0; j < skillGroup.skills.length; j++)
+		{
+			skills.push(parseInt(skillGroup.skills[j].id));
+		}
+	}
+
+	task.skills = skills;
+
+	var disclaimers = [];
+	for (i = 0; i < task.disclaimers.length; i++)
+	{
+		disclaimers.push(parseInt(task.disclaimers[i].id));
+	}
+
+	task.disclaimers = disclaimers;
+
+	console.log(task);
+
+	$.ajax({
+		type: "post",
 		url: "/save-task", 
 		data: task, 
 		success: function (res){
@@ -561,5 +1125,8 @@ $(document).on('click', '#post-task', function(e){
 		}
 	});
 });
+
+
+
 
 
