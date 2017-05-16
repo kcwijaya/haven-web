@@ -12,7 +12,7 @@
 
 	<h5 id="id" style="display: none"> {{id}} </h5>
 
-	<div style="margin-top: 2%; width: 90%" class="form-card left-align">
+	<div style="margin-top: 2%; width: 80%" class="form-card left-align">
 		<div class="form-input-group">
 			<h6 class="user-input-h"> Title </h6>
 			<div id="title" class="text-placeholder">
@@ -125,7 +125,9 @@
 					{{/each}}
 						</tbody>
 					</table>
-			{{/if}}
+			{{else}}
+			<p style="margin-left: 1%"> There are currently no volunteers signed up. </p>			{{/if}}
+
 			 </div>	
 		</div>
 	</div>
