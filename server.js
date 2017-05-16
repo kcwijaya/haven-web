@@ -357,7 +357,7 @@ app.get('/create/new', function(req, res) {
         console.log(error);
         res.status(404).send("Not Found");
       }
-
+      
 
       body = parser.parseOneTemplate(body);
       console.log(body);
