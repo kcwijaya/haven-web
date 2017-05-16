@@ -27,6 +27,7 @@ var processing = false;
 
 
 var AuthMiddleware = function(req, res, next) {
+  console.log(req.url);
   if (req.url.includes('callback'))
   {
     next();
@@ -40,7 +41,7 @@ var AuthMiddleware = function(req, res, next) {
   }));
    return;
   }
- next(); 
+next();
 }
 
 var hbs = exphbs.create({
