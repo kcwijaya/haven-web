@@ -135,7 +135,7 @@ app.get('/callback', function(req, res){
 });
 
 app.get('/home', function(req, res) {
-  res.sendFile(__dirname + '/Homepage.html');
+  res.sendFile(__dirname + '/TaskCreationHome.html');
 });
 
 app.post('/review-new', function(req, res) {
@@ -357,7 +357,7 @@ app.get('/create/new', function(req, res) {
         console.log(error);
         res.status(404).send("Not Found");
       }
-      
+
 
       body = parser.parseOneTemplate(body);
       console.log(body);
