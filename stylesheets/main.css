@@ -128,6 +128,11 @@ body
 	height: 15rem;
 }
 
+.click-icon:hover
+{
+	cursor: pointer;
+}
+
 .card-title
 {
 	color: #33cccc;
