@@ -1,7 +1,7 @@
 exports.credentials ={
   client: {
-    id: 'xZ_qUr8_voYXni802iRDkg..', 
-    secret: 'sg2oMEvQT6rI7OoCmtBWWQ..',
+    id: 'tBbCkbpjL2xLzPMPDDPmxQ..', 
+    secret: '9hfhXQSFmrHMSJKZBWwmQw..',
   },
   auth: {
     tokenHost: 'https://129.152.41.24/',
@@ -9,4 +9,3 @@ exports.credentials ={
     authorizePath: 'ords/pdb1/havenapi3/oauth2/auth'
   }
 };
-
