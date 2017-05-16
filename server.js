@@ -284,7 +284,8 @@ app.post('/save-changes', function(req, res){
 
 app.post('/save-template', function(req, res){
   var id = req.body.id;
-
+  req.body.creator = 21;
+  console.log(id);
   if (typeof id != 'undefined' && id != '')
   {
     api.editTemplate(getAccessToken(), req.body, 
@@ -302,6 +303,8 @@ app.post('/save-template', function(req, res){
   }
   else
   {
+    console.log("Adding new template...");
+    console.log(req.body);
     api.addNewTemplate(getAccessToken(), req.body, 
       function(error, response, body)
       {
@@ -310,7 +313,9 @@ app.post('/save-template', function(req, res){
           console.log(error)
           res.status(404).send("Not Found");
         }
-
+        console.log(response.headers);
+        console.log(response.headers.id);
+        req.body.id = response.headers.id;
         apihelper.startWithAddingSkillsTemplate(getAccessTokenObj(), req.body, res);
       }
     );
@@ -360,6 +365,7 @@ app.get('/create/new', function(req, res) {
       getFields(body, function(result){
         result.pageTitle = "Haven - Create";
         result.newBtn = true;
+        result.oldTask = true;
         res.render('task-create', result);
       });
     });
@@ -380,6 +386,7 @@ app.get('/create/new', function(req, res) {
       getFields(body, function(result){
         result.pageTitle = "Haven - Create";
         result.newBtn = true;
+        result.templateBtn = true;
         res.render('task-create', result);
       });
     });
@@ -398,8 +405,8 @@ app.get('/templates/edit', function(req, res) {
         res.status(404).send('Not Found');
       }
 
-      console.log()
       var template = parser.parseOneTemplate(body);
+      console.log(template)
 
       getFields(template, function(result){
         result.pageTitle = "Haven - Edit Template";

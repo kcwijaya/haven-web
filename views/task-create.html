@@ -28,7 +28,12 @@
 		<h2> Tell us more about your task. </h2>
 	</div>
 
-	<p id="taskID" style="display: none">{{id}}</p>
+	{{#if templateBtn}}
+		<p id="templateID" style="display: none"> {{id}} </p>
+	{{/if}}
+	{{#if oldTask}}
+		<p id="taskID" style="display: none">{{id}}</p>
+	{{/if}}
 
 	<form id="task-form" class="templates left-align">
 		<h7 class="section-title"> General Information </h7>
@@ -161,7 +166,7 @@
 			</div>
 		</div>
 
-		{{#if id}}
+		{{#if taskBtn}}
 		<h7 class="section-title"> Volunteers </h7>
 		<div class="form-card">
 			<div style="padding: 5%;">

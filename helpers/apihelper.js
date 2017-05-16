@@ -327,7 +327,7 @@ exports.startWithAddingSkillsTemplate = function(token, template, res)
     for (j = 0; j < template.skills.length; j++)
     {
       console.log("Adding skill: " + template.skills[j]);
-      api.addTemplateSkill(getAccessToken(token), template.id, template.skills[j].id,
+      api.addTemplateSkill(getAccessToken(token), template.id, template.skills[j],
         function(error, response, addedSkills){
           console.log("Finished adding skill: " + template.skills[skillsToAdd]);
             skillsToAdd++;

@@ -1031,6 +1031,35 @@ $(document).on('click', '#review-template', function(e){
 $(document).on('click', '#save-template', function(e){
 	e.preventDefault();
 
+	var id = $('#templateID').text();
+
+	if (typeof id != 'undefined' && id != '')
+	{
+		task.id = parseInt(id);
+	}
+
+	var skills = [];
+	for (i = 0; i < task.skills.length; i++)
+	{
+		var skillGroup = task.skills[i];
+		for (j = 0; j < skillGroup.skills.length; j++)
+		{
+			skills.push(parseInt(skillGroup.skills[j].id));
+		}
+	}
+
+	task.skills = skills;
+
+	var disclaimers = [];
+	for (i = 0; i < task.disclaimers.length; i++)
+	{
+		disclaimers.push(parseInt(task.disclaimers[i].id));
+	}
+
+	task.disclaimers = disclaimers;
+
+	console.log(task);
+
 	$.ajax({
 		type: "POST",
 		url: "/save-template", 
@@ -1078,7 +1107,11 @@ $(document).on('click', '#post-task', function(e){
 
 $(document).on('click', '#save-task', function(e){
 	var id = $('#taskID').text();
-	task.id = parseInt(id);
+
+	if (typeof id != 'undefined' && id != '')
+	{
+		task.id = parseInt(id);
+	}
 
 	console.log(task.id);
 	var skills = [];
