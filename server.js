@@ -203,6 +203,10 @@ app.get('/hello', function(req, res){
   console.log(api.getAllTasks(getAccessToken()));
 });
 
+app.get('/favicons/*', function(req, res){
+  res.sendFile(__dirname + req.url);
+});
+
 app.get('/create', function(req, res) {
   res.sendFile(__dirname + '/TaskCreationHome.html');
 });
