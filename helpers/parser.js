@@ -92,14 +92,6 @@ exports.parseOneTask = function(body)
 
   task.severity = this.convertSeverity(task.severity_level, true);
   task.clock = this.formatDate(task.start_time);
-  task.pageTitle = 'Haven - View Task';
-  task.volunteers = [
-    {first: "Kimberly", last: "Wijaya", phone: "(650) 490-0437", email: "kcwijaya@stanford.edu"}, 
-    {first: "Maria", last: "Gutierrez", phone: "(650) 922-9534", email: "mariagtz@stanford.edu"}, 
-    {first: "Belinda", last: "Esqueda", phone: "(714) 309-3607", email: "besqueda@stanford.edu"}, 
-    {first: "Virgilio", last: "Urmenata", phone: "(650) 796-3148", email: "vurmenet@stanford.edu"}, 
-    {first: "Sofi", last: "Arimany", phone: "(786) 338-8496", email: "asarimany@stanford.edu"}, 
-  ];
 
   return task;
 }
