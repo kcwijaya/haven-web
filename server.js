@@ -85,7 +85,7 @@ app.use(express.static('public'));
 
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/Homepage.html');
+  res.sendFile(__dirname + '/TaskCreationHome.html');
 });
 
 function getAccessTokenObject()

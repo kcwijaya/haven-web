@@ -9,9 +9,6 @@ $(document).ready(function(){
 		</div>
 		<div class="row collapse navbar-collapse" id="navbarText">
 			<ul class="col-md-7 navbar-nav mr-auto right-align">
-				<li class="nav-item">
-					<a class="nav-link {{home}}" href="/home">Home </a>
-				</li>
 				{{#unless signin}}
 				<li class="nav-item">
 					<a class="nav-link {{task}}" href="/tasks">Task List</a>
