@@ -358,7 +358,6 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
 .slick-slide
 {
 	width: 21rem;
-	margin-left: 0.15%;
 	margin-bottom: 10px;
 }
 
