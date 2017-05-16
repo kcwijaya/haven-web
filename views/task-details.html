@@ -14,28 +14,28 @@
 
 	<div style="margin-top: 2%; width: 90%" class="form-card left-align">
 		<div class="form-input-group">
-			<h4 class="user-input-h"> Title </h4>
+			<h6 class="user-input-h"> Title </h6>
 			<div id="title" class="text-placeholder">
 				<h5 class="user-input"> {{title}}</h5> 
 			</div>
 		</div>
 
 		<div class="form-input-group">
-			<h4 class="user-input-h">  Location </h4>
+			<h6 class="user-input-h">  Location </h6>
 			<div id="location" class="text-placeholder"> 
 				<h5 class="user-input">{{location}}</h5>
 			</div>
 		</div>
 
 		<div class="form-input-group">
-			<h4 class="user-input-h"> Description </h4>
+			<h6 class="user-input-h"> Description </h6>
 			<div id="description" class="text-placeholder">
 			<h5 class="user-input">{{description}}</h5>
 			</div>
 		</div>
 
 		<div class="form-input-group">
-			<h4 class="user-input-h">  Instructions </h4>
+			<h6 class="user-input-h">  Instructions </h6>
 			<div id="instructions" class="text-placeholder">	
 				<h5 class="user-input"> {{instructions}} </h5>
 			</div>
@@ -43,31 +43,31 @@
 
 		<div style="margin-bottom: 1%;" class="row">
 			<div class="col-md-4">
-				<h4 class="user-input-h"> Severity of Impacted Region </h4>
+				<h6 class="user-input-h"> Severity of Impacted Region </h6>
 				<div id="severity"  {{#unless severity}} style="padding: 3%" {{/unless}} class="text-placeholder">
 					<h5 class="user-input"> {{severity}}</h5>
 				</div>
 			</div>
 			<div class="col-md-4">
-				<h4 class="user-input-h"> Time of Day </h4>
+				<h6 class="user-input-h"> Time of Day </h6>
 				<div id="time" {{#unless time}} style="padding: 3%" {{/unless}} class="text-placeholder"> <h5 class="user-input"> {{time}} </h5></div>
 			</div>
 
 			<div class="col-md-4">
-				<h4 class="user-input-h"> Date and Time </h4>
+				<h6 class="user-input-h"> Date and Time </h6>
 				<div id="clock-text" {{#unless clock}} style="padding: 3%" {{/unless}}  class="text-placeholder"> <h5 class="user-input"> {{clock}}</h5></div>
 			</div>
 		</div>
 
 		<div class="form-input-group">
-			<h4 class="user-input-h">  Number of Volunteers </h4>
+			<h6 class="user-input-h">  Number of Volunteers </h6>
 			<div id="num_volunteers" class="text-placeholder">	
 				<h5 class="user-input"> {{num_volunteers}} </h5>
 			</div>
 		</div>
 
 		<div class="form-input-group">
-			<h4 class="user-input-h"> Disclaimers </h4>
+			<h6 class="user-input-h"> Disclaimers </h6>
 			<div id="disclaimers-text" class="text-placeholder"> 
 				{{#if disclaimers}}
 				{{#list disclaimers}}
@@ -78,7 +78,7 @@
 		</div>
 
 		<div class="form-input-group">
-			<h4 class="user-input-h">  Skills </h4>
+			<h6 class="user-input-h">  Skills </h6>
 			<div id="skills-text" class="text-placeholder">
 			{{#if skills}}
 				{{#each skills}}
@@ -99,7 +99,7 @@
 
 
 		<div class="form-input-group">
-			<h4 class="user-input-h">  Volunteers </h4>
+			<h6 class="user-input-h">  Volunteers </h6>
 			<div id="volunteer-text" style="padding: 0" class="text-placeholder">
 			{{#if volunteers}}
 					<table id="volunteers" style="width: 100%;">
