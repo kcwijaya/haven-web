@@ -153,7 +153,9 @@ exports.deleteTaskDisclaimer = function(token, taskID, disclaimerID, callback){
 	request(options, callback);
 }
 
-exports.getTaskVolunteers = function(token, userID, taskID, callback){
+exports.addTaskVolunteer = function(token, userID, taskID, callback){
+	console.log(typeof taskID);
+		console.log("Adding task " + taskID + " to user " + userID);
 		var options = {
 		uri: host + "/users/tasks/" + userID,
 		headers: {
@@ -163,6 +165,22 @@ exports.getTaskVolunteers = function(token, userID, taskID, callback){
 			'bearer': token
 		},
 		method: 'POST'
+	}
+
+	console.log(options.uri);
+	request(options, callback);
+}
+
+exports.deleteTaskVolunteer = function(token, userID, taskID, callback){
+		var options = {
+		uri: host + "/users/tasks/" + userID,
+		headers: {
+			'task_id': taskID
+		},			
+		auth: {
+			'bearer': token
+		},
+		method: 'DELETE'
 	}
 
 	request(options, callback);

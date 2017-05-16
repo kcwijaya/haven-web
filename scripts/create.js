@@ -8,6 +8,8 @@ var pressed;
 
 function makeMap(lat, long)
 {
+
+	console.log("Lat: " + lat + ", Lng: " + long);
 	if (lat != 0 && long != 0)
 	{
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -23,8 +25,8 @@ function makeMap(lat, long)
      	});	
 	}
 	
-
      	var input = document.getElementById('location');
+     	console.log("LOCATION: " + input.value);
         var searchBox = new google.maps.places.SearchBox(input);
         //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
@@ -108,8 +110,10 @@ function initMap()
  	    val = input.value;
  	}
 
+
  	if (val != null && typeof val != 'undefined' && val != '')
  	{
+ 		console.log("LOOKING UP: " + val);
  		var geocoder = new google.maps.Geocoder();
         geocoder.geocode({'address': val}, function(results, status) {
           if (status === 'OK') {
@@ -423,6 +427,9 @@ $(document).ready(function(){
 
 	if (typeof document.getElementById('volunteers')!= 'undefined')
 	{
+		if (typeof volunteerTable == 'undefined' || volunteerTable == null)
+		{
+
 		volunteerTable = $('#volunteers').DataTable({
 			'columnDefs': [
 			{
@@ -431,6 +438,7 @@ $(document).ready(function(){
 			}
 			]
 		});
+	}
 	}
 
   $("input[type=checkbox]").change(function () {
@@ -562,7 +570,7 @@ $(document).on('click', '#save-review-task', function(e){
 		for (i = 0; i < volunteers.length; i++)
 		{
 			volunteer = volunteers[i];
-			volunteerO.push({id: volunteer[0], first_name: volunteer[1], last_name: volunteer[2], phone_number: volunteer[3], email: volunteer[4]});
+			volunteerO.push({id: parseInt(volunteer[0]), first_name: volunteer[1], last_name: volunteer[2], phone_number: volunteer[3], email: volunteer[4]});
 		}
 	}
 
@@ -780,7 +788,7 @@ $(document).on('click', '#save-review', function(e){
 		for (i = 0; i < volunteers.length; i++)
 		{
 			volunteer = volunteers[i];
-			volunteerO.push({id: volunteer[0], first_name: volunteer[1], last_name: volunteer[2], phone_number: volunteer[3], email: volunteer[4]});
+			volunteerO.push({id: parseInt(volunteer[0]), first_name: volunteer[1], last_name: volunteer[2], phone_number: volunteer[3], email: volunteer[4]});
 		}
 	}
 
@@ -1070,7 +1078,7 @@ $(document).on('click', '#post-task', function(e){
 
 $(document).on('click', '#save-task', function(e){
 	var id = $('#taskID').text();
-	task.id = id;
+	task.id = parseInt(id);
 
 	console.log(task.id);
 	var skills = [];

@@ -239,19 +239,7 @@ app.post('/save-task', function(req, res){
 
         if (typeof task.volunteers != 'undefined' && task.volunteers.length > 0)
         {
-          var addedVolunteers = 0;
-          for (i=0; i < task.volunteers.length; i++)
-          {
-            api.addTaskVolunteer(getAccessToken(), task.volunteers[i].id, task.id, 
-              function(error, response, body){
-                addedVolunteers++;
-                if (addedVolunteers == task.volunteers.length)
-                {
-                  apihelper.startWithGettingSkillsTask(getAccessTokenObj(), task, res);
-                }
-              }
-            );
-          }
+          apihelper.startWithGettingVolunteersTask(getAccessTokenObj(), task, res);
         }
         else
         {

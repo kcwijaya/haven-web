@@ -1,18 +1,21 @@
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
 	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="../scripts/taskview.js"></script>
-
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAej_Btkc_ko3TrAgYkLY52elkW6bahpgk&libraries=places"
+    async defer></script>
 	<script id="render-navbar" type="text/x-handlebars-template">
 		{{> navbar task="active"}}
 	</script>
 
-	<div class="vertical-align-15 left-align">
+	<div style="margin-bottom: 1%; margin-left: 7%" class="vertical-align-15 left-align">
 		<h2> View your task. </h2>
 	</div>
 
 	<h5 id="id" style="display: none"> {{id}} </h5>
+	<h5 id="latitude" style="display: none"> {{latitude}} </h5>
+	<h5 id="longitude" style="display: none"> {{longitude}} </h5>
 
-	<div style="margin-top: 2%; width: 90%" class="form-card left-align">
+	<div style="margin-left: 7%; margin-top: 2%; width: 85%" class="form-card left-align">
 		<div class="form-input-group">
 			<h6 class="user-input-h"> Title </h6>
 			<div id="title" class="text-placeholder">
@@ -21,10 +24,12 @@
 		</div>
 
 		<div class="form-input-group">
-			<h6 class="user-input-h">  Location </h6>
+			<h6 class="user-input-h"> Location </h6>
 			<div id="location" class="text-placeholder"> 
-				<h5 class="user-input">{{location}}</h5>
+				<h5 id="location-input" class="user-input">{{location}}</h5>
 			</div>
+		<div style="background-image: url('../imgs/loading_spinner.gif'); background-repeat: no-repeat; background-position: center;
+ height: 300px" class="form-group" id="map"></div>
 		</div>
 
 		<div class="form-input-group">
@@ -106,7 +111,7 @@
 			<h6 class="user-input-h">  Volunteers </h6>
 			<div id="volunteer-text" style="padding: 0" class="text-placeholder">
 			{{#if volunteers}}
-				<table id="volunteers" style="width: 100%;">
+					<table id="volunteers" style="width: 100%;">
 					<thead>
 					<tr>
 							<th style="display: none"> </th>
@@ -132,7 +137,6 @@
 					{{/each}}
 					</tbody>
 				</table>
-					</table>
 			{{else}}
 				<p style="margin-left: 1%"> There are currently no volunteers signed up. </p>
 

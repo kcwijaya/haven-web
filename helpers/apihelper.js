@@ -142,7 +142,7 @@ exports.startWithDeletingSkillsTask = function(token, task, res, skills)
 
 exports.startWithGettingSkillsTask = function(token, task, res)
   {
-    console.log("Getting id for ... " + task.id);
+    console.log("Getting skills for ... " + task.id);
     api.getTaskSkills(getAccessToken(token), task.id, 
       function(error, response, bodySkill)
       {
@@ -163,6 +163,92 @@ exports.startWithGettingSkillsTask = function(token, task, res)
       }
     );
   }
+
+  exports.startWithAddingVolunteersTask = function(token, task, res)
+  {
+    var volsToAdd = 0;
+    for (j = 0; j < task.volunteers.length; j++)
+    {
+      console.log("Adding volunteer: " + task.volunteers[j].id);
+      api.addTaskVolunteer(getAccessToken(token), task.volunteers[j].id, task.id, 
+        function(error, response, addedSkills){
+          console.log("Finished adding volunteer: " + task.volunteers[volsToAdd].id);
+          volsToAdd++;
+          if (volsToAdd == task.volunteers.length)
+          {
+            if (typeof task.id != 'undefined' && task.id != '')
+            {
+              ths.startWithGettingSkillsTask(token, task, res);
+            }
+            else if (typeof task.skills != 'undefined' && task.skills.length > 0)
+            {
+              ths.startWithAddingSkillsTask(token, task, res);
+            }
+            else if (typeof task.disclaimers != 'udnefined' && task.disclaimers.length > 0)
+            {
+              ths.startWithAddingDisclaimersTask(token, task, res);
+            }
+            else
+            {
+              res.status(200).json(task);
+            }
+          }
+        }
+      );
+    }
+  }
+
+
+  exports.startWithDeletingVolunteersTask = function(token, task, res, vols)
+  {
+    var volToDelete = 0;
+    for (i = 0; i < vols.length; i++)
+    {
+      console.log("Deleting volunteer: " + vols[i].id);
+      api.deleteTaskVolunteer(getAccessToken(token), vols[i].id, task.id, 
+        function(error, response, deletedVolunteers){
+          console.log("Finished deleting volunteer: " + vols[volToDelete].id);
+          volToDelete++;
+          if (volToDelete == vols.length)
+          {
+            if (typeof task.volunteers != 'undefined' && task.volunteers.length > 0)
+            {
+              ths.startWithAddingVolunteersTask(token, task, res);
+            }
+            else
+            {
+              ths.startWithGettingSkillsTask(token, task, res);
+            }
+          }
+        }
+      );
+    }
+  }
+
+  exports.startWithGettingVolunteersTask = function(token, task, res)
+  {
+    console.log("Getting volunteers for ... " + task.id);
+    api.getTaskVolunteers(getAccessToken(token), task.id, 
+      function(error, response, body)
+      {
+        body = JSON.parse(body);
+        var vols = body.items;
+        if (vols.length > 0)
+        {
+          ths.startWithDeletingVolunteersTask(token, task, res, vols);
+        }
+        else if (typeof task.volunteers != 'undefined' && task.volunteers.length > 0)
+        {
+          ths.startWithAddingVolunteersTask(token,task, res);
+        }
+        else if (typeof task.volunteers == 'undefined')
+        {
+          ths.startWithGettingSkillsTask(token,task, res);
+        }
+      }
+    );
+  }
+
 
 exports.startWithAddingDisclaimersTemplate = function(token,template, res)
 {
