@@ -204,7 +204,7 @@ app.get('/hello', function(req, res){
 });
 
 app.get('/create', function(req, res) {
-	res.sendFile(__dirname + '/TaskCreationHome.html');
+  res.sendFile(__dirname + '/TaskCreationHome.html');
 });
 
 app.get('/views/*', function(req, res) {
@@ -603,6 +603,20 @@ app.get('/templates/disclaimers', function(req, res){
     );
 });
 
+app.get('/users/all', function(req, res){
+  api.getUsers(getAccessToken(),
+    function(error, response, body)
+    {
+      if (error)
+      {
+        console.log(error);
+      }
+      body = JSON.parse(body);
+      console.log(body.items);
+      res.json(body.items);
+    }
+    );
+});
 
 http.listen(process.env.PORT || 5000, function() {
   console.log('listening on ' + process.env.PORT || 5000);
