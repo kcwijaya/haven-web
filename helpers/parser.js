@@ -224,14 +224,9 @@ exports.parseOneTemplate = function(body)
 {
   body = JSON.parse(body);
   console.log(body);
-  var templates = body;
-  var template = {};
-  if (templates.length > 0)
-  {
-    template = templates[0];
-  }
+  
 
-  return template;
+  return body;
 }
 
 

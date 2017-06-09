@@ -564,6 +564,8 @@ app.post('/save-new-template', function(req, res){
 
 function getFields(input, callback)
 {
+  console.log("beginning");
+  console.log(input);
   api.getSkills( function(error, response, body){
     parser.parseSkills(error, response, body, 
       function(one, two){
@@ -573,6 +575,8 @@ function getFields(input, callback)
               input.skillGroupsOne = one;
               input.skillGroupsTwo = two;
               input.disclaimers = disclaimers;
+              console.log("GET FIELDS");
+              console.log(input);
               callback(input);
             }
             );
@@ -654,8 +658,10 @@ app.get('/templates/edit', function(req, res) {
 
       var template = parser.parseOneTemplate(body);
 
+      console.log(template);
       getFields(template, function(result){
         result.pageTitle = "Haven - Edit Template";
+        console.log(result);
         res.render('template-edit', result);
       });
 
