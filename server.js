@@ -357,6 +357,8 @@ app.post('/save-task', function(req, res){
           console.log(task.volunteers);
 
           apihelper.startWithGettingVolunteersTask(req.body, res);
+
+         // apihelper.startWithGettingSkillsTask(req.body, res);
         }
       );
     }

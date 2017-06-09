@@ -192,7 +192,9 @@ exports.logVolunteerHours = function(userID, taskID, hours, callback){
 	request(options,callback);
 }
 
-exports.getTaskVolunteers = function( id, callback){
+exports.getTaskVolunteers = function(id, callback){
+	console.log('hello');
+	console.log("looking for..." + id);
 	request.get(host + "/tasks/" + id + "/users", callback);
 }
 

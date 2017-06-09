@@ -221,12 +221,29 @@ exports.startWithGettingSkillsTask = function(task, res)
   exports.startWithGettingVolunteersTask = function(task, res)
   {
     console.log("Getting volunteers for ... " + task.id);
-    api.getTaskVolunteers( task.id, 
+    console.log(task);
+    api.getTaskVolunteers(task.id, 
       function(error, response, body)
       {
-        body = JSON.parse(body);
-        vols = body[0]; 
-        ths.startWithDeletingVolunteersTask(task,res, vols);
+        console.log(error);
+        console.log(body);
+        var body = JSON.parse(body);
+        console.log(body);
+        vols = body[0];
+
+        console.log(task.volunteers);
+        if (vols.length > 0)
+        {
+          ths.startWithDeletingVolunteersTask(task, res, vols);
+        }
+        else if (typeof task.volunteers != 'undefined' && task.volunteers.length > 0)
+        {
+          ths.startWithAddingVolunteersTask( task, res);
+        }
+        else if (typeof task.volunteers == 'undefined')
+        {
+          ths.startWithDeletingVolunteersTask( task, res);
+        }
       }
     );
   }
