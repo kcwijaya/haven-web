@@ -640,13 +640,17 @@ app.get('/create/new', function(req, res) {
 app.get('/templates/edit', function(req, res) {
   var templateID = req.query.id;
   
-  api.getTemplateByID( templateID, 
+  console.log("templateID: " + templateID);
+
+  api.getTemplateByID(templateID, 
     function(error, response, body){
       if (error)
       {
         console.log(error);
         res.status(404).send('Not Found');
       }
+      console.log("TEMPLATES");
+      console.log(body);
 
       var template = parser.parseOneTemplate(body);
 

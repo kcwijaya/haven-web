@@ -223,7 +223,8 @@ exports.parseAllTasks = function(body)
 exports.parseOneTemplate = function(body)
 {
   body = JSON.parse(body);
-  var templates = body.items;
+  console.log(body);
+  var templates = body;
   var template = {};
   if (templates.length > 0)
   {
