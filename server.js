@@ -989,14 +989,7 @@ app.get('/org', function(req, res){
         res.status(404).send("Not Found");
       }
       body = JSON.parse(body);
-      if (body.items.length > 0)
-      {
-        res.json(body.items[0]);
-      }
-      else
-      {
-        res.json({name: "Not Available"});
-      }
+      res.json(body);
     })
 });
 
