@@ -1,8 +1,8 @@
 
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
-	<link rel="stylesheet" type="text/css" href="../slick/slick/slick.css"/>
-	<link rel="stylesheet" type="text/css" href="../slick/slick/slick-theme.css"/>
-	<script type="text/javascript" src="../slick/slick/slick.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../scripts/external/slick/slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="../scripts/external/slick/slick/slick-theme.css"/>
+	<script type="text/javascript" src="../scripts/external/slick/slick/slick.min.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
 	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
@@ -14,57 +14,59 @@
 	</script>
 
 	<div id="nav-placeholder"> </div>
-	
-	<div class="vertical-align-25 center-text">
-		<h2 style="margin-bottom: 5%"> Browse Tasks</h2>
-		<hr class="mid-size-line" />
-	</div>
 
-	<div id="task-group-card" class="task-item-group">
-		<h5> {{title}}
-		 	<i id={{listID}} style="margin-top: 1%; margin-left: 1%" class="fa fa-list" aria-hidden="true"></i>
-    	</h5>		
-		<div class="{{cardID}}">
+	<script id="card-group" type="text/x-handlebars-template">
+		<div style="margin-bottom: 5%; text-align: center">
+		<h2> Browse Tasks
+		</h2>
+			 	<i id={{listID}} style="font-size: 2rem; margin-top: 1%; margin-left: 1%" class="click-icon fa fa-list" aria-hidden="true"></i>
+    		
+    	    	<hr class="mid-size-line" />
+
+    	</div>	
+		<div style="margin-left: 6%; margin-bottom: 5%" class="{{cardID}}">
 			{{#each cards}}
 			<div class="card">
 				<div class="card-block">
-					<h4 class="card-title">{{cardTitle}}</h4>
+					<p class="card-id" style="display: none">{{cardID}}</p>
+					<h4 style="color: #33cccc;" class="card-title">{{cardTitle}}</h4>
 					<p class="card-text"> {{cardText}}</p>
 				</div>
 			</div>	
 			{{/each}}
 		</div>
-	</div>
+	</script>
 
-	<div id="task-group-list" class="task-item-group">
-		<h5> {{title}}  
-				<i id={{boxID}} style="margin-top: 1%; margin-left: 1%" class="fa fa-th" aria-hidden="true"></i>
-    	</h5>
+	<script id="card-list" type="text/x-handlebars-template">
+		<div style="margin-bottom: 5%; text-align: center">
+		<h2> Browse Tasks  </h2>
+    	<i id={{boxID}} style="font-size: 2rem; margin-top: 1%; margin-left: 1%" class="click-icon fa fa-th" aria-hidden="true"></i>
+    	<hr class="mid-size-line" />
+    	</div>
 		 
 		
-		<div class="{{cardID}}">
-			<table id="{{cardID}}" style="width: 100%; border-collapse: collapse;" class="card-list">
+		<div style="margin-left: 6%; margin-bottom: 5%" class="{{cardID}}">
+			<table id="{{cardID}}" style="width: 100%; border-collapse: collapse;" class="hover card-list">
 				<thead>
 				<tr>
-						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Name </th>
-						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Description 
+						<th style="display: none"> </th>
+						<th style="color: white; background-color: #33cccc; border: 1px solid #dddddd;">Name </th>
+						<th style="color: white; background-color: #33cccc; border: 1px solid #dddddd;">Description 
 						</th>
 				</tr>
-				</thead
+				</thead>
 				<tbody>
 			{{#each cards}}
 				<tr>
-					<td style="border: 1px solid #dddddd;"> {{cardTitle}}</td>
-					<td style="border: 1px solid #dddddd;"> {{cardText}} </td>
+					<td style="margin-left: 1%; display: none"> {{cardID}} </td>
+					<td style="margin-left: 1%; border: 1px solid #dddddd;">{{cardTitle}}</td>
+					<td style="margin-left: 1%; border: 1px solid #dddddd;">{{cardText}} </td>
 				</tr>
 			{{/each}}
 				</tbody>
 			</table>
 		</div>
 
-	</div>
+	</script>
 
-	<div id="footer-bigger">
-		<img src="../imgs/logo-full.png" id="logo-full"/>
-	</div>
-
+	<div style="margin-left: 14%" id="task-group" class="task-item-group"> </div>

@@ -37,30 +37,100 @@ $(document).ready(function(){
       type: "GET",
       url: "/tasks/all",
       success: function (res){
-        console.log("MAKING THE CARDS....");
         cards = [];
         for (i = 0; i < res.length; i++)
         {
           cards.push({
             cardID: res[i].id,
             cardTitle: res[i].title,
-            cardText: res[i].description
+            cardText: res[i].description,
+            cardOrg: res[i].org_name,
+            cardTime: (typeof res[i].start_time != 'undefined') ? new Date(res[i].start_time) : 'Not Provided',
+            cardLoc: res[i].location
           });
         }
 
-        console.log(cards);
         taskContext.cards = cards;
-
-        console.log(taskContext);
         makeTaskGroup('#card-group', true);
       }
   });
 });
 
-  $('#example tbody').on('click', 'tr', function () {
-        var data = table.row( this ).data();
-        alert( 'You clicked on '+data[0]+'\'s row' );
-  } );
+function getTaskSkills(id)
+{
+  var params = $.param({
+    id: parseInt(id),
+  });
+
+  $.ajax({
+    type: "GET",
+    url: "/tasks/skills?" + params,
+    success: function (res){
+      console.log("SKILLS: " );
+      console.log(res);
+      if (res.length == 0)
+      {
+        $("#skills-text").html('<p> There are currently no required skills.');
+        return;
+      }
+      var categories = {};
+      for (i = 0; i < res.length; i++)
+      {
+        if (!(res[i].category in categories))
+        {
+          categories[res[i].category] = [];
+        }
+        categories[res[i].category].push(res[i].name);
+      }
+
+      var toAppend = "";
+
+      Object.keys(categories).forEach(function(key,index) {
+        toAppend += "<b><h7>" + key + "</h7></b>"
+        toAppend += "<ul>"
+        for (i = 0; i < categories[key].length; i++)
+        {
+          toAppend += "<li>" + categories[key][i] + "</li>";
+        }
+        toAppend += "</ul>";
+      });
+
+      $('#skills-text').html(toAppend);
+    }
+  });
+}
+
+function getTaskDisclaimers(id)
+{
+  var params = $.param({
+    id: parseInt(id),
+  });
+
+  $.ajax({
+    type: "GET",
+    url: "/tasks/disclaimers?" + params,
+    success: function (res){
+      console.log("DISCLAIMERS: " );
+      console.log(res);
+
+      if (res.length == 0)
+      {
+        $("#disclaimers-text").html('<p> There are currently no disclaimers');
+        return;
+      }
+
+      var toAppend = "<ul>";
+      for (i = 0; i < res.length; i++)
+      {
+        toAppend += "<li>" + res[i].disclaimer + "</li>";
+      }
+      toAppend += "</ul>";
+
+      $('#disclaimers-text').html(toAppend);
+    }
+  });
+}
+
 
 
 $(document).on('click', '#tasks tbody tr', function (){
@@ -86,7 +156,17 @@ $(document).on('click', '.card', function (){
 
 $(document).on('click', '#task-list', function(){
   makeTaskGroup('#card-list', false);
-  $('#tasks').DataTable();
+  $('#tasks').DataTable(
+      {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf'
+        ],
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+      }
+  );
+
+
 });
 
 

@@ -134,11 +134,21 @@ function getTaskDisclaimers(id)
 $(document).ready(function (){
 
 	var id = $("#id").text().trim();
-
-	getTaskDisclaimers(id);
-	getTaskSkills(id);
+	
+	 getTaskDisclaimers(id);
+	 getTaskSkills(id);
 
 	updateMap();
+
+	$('#volunteers').DataTable(
+	  {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf'
+        ],
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+      }
+	);
 
 	$('#edit-task').click(function(e){
 		var id = $('#id').text().trim();
@@ -147,5 +157,15 @@ $(document).ready(function (){
 			id: id
 		});
 		window.location.href = "/tasks/edit?" + params;
+	});
+
+	$('#log-hours').click(function(e){
+		var id = $('#id').text().trim();
+		var title = $('#title').text().trim();
+		var params = $.param({
+			id: id,
+			title: title
+		});
+		window.location.href = "/tasks/hours?" + params;
 	});
 });

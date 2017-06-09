@@ -30,21 +30,33 @@
 		<div class="row" >
 			<div class="col-md-4">
 				<h7> Severity of Impacted Region </h7>
-				<div id="severity" class="text-placeholder">{{severity}} </div>
+				<div id="severity" {{#if severity_level}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{severity_level}} </div>
 			</div>
-			<div class="col-md-3">
-				
-		<h7> Number of Volunteers</h7>
-		<div id="num_volunteers" {{#if num_volunters}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{num_volunteers}}</div>
+			<div class="col-md-4">	
+				<h7> Number of Volunteers</h7>
+				<div id="num_volunteers" {{#if num_volunteers}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{num_volunteers}}
+				</div>
+			</div>
+			<div class="col-md-4">
+					<label for="status">Status</label>
+					<div id="status" {{#if status}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{status}}
+					</div>
+			</div> 
+		</div>
+
+		<br>
+		<div class="row" >
+			<div class="col-md-6">
+				<h7> Point of Contact</h7>
+				<div id="contact_person" {{#if point_of_contact}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{point_of_contact}} </div>
 			</div>
 
-			<div class="col-md-5">
+			<div class="col-md-6">
 				<h7> Date and Time </h7>
-				<div id="clock-text" class="text-placeholder"> {{start_time}}</div>
+				<div id="clock-text" {{#if start_time}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> {{start_time}}</div>
 			</div>
 		</div>
-				<br>
-
+		<br>
 
 		<h7> Disclaimers </h7>
 		<div id="disclaimers-text" {{#if disclaimers}} {{else}} style="height:100px" {{/if}} class="text-placeholder"> 
@@ -84,8 +96,9 @@
 
 
 		<div style="margin-left: 15%">
-			<button style="width: 40%" id="edit-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Make Changes</button>
-			<button style="width: 40%" id="post-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Post Task</button>
+			<button style="width: 20%" id="edit-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Make Changes</button>
+			<button style="width: 20%" id="save-new-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save as Template</button>
+			<button style="width: 20%" id="post-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Post Task</button>
 		</div>
 
 	

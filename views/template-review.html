@@ -60,10 +60,19 @@
 	</div>
 		<br>
 
-	<div style="margin-left: 15%">
-		<button style="width: 40%" id="edit-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Make Changes</button>
-		<button style="width: 40%" id="save-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Template</button>
-	</div>
+	{{#if id}}
+		<div style="margin-left: 15%">
+			<button style="width: 25%" id="edit-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Make Changes</button>
+			<button style="width: 25%" id="save-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
+			<button style="width: 25%" id="save-new-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save As New Template</button>
+		</div>
+	{{else}}
+	<div style="margin-left: 20%">
+			<button style="width: 35%" id="edit-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Make Changes</button>
+			<button style="width: 35%" id="save-new-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
+		</div>
+	{{/if}}
+
 
 
 

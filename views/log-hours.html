@@ -1,0 +1,72 @@
+
+
+<script type="text/javascript" src="../bower_components/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAej_Btkc_ko3TrAgYkLY52elkW6bahpgk&libraries=places"
+async defer></script>
+<script type="text/javascript" src="../scripts/hours.js"></script>
+
+
+<script id="render-navbar" type="text/x-handlebars-template">
+	{{> navbar task="active"}}
+</script>
+
+<div id="container">
+	<div class="vertical-align-15 left-align">
+		<h2> Log Volunteer Hours. </h2>
+	</div>
+
+	<p id="taskID" style="display: none">{{id}}</p>
+
+	
+
+	<form id="task-form" class="templates left-align">
+		<h7 class="section-title"> Task Information</h7>
+		<div class="form-card">
+				<h4> Title </h4>
+				<div id="title" {{#if title}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> {{title}} </div>
+		<br>
+		<br>
+			
+		<h4> Volunteers </h4>
+			<table id="volunteers" class="hover" style="width: 100%;">
+				<thead>
+				<tr>
+						<th style="display: none"></th>
+						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
+						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
+						</th>
+						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number
+						</th>
+						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
+						</th>
+						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Hours </th>
+						<th></th>
+				</tr>
+				</thead>
+				<tbody>
+			{{#each volunteers}}
+				<tr>
+					<td style="display: none">{{id}}</td>
+					<td style="border: 1px solid #dddddd;"> {{first_name}}</td>
+					<td style="border: 1px solid #dddddd;"> {{last_name}} </td>
+					<td style="border: 1px solid #dddddd;"> {{phone_number}} </td>
+					<td style="border: 1px solid #dddddd;"> {{email}} </td>
+					<td style="border: 1px solid #dddddd;"> {{#if hours}} {{hours}} {{else}} 0 {{/if}} </td>
+					<td style="border: 1px solid #dddddd;"></i> <i style="font-size: 30px;" class="edit-button fa fa-pencil"></i><i style="font-size: 30px; display: none;" class="save-button fa fa-save"></i> </td>
+				</tr>
+			{{/each}}
+				</tbody>
+			</table>
+	</form>
+</div>
+
+		<div style="margin-left: 35%">
+			<button style="width: 35%" id="return-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Return to Task Details</button>
+		</div>
+</div>

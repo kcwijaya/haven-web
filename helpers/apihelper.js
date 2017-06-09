@@ -2,23 +2,13 @@ var api = require(__dirname + "/oracle-api.js");
 
 var ths = this;
 
-function getAccessToken(token)
-{
-  if (token.expired()) {
-    token.refresh((error, result) => {
-      token = oauth2.accessToken.create(result);
-    });
-  }
-  return token.token.access_token;
-}
-
-exports.startWithAddingDisclaimersTask = function(token, task, res)
+exports.startWithAddingDisclaimersTask = function(task, res)
 {
   var disclaimersToAdd = 0;
   for (l = 0; l < task.disclaimers.length; l++)
   {
     console.log("Adding disclaimer: " + task.disclaimers[l]);
-    api.addTaskDisclaimer(getAccessToken(token), task.id, task.disclaimers[l],
+    api.addTaskDisclaimer( task.id, task.disclaimers[l],
       function(error, body, addedDisclaimers)
       {
         console.log("Finished adding disclaimer: " + task.disclaimers[disclaimersToAdd]);
@@ -32,13 +22,13 @@ exports.startWithAddingDisclaimersTask = function(token, task, res)
   }
 }
 
-exports.startWithDeletingDisclaimersTask = function(token, task, res, existingDisclaimers)
+exports.startWithDeletingDisclaimersTask = function(task, res, existingDisclaimers)
 {
   var disclaimersToDelete = 0;
   for (k = 0; k < existingDisclaimers.length; k++)
   {
     console.log("Deleting disclaimer: " + existingDisclaimers[k].id);
-    api.deleteTaskDisclaimer(getAccessToken(token), task.id, existingDisclaimers[k].id,
+    api.deleteTaskDisclaimer( task.id, existingDisclaimers[k].id,
       function(error, response, deletedDisclaimers)
       {
         console.log("Finished deleting disclaimer: " + existingDisclaimers[disclaimersToDelete].id);
@@ -47,7 +37,7 @@ exports.startWithDeletingDisclaimersTask = function(token, task, res, existingDi
         {
           if (typeof task.disclaimers != 'undefined' && task.disclaimers.length > 0)
           {
-            ths.startWithAddingDisclaimersTask(token, task, res);
+            ths.startWithAddingDisclaimersTask(  task, res);
           }
           else
           {
@@ -59,20 +49,19 @@ exports.startWithDeletingDisclaimersTask = function(token, task, res, existingDi
   }
 }
 
-exports.startWithGettingDisclaimersTask = function(token, task, res)
+exports.startWithGettingDisclaimersTask = function(task, res)
 {
-  api.getTaskDisclaimers(getAccessToken(token), task.id, 
+  api.getTaskDisclaimers( task.id, 
     function(error, response, disclaimerBody)
     {
-      disclaimerBody = JSON.parse(disclaimerBody);
-      var existingDisclaimers = disclaimerBody.items;
+      var existingDisclaimers = JSON.parse(disclaimerBody);
       if (existingDisclaimers.length > 0)
       {
-        ths.startWithDeletingDisclaimersTask(token, task, res, existingDisclaimers);
+        ths.startWithDeletingDisclaimersTask(  task, res, existingDisclaimers);
       }
       else if (typeof task.disclaimers != 'undefined' && task.disclaimers.length > 0)
       {
-        ths.startWithAddingDisclaimersTask(token, task, res);
+        ths.startWithAddingDisclaimersTask(  task, res);
       }
       else
       {
@@ -83,25 +72,30 @@ exports.startWithGettingDisclaimersTask = function(token, task, res)
 }
 
 
-exports.startWithAddingSkillsTask = function(token, task, res)
+exports.startWithAddingSkillsTask = function(task, res)
   {
     var skillsToAdd = 0;
     for (j = 0; j < task.skills.length; j++)
     {
       console.log("Adding skill: " + task.skills[j]);
-      api.addTaskSkill(getAccessToken(token), task.id, task.skills[j],
+      api.addTaskSkill( task.id, task.skills[j],
         function(error, response, addedSkills){
+          if (error)
+          {
+            console.log("ERROR occured when adding skill " + task.skills[skillsToAdd]);
+            console.log(error);
+          }
           console.log("Finished adding skill: " + task.skills[skillsToAdd]);
           skillsToAdd++;
           if (skillsToAdd == task.skills.length)
           {
             if (typeof task.id != 'undefined' && task.id != '')
             {
-              ths.startWithGettingDisclaimersTask(token, task, res);
+              ths.startWithGettingDisclaimersTask(  task, res);
             }
             else if (typeof task.disclaimers != 'undefined' && task.disclaimers.length > 0)
             {
-              ths.startWithAddingDisclaimersTask(token, task, res);
+              ths.startWithAddingDisclaimersTask(  task, res);
             }
             else
             {
@@ -114,13 +108,13 @@ exports.startWithAddingSkillsTask = function(token, task, res)
   }
 
 
-exports.startWithDeletingSkillsTask = function(token, task, res, skills)
+exports.startWithDeletingSkillsTask = function(task, res, skills)
   {
     var skillsToDelete = 0;
     for (i = 0; i < skills.length; i++)
     {
       console.log("Deleting skill: " + skills[i].id);
-      api.deleteTaskSkill(getAccessToken(token), task.id, skills[i].id, 
+      api.deleteTaskSkill( task.id, skills[i].id, 
         function(error, response, deletedSkills){
           console.log("Finished deleting skill: " + skills[skillsToDelete].id);
           skillsToDelete++;
@@ -128,11 +122,11 @@ exports.startWithDeletingSkillsTask = function(token, task, res, skills)
           {
             if (typeof task.skills != 'undefined' && task.skills.length > 0)
             {
-              ths.startWithAddingSkillsTask(token, task, res);
+              ths.startWithAddingSkillsTask(  task, res);
             }
             else
             {
-              ths.startWithGettingDisclaimersTask(token, task, res);
+              ths.startWithGettingDisclaimersTask(  task, res);
             }
           }
         }
@@ -140,37 +134,36 @@ exports.startWithDeletingSkillsTask = function(token, task, res, skills)
     }
   }
 
-exports.startWithGettingSkillsTask = function(token, task, res)
+exports.startWithGettingSkillsTask = function(task, res)
   {
     console.log("Getting skills for ... " + task.id);
-    api.getTaskSkills(getAccessToken(token), task.id, 
+    api.getTaskSkills(task.id, 
       function(error, response, bodySkill)
       {
-        bodySkill = JSON.parse(bodySkill);
-        var skills = bodySkill.items;
+        var skills = JSON.parse(bodySkill);
         if (skills.length > 0)
         {
-          ths.startWithDeletingSkillsTask(token, task, res, skills);
+          ths.startWithDeletingSkillsTask(  task, res, skills);
         }
         else if (typeof task.skills != 'undefined' && task.skills.length > 0)
         {
-          ths.startWithAddingSkillsTask(token,task, res);
+          ths.startWithAddingSkillsTask( task, res);
         }
         else if (typeof task.skills == 'undefined')
         {
-          ths.startWithGettingDisclaimersTask(token,task, res);
+          ths.startWithGettingDisclaimersTask( task, res);
         }
       }
     );
   }
 
-  exports.startWithAddingVolunteersTask = function(token, task, res)
+  exports.startWithAddingVolunteersTask = function(task, res)
   {
     var volsToAdd = 0;
     for (j = 0; j < task.volunteers.length; j++)
     {
       console.log("Adding volunteer: " + task.volunteers[j].id);
-      api.addTaskVolunteer(getAccessToken(token), task.volunteers[j].id, task.id, 
+      api.addTaskVolunteer( task.volunteers[j].id, task.id, 
         function(error, response, addedSkills){
           console.log("Finished adding volunteer: " + task.volunteers[volsToAdd].id);
           volsToAdd++;
@@ -178,15 +171,15 @@ exports.startWithGettingSkillsTask = function(token, task, res)
           {
             if (typeof task.id != 'undefined' && task.id != '')
             {
-              ths.startWithGettingSkillsTask(token, task, res);
+              ths.startWithGettingSkillsTask(  task, res);
             }
             else if (typeof task.skills != 'undefined' && task.skills.length > 0)
             {
-              ths.startWithAddingSkillsTask(token, task, res);
+              ths.startWithAddingSkillsTask(  task, res);
             }
-            else if (typeof task.disclaimers != 'udnefined' && task.disclaimers.length > 0)
+            else if (typeof task.disclaimers != 'undefined' && task.disclaimers.length > 0)
             {
-              ths.startWithAddingDisclaimersTask(token, task, res);
+              ths.startWithAddingDisclaimersTask(  task, res);
             }
             else
             {
@@ -199,13 +192,13 @@ exports.startWithGettingSkillsTask = function(token, task, res)
   }
 
 
-  exports.startWithDeletingVolunteersTask = function(token, task, res, vols)
+  exports.startWithDeletingVolunteersTask = function(task, res, vols)
   {
     var volToDelete = 0;
     for (i = 0; i < vols.length; i++)
     {
       console.log("Deleting volunteer: " + vols[i].id);
-      api.deleteTaskVolunteer(getAccessToken(token), vols[i].id, task.id, 
+      api.deleteTaskVolunteer( vols[i].id, task.id, 
         function(error, response, deletedVolunteers){
           console.log("Finished deleting volunteer: " + vols[volToDelete].id);
           volToDelete++;
@@ -213,11 +206,11 @@ exports.startWithGettingSkillsTask = function(token, task, res)
           {
             if (typeof task.volunteers != 'undefined' && task.volunteers.length > 0)
             {
-              ths.startWithAddingVolunteersTask(token, task, res);
+              ths.startWithAddingVolunteersTask(  task, res);
             }
             else
             {
-              ths.startWithGettingSkillsTask(token, task, res);
+              ths.startWithGettingSkillsTask(  task, res);
             }
           }
         }
@@ -225,38 +218,27 @@ exports.startWithGettingSkillsTask = function(token, task, res)
     }
   }
 
-  exports.startWithGettingVolunteersTask = function(token, task, res)
+  exports.startWithGettingVolunteersTask = function(task, res)
   {
     console.log("Getting volunteers for ... " + task.id);
-    api.getTaskVolunteers(getAccessToken(token), task.id, 
+    api.getTaskVolunteers( task.id, 
       function(error, response, body)
       {
         body = JSON.parse(body);
-        var vols = body.items;
-        if (vols.length > 0)
-        {
-          ths.startWithDeletingVolunteersTask(token, task, res, vols);
-        }
-        else if (typeof task.volunteers != 'undefined' && task.volunteers.length > 0)
-        {
-          ths.startWithAddingVolunteersTask(token,task, res);
-        }
-        else if (typeof task.volunteers == 'undefined')
-        {
-          ths.startWithGettingSkillsTask(token,task, res);
-        }
+        vols = body[0]; 
+        ths.startWithDeletingVolunteersTask(task,res, vols);
       }
     );
   }
 
 
-exports.startWithAddingDisclaimersTemplate = function(token,template, res)
+exports.startWithAddingDisclaimersTemplate = function(template, res)
 {
   var disclaimersToAdd = 0;
   for (l = 0; l < template.disclaimers.length; l++)
   {
     console.log("Adding disclaimer: " + template.disclaimers[l]);
-    api.addTemplateDisclaimer(getAccessToken(token), template.id, template.disclaimers[l],
+    api.addTemplateDisclaimer( template.id, template.disclaimers[l],
       function(error, body, addedDisclaimers)
       {
         console.log("Finished adding disclaimer: " + template.disclaimers[disclaimersToAdd]);
@@ -270,13 +252,13 @@ exports.startWithAddingDisclaimersTemplate = function(token,template, res)
   }
 }
 
-exports.startWithDeletingDisclaimersTemplate = function(token,template, res, existingDisclaimers)
+exports.startWithDeletingDisclaimersTemplate = function(template, res, existingDisclaimers)
 {
   var disclaimersToDelete = 0;
   for (k = 0; k < existingDisclaimers.length; k++)
   {
     console.log("Deleting disclaimer: " + existingDisclaimers[k].id);
-    api.deleteTemplateDisclaimer(getAccessToken(token), template.id, existingDisclaimers[k].id,
+    api.deleteTemplateDisclaimer( template.id, existingDisclaimers[k].id,
       function(error, response, deletedDisclaimers)
       {
         console.log("Finished deleting disclaimer: " + existingDisclaimers[disclaimersToDelete].id);
@@ -285,7 +267,7 @@ exports.startWithDeletingDisclaimersTemplate = function(token,template, res, exi
         {
           if (typeof template.disclaimers != 'undefined' && template.disclaimers.length > 0)
           {
-            ths.startWithAddingDisclaimersTemplate(token,template, res);
+            ths.startWithAddingDisclaimersTemplate( template, res);
           }
           else
           {
@@ -297,20 +279,19 @@ exports.startWithDeletingDisclaimersTemplate = function(token,template, res, exi
   }
 }
 
-exports.startWithGettingDisclaimersTemplate = function(token, template, res)
+exports.startWithGettingDisclaimersTemplate = function(  template, res)
   {
-    api.getTemplateDisclaimers(getAccessToken(token), template.id, 
+    api.getTemplateDisclaimers( template.id, 
       function(error, response, disclaimerBody)
       {
-        disclaimerBody = JSON.parse(disclaimerBody);
-        var existingDisclaimers = disclaimerBody.items;
+        var existingDisclaimers = JSON.parse(disclaimerBody);
         if (existingDisclaimers.length > 0)
         {
-          ths.startWithDeletingDisclaimersTemplate(token,template, res, existingDisclaimers);
+          ths.startWithDeletingDisclaimersTemplate( template, res, existingDisclaimers);
         }
         else if (typeof template.disclaimers != 'undefined' && template.disclaimers.length > 0)
         {
-          ths.startWithAddingDisclaimersTemplate(token,template, res);
+          ths.startWithAddingDisclaimersTemplate( template, res);
         }
         else
         {
@@ -321,13 +302,13 @@ exports.startWithGettingDisclaimersTemplate = function(token, template, res)
   }
 
 
-exports.startWithAddingSkillsTemplate = function(token, template, res)
+exports.startWithAddingSkillsTemplate = function(  template, res)
   {
     var skillsToAdd = 0;
     for (j = 0; j < template.skills.length; j++)
     {
       console.log("Adding skill: " + template.skills[j]);
-      api.addTemplateSkill(getAccessToken(token), template.id, template.skills[j],
+      api.addTemplateSkill( template.id, template.skills[j],
         function(error, response, addedSkills){
           console.log("Finished adding skill: " + template.skills[skillsToAdd]);
             skillsToAdd++;
@@ -336,11 +317,11 @@ exports.startWithAddingSkillsTemplate = function(token, template, res)
           {
             if (typeof template.id != 'undefined' && template.id != '')
             {
-              ths.startWithGettingDisclaimersTemplate(token,template, res);
+              ths.startWithGettingDisclaimersTemplate( template, res);
             }
             else if (typeof template.disclaimers != 'undefined' && template.disclaimers.length > 0)
             {
-              ths.startWithAddingDisclaimersTemplate(token,template, res);
+              ths.startWithAddingDisclaimersTemplate( template, res);
             }
             else
             {
@@ -353,13 +334,13 @@ exports.startWithAddingSkillsTemplate = function(token, template, res)
   }
 
 
-exports.startWithDeletingSkillsTemplate = function(token, template, res, skills)
+exports.startWithDeletingSkillsTemplate = function(  template, res, skills)
   {
     var skillsToDelete = 0;
     for (i = 0; i < skills.length; i++)
     {
       console.log("Deleting skill: " + skills[i].id);
-      api.deleteTemplateSkill(getAccessToken(token), template.id, skills[i].id, 
+      api.deleteTemplateSkill( template.id, skills[i].id, 
         function(error, response, deletedSkills){
           console.log("Finished deleting skill: " + skills[skillsToDelete].id);
             skillsToDelete++;
@@ -368,11 +349,11 @@ exports.startWithDeletingSkillsTemplate = function(token, template, res, skills)
           {
             if (typeof template.skills != 'undefined' && template.skills.length > 0)
             {
-              ths.startWithAddingSkillsTemplate(token,template, res);
+              ths.startWithAddingSkillsTemplate( template, res);
             }
             else
             {
-              ths.startWithGettingDisclaimersTemplate(token,template, res);
+              ths.startWithGettingDisclaimersTemplate( template, res);
             }
           }
         }
@@ -380,24 +361,23 @@ exports.startWithDeletingSkillsTemplate = function(token, template, res, skills)
     }
   }
 
-exports.startWithGettingSkillsTemplate = function(token, template, res)
+exports.startWithGettingSkillsTemplate = function(template, res)
   {
-    api.getTemplateSkills(getAccessToken(token), template.id, 
+    api.getTemplateSkills( template.id, 
       function(error, response, bodySkill)
       {
-        bodySkill = JSON.parse(bodySkill);
-        var skills = bodySkill.items;
+        var skills = JSON.parse(bodySkill);
         if (skills.length > 0)
         {
-          ths.startWithDeletingSkillsTemplate(token, template, res, skills);
+          ths.startWithDeletingSkillsTemplate(  template, res, skills);
         }
         else if (typeof template.skills != 'undefined' && template.skills.length > 0)
         {
-          ths.startWithAddingSkillsTemplate(token, template, res);
+          ths.startWithAddingSkillsTemplate(  template, res);
         }
         else if (typeof template.skills == 'undefined')
         {
-          ths.startWithGettingDisclaimersTemplate(token, template, res);
+          ths.startWithGettingDisclaimersTemplate(  template, res);
         }
       }
     );

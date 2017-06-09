@@ -86,7 +86,11 @@ $(document).on('click', '.card', function (){
 
 $(document).on('click', '#template-list', function(){
   makeTemplateGroup('#card-list', false);
-  $('#templates').DataTable();
+  $('#templates').DataTable( 
+    {
+      "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+    }
+  );
 });
 
 

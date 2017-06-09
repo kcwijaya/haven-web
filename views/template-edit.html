@@ -47,7 +47,7 @@
 			<div class="form-group">
 				<div id="volunteer-container" class="form-group">
 					<label for="title">Number of Volunteers</label>
-					<input type="number" name="num_volunteers" {{#if num_volunteers}} value="{{num_volunteers}}" {{/if}} class="form-control" id="num_volunteers">
+					<input type="number" min=0 name="num_volunteers" {{#if num_volunteers}} value="{{num_volunteers}}" {{/if}} class="form-control" id="num_volunteers">
 				</div>
 			</div>
 		<div class="form-group">
@@ -79,7 +79,7 @@
 							<label class="form-check-label">
 								<input class="form-checkbox" type="checkbox" id="{{name}}" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
 							{{#if more}}
-									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' readonly />
+									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' />
 								{{/if}}
 							</label>
 								
@@ -100,7 +100,7 @@
 									<input class="form-checkbox" type="checkbox" id="{{name}}" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
 									{{#if more}}
 									</br>
-									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' readonly />
+									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' />
 								{{/if}}
 								</label>
 								
@@ -115,7 +115,7 @@
 
 		<div>
 		<center>
-			<button style="width: 50%" id="review-template" formaction="/SaveTask" type="submit" class="btn-group-mem btn btn-primary btn-lg">Save Changes</button>
+			<button style="width: 30%" id="review-template" formaction="/SaveTask" type="submit" class="btn-group-mem btn btn-primary btn-lg">Review Changes</button>
 		</center>
 		</div>
 	</form>

@@ -1,5 +1,3 @@
-
-
 <script type="text/javascript" src="../bower_components/moment/min/moment.min.js"></script>
   	<script type="text/javascript" src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
  	 <link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
@@ -13,15 +11,16 @@
 
 {{#if newBtn}}
 <script id="render-navbar" type="text/x-handlebars-template">
-	{{> navbar create="active"}}
+	{{> navbar create="active" username=username}}
 </script>
 {{/if}}
 
 {{#if taskBtn}}
 <script id="render-navbar" type="text/x-handlebars-template">
-	{{> navbar task="active"}}
+	{{> navbar task="active" username=username}}
 </script>
 {{/if}}
+
 
 <div id="container">
 	<div class="vertical-align-15 left-align">
@@ -46,52 +45,92 @@
 				<div id="title-req" style="display: none" class="form-control-feedback">This field is required. </div>
 
 			</div>
-			<div id="loc-container" class="form-group">
+			<div id="loc-container" class="form-group has-warning">
 				<label for="location"> Location </label>
 				<input id="location" class="form-control" value="{{location}}" type="text" placeholder="Search Location">
+				 <div id="loc-warn" class="form-control-feedback">This will not be shown to the volunteer until they sign up.</div>
+
 				<div id="loc-req" style="display: none" class="form-control-feedback">This field is required. </div>
 			 <div style="background-image: url('../imgs/loading_spinner.gif'); background-repeat: no-repeat; background-position: center;
  height: 300px" class="form-group" id="map">
 
 			 </div>
 			 </div>
-			<div class="form-group"> 
-				<label for="description">Description</label>
-				<textarea class="form-control" name="description"  id="description" rows="10" placeholder="Describe your task.">{{#if description}} {{description}} {{/if}}</textarea>
+			<div class="form-group row"> 
+				<div class="col-md-6">
+					<label for="description">Description</label>
+					<textarea class="form-control" name="description"  id="description" rows="3" placeholder="Describe your task.">{{#if description}} {{description}} {{/if}}</textarea>
+				</div>
+				<div class="col-md-6" style="margin-top: 3%">
+				<label for="description"><i>Sample Description</i></label>
+
+				<p> Evacuation of people from Old Union which has caught fire. </p>
+				</div>
 			</div>
 		</div>
 
 		<h7 class="section-title"> Task Requirements </h7>
 		<div class="form-card">
-			<div class="form-group">
+			<div class="form-group row">
+			<div class="col-md-6">
 				<label for="instructions">Instructions</label>
-				<textarea class="form-control" name="instructions" id="instructions" rows="5" placeholder="Describe instructions for task.">{{#if instructions }} {{instructions}}{{/if}}</textarea>
+				<textarea class="form-control" name="instructions" id="instructions" rows="10" placeholder="Describe instructions for your task.">{{#if instructions }} {{instructions}}{{/if}}</textarea>
+			</div>
+			<div class="col-md-6" style="margin-top: 7%;">
+				<label for="description"><i>Sample Instructions</i></label>
+
+				<p> Please bring your own heat-resistant gear and do not be late. There will be road-blocks leading up to the location. Just give the security your point of contact's name and you will be escorted through. </p>
+			</div>
 			</div>
 			<div class="form-group row">
 				<div class="col-md-4">
 					<label for="severity">Severity of Impacted Region</label>
 					<select name="severity" class="form-control" id="severity">
-						<option value="Light" {{#equal severity 'Light'}} selected {{/equal}}>Light</option>
-						<option value="Moderate" {{#equal severity 'Moderate'}} selected {{/equal}} >Moderate</option>
-						<option value="Severe" {{#equal severity 'Severe'}} selected {{/equal}}>Severe</option>
+						<option value="Low" {{#equal severity_level 'Low'}} selected {{/equal}}>Low</option>
+						<option value="Medium" {{#equal severity_level 'Medium'}} selected {{/equal}} >Medium</option>
+						<option value="High" {{#equal severity_level 'High'}} selected {{/equal}}>High</option>
 					</select>
 				</div>
 
 				<div class="col-md-4">
 					<div id="volunteer-container" class="form-group">
 					<label for="num_volunteers">Number of Volunteers</label>
-					<input required type="number" name="num_volunteers" {{#if num_volunteers}} value="{{num_volunteers}}" {{/if}} class="form-control" id="num_volunteers">
+					<input required type="number" min=0 name="num_volunteers" {{#if num_volunteers}} value="{{num_volunteers}}" {{/if}} class="form-control" id="num_volunteers">
 				</div>
 
 				</div>
 
 				<div class="col-md-4">
+					<label for="status">Status</label>
+					<select name="status" class="form-control" id="status">
+						<option value="Scheduled" {{#equal status 'Scheduled'}} selected {{/equal}}>Scheduled</option>
+						<option value="In Progress" {{#equal status 'In Progress'}} selected {{/equal}} >In Progress</option>
+						<option value="Completed" {{#equal status 'Completed'}} selected {{/equal}}>Completed</option>
+						<option value="Cancelled" {{#equal status 'Cancelled'}} selected {{/equal}}>Cancelled</option>
+					</select>
+					<!-- <label for="background_check">Volunteer Background Check Required: </label>
+					<input style="margin-left: 5px" class="form-checkbox" type="checkbox" name="background_check" id="background_check" {{#if background_check}} value="{{background_check}}" {{/if}} />   -->
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-6">
+					<div id="contact-container" class="has-warning form-group">
+						<label for="contact_person">Point of Contact</label>
+						<input type="text" name="contact_person" {{#if point_of_contact}} value="{{point_of_contact}}" {{/if}} class="form-control" id="contact_person">
+						<div id="contact-warn" class="form-control-feedback">This will not be shown to the volunteer until they sign up.</div>
+					</div>
+
+				</div>
+				<div class="col-md-6">
+					<div id="clock-container">
 					<label for="clock">Time</label>
-					<div id="clock" class="container input-group">
-						<input type='text' {{#if clock}} value="{{clock}}" {{/if}} id="clock-input" class="form-control" />
-						<span class="input-group-addon">
-                        	<span class="fa fa-calendar"></span>
-                    	</span>
+						<div id="clock" style="width: 100%" class=" input-group">
+							<input type='text' {{#if clock}} value="{{clock}}" {{/if}} id="clock-input" class="form-control" />
+							<span class="input-group-addon">
+	                        	<span class="fa fa-calendar"></span>
+	                    	</span>
+						</div>
+						<div id="clock-req" style="display: none" class="form-control-feedback">This field is required. </div>
 					</div>
 				</div>
 		</div>
@@ -125,7 +164,7 @@
 							<label class="form-check-label">
 								<input class="form-checkbox" type="checkbox" id="{{name}}" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
 							{{#if more}}
-									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' readonly />
+									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' />
 								{{/if}}
 							</label>
 								
@@ -146,7 +185,7 @@
 									<input class="form-checkbox" type="checkbox" id="{{name}}" name="{{name}}" value="{{value}}" /> {{#if label}} {{label}} {{else}} {{value}} {{/if}}
 								{{#if more}}
 									</br>
-									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' readonly />
+									<input style="margin-left: 4%; width: 95%" class="more-info" id="{{moreID}}" type='text' />
 								{{/if}}
 								</label>
 								
@@ -163,40 +202,41 @@
 		<h7 class="section-title"> Volunteers </h7>
 		<div class="form-card">
 			<div style="padding: 5%;">
-
 			<h4> Add Volunteers </h4>
-			<table id="users" style="width: 100%; height: 80%"></table>
+			<table id="users" class="hover" style="width: 100%; height: 80%"></table>
 			</div>
 				<div style="padding: 5%;">
 				<h4> Current Volunteers </h3>
-				<table id="volunteers" style="width: 100%;">
+				<table id="volunteers" class="hover" style="width: 100%;">
 					<thead>
 					<tr>
 							<th style="display: none"></th>
 							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
 							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
 							</th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number 
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number
 							</th>
 							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
 							</th>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Hours </th>
 							<th></th>
 					</tr>
 					</thead>
 					<tbody>
 				{{#each volunteers}}
-					<tr style="background-color:white">
+					<tr>
 						<td style="display: none">{{id}}</td>
 						<td style="border: 1px solid #dddddd;"> {{first_name}}</td>
 						<td style="border: 1px solid #dddddd;"> {{last_name}} </td>
 						<td style="border: 1px solid #dddddd;"> {{phone_number}} </td>
 						<td style="border: 1px solid #dddddd;"> {{email}} </td>
-						<td style="text-align: center; border: 1px solid #dddddd;"> <i style="font-size: 25px" class="delete-button fa fa-trash"></i> </td>
+						<td style="border: 1px solid #dddddd;"> {{hours}} </td>
+						<td style="text-align: center; border: 1px solid #dddddd;"></i> <i style="font-size: 25px" class="delete-button fa fa-trash"></i> </td>
 					</tr>
 				{{/each}}
 					</tbody>
 				</table>
-				</div>
+			</div>
 		</div>
 		{{/if}}
 

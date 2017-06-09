@@ -185,6 +185,8 @@ function makeForm()
 {
 	console.log(formSource);
 
+	console.log("Task: ");
+	console.log(task);
 	$("#container").html(formSource);
 
 
@@ -194,8 +196,9 @@ function makeForm()
 	 	sideBySide: true
 	 });
 
-
+	$("#status").val(task.status);
 	$("#title").val(task.title);
+	$("#contact_person").val(task.point_of_contact);
 	$("#location").val(task.location);
 
 
@@ -203,9 +206,10 @@ function makeForm()
 
 	$("#description").val(task.description);
 	$("#instructions").val(task.instructions);
-	$("#severity").val(task.severity);
+	$("#severity").val(task.severity_id);
+	console.log(task.severity_id);
 	$("#clock").data("DateTimePicker").date(task.start_time);
-
+	$("#num_volunteers").val(task.num_volunteers);
 
 	console.log(task);
 	for (i = 0; i < task.disclaimers.length; i++)
@@ -239,7 +243,8 @@ function makeTemplateForm()
 
 	$("#description").val(task.description);
 	$("#instructions").val(task.instructions);
-
+	$("#num_volunteers").val(task.num_volunteers);
+	console.log("CURREN TEMPLATE: ");
 	console.log(task);
 	for (i = 0; i < task.disclaimers.length; i++)
 	{
@@ -292,6 +297,28 @@ function getTemplateDisclaimers(id)
 		url: "/templates/disclaimers?" + params,
 		success: function (res){
 			console.log(res);
+			for (i = 0; i < res.length; i++)
+			{
+				$("#" + res[i].id).prop('checked', true);
+			}
+		}
+	});
+}
+
+
+function checkSkillsDisc(id)
+{
+  var params = $.param({
+    id: parseInt(id),
+  });
+
+	$.ajax({
+		type: "GET",
+		url: "/tasks/id?" + params,
+		success: function (res){
+			console.log(res);
+
+
 			for (i = 0; i < res.length; i++)
 			{
 				$("#" + res[i].id).prop('checked', true);
@@ -376,6 +403,7 @@ function getUsers(id)
 						'title': ''
 					}
 				],
+        		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 				'columnDefs': [
 					{
 						"targets": 5,
@@ -398,6 +426,7 @@ $(document).ready(function(){
 	{
 		console.log("Populating task details...");
 		taskID = parseInt(taskID);
+		checkSkillsDisc(taskID);
 		getTaskSkills(taskID);
 		getTaskDisclaimers(taskID);
 		getUsers();
@@ -435,25 +464,27 @@ $(document).ready(function(){
 				'targets': 5,
 				'orderable': false
 			}
-			]
+			],
+			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
 		});
 	}
 	}
+  
 
-  $("input[type=checkbox]").change(function () {
-  	$(this).parent().find('input[type=text]').attr('readonly', !this.checked);
-  })  
+  $("input.more-info").on("keyup blur", function() {
+  	    $(this).parent().find('input[type=checkbox]').attr('checked', this.value != "");
+   });
 
   initMap();
 
 });
 
-$(document).on('click', '#edit-task', function(e){
+$(document).one('click', '#edit-task', function(e){
 		e.preventDefault();
 		makeForm();
  });
 
-$(document).on('click', '#edit-template', function(e){
+$(document).one('click', '#edit-template', function(e){
 		e.preventDefault();
 		makeTemplateForm();
  });
@@ -463,13 +494,13 @@ $(document).on('change', "input[type=checkbox]", function () {
   		$(this).parent().find('input[type=text]').attr('readonly', !this.checked);
 });
 
-$(document).on('click', '#save-review-task', function(e){
+$(document).one('click', '#save-review-task', function(e){
 	formSource = $('#container').html();
 	e.preventDefault();
 	var id = $("#taskID").text();
 	var title = $("#title").val();
 	var address = $("#location").val();
-
+	var clock = $("#clock-input").val();
 	if (title == '' || typeof title == 'undefined')
 	{
 		$("#title-req").show();
@@ -492,6 +523,22 @@ $(document).on('click', '#save-review-task', function(e){
 		$('#loc-container').removeClass('has-danger');
 	}
 
+	
+
+	if (clock == null || clock=="")
+	{
+		$('#clock-req').show();
+		$('#clock-container').addClass('has-danger');
+
+	}
+	else
+	{
+		$("#clock-req").hide();
+		$('#clock-container').removeClass('has-danger');
+		clock =	clock.toString();
+	}
+
+
 
 	if (address == '')
 	{
@@ -507,22 +554,16 @@ $(document).on('click', '#save-review-task', function(e){
 	var description = $("#description").val();
 	var instructions = $("#instructions").val();
 	var severity = $("#severity option:selected" ).text();
-	var clock = $("#clock-input").val();
 	var num_volunteers = $("#num_volunteers").val();
+	var contact_person = $("#contact_person").val();
+	var status = $("#status").val();
 
 	if (num_volunteers != '')
 	{
 		num_volunteers = parseInt(num_volunteers);
 	}
 
-	if (clock == null)
-	{
-		clock = "";
-	}
-	else
-	{
-		clock =	clock.toString();
-	}
+	
 
 	var disc = [];
 	$('#disclaimers input:checked').each(function() {
@@ -594,13 +635,15 @@ $(document).on('click', '#save-review-task', function(e){
 				longitude: longitude,
 				description: description,
 				instructions: instructions,
-				severity: severity,
+				severity_id: severity,
 				start_time: clock,
 				num_volunteers: num_volunteers,
 				disclaimers: disc,
 				skills: skills,
 				newBtn: true,
-				id: id
+				id: id,
+				point_of_contact: contact_person,
+				status: status
 			}
 
 
@@ -649,10 +692,12 @@ $(document).on('click', '#save-review-task', function(e){
 				longitude: longitude,
 				description: description,
 				instructions: instructions,
-				severity: severity,
+				severity_id: severity,
 				start_time: clock,
 				num_volunteers: num_volunteers,
 				disclaimers: disc,
+				status: status,
+				point_of_contact: contact_person,
 				skills: skills,
 				id: id,
 				newBtn: true
@@ -678,7 +723,7 @@ $(document).on('click', '#save-review-task', function(e){
 	}
 });
 
-$(document).on('click', '#save-review', function(e){
+$(document).one('click', '#save-review', function(e){
 	formSource = $('#container').html();
 	e.preventDefault();
 	var id = $("#taskID").text();
@@ -724,6 +769,8 @@ $(document).on('click', '#save-review', function(e){
 	var severity = $("#severity option:selected" ).text();
 	var clock = $("#clock-input").val();
 	var num_volunteers = $("#num_volunteers").val();
+	var status = $("#status").val();
+	var contact_person = $("#contact_person").val();
 
 	if (num_volunteers != '')
 	{
@@ -809,12 +856,14 @@ $(document).on('click', '#save-review', function(e){
 				longitude: longitude,
 				description: description,
 				instructions: instructions,
-				severity: severity,
+				severity_id: severity,
 				start_time: clock,
 				num_volunteers: num_volunteers,
 				disclaimers: disc,
 				skills: skills,
-				newBtn: true
+				newBtn: true,
+				status: status, 
+				point_of_contact: contact_person
 			}
 
 			if (volunteerO.length > 0)
@@ -861,9 +910,11 @@ $(document).on('click', '#save-review', function(e){
 				longitude: longitude,
 				description: description,
 				instructions: instructions,
-				severity: severity,
+				severity_id: severity,
 				start_time: clock,
 				num_volunteers: num_volunteers,
+				status: status,
+				point_of_contact: contact_person,
 				disclaimers: disc,
 				skills: skills,
 				newBtn: true
@@ -923,7 +974,7 @@ $(document).on('click', '.add-volunteer', function(e){
 			return;
 		}
 	}
-	var add = volunteerTable.row.add([vol['id'], vol['first_name'], vol['last_name'], vol['phone_number'], vol['email'], '<center><i style="font-size: 25px" class="delete-button fa fa-trash"></i></center>']).draw().node();
+	var add = volunteerTable.row.add([vol['id'], vol['first_name'], vol['last_name'], vol['phone_number'], vol['email'], 0, '<center><i style="font-size: 25px" class="delete-button fa fa-trash"></i></center>']).draw().node();
 	$(add).css('background-color', 'white');
 	var cells = $(add).find("td");
 	cells.each(function(){
@@ -935,7 +986,7 @@ $(document).on('click', '.add-volunteer', function(e){
 
 });
 
-$(document).on('click', '#review-template', function(e){
+$(document).one('click', '#review-template', function(e){
 	formSource = $('#container').html();
 	e.preventDefault();
 	var id = $("#templateID").text();
@@ -1021,35 +1072,40 @@ $(document).on('click', '#review-template', function(e){
 	});
 });
 
-$(document).on('click', '#save-template', function(e){
-	e.preventDefault();
-
-	var id = $('#templateID').text();
-
-	if (typeof id != 'undefined' && id != '')
-	{
-		task.id = parseInt(id);
-	}
-
+function popSkillsAndDisc()
+{
 	var skills = [];
-	for (i = 0; i < task.skills.length; i++)
+	if (typeof task.skills != 'undefined')
 	{
-		var skillGroup = task.skills[i];
-		for (j = 0; j < skillGroup.skills.length; j++)
+		for (i = 0; i < task.skills.length; i++)
 		{
-			skills.push(parseInt(skillGroup.skills[j].id));
+			var skillGroup = task.skills[i];
+			for (j = 0; j < skillGroup.skills.length; j++)
+			{
+				skills.push(parseInt(skillGroup.skills[j].id));
+			}
 		}
 	}
 
 	task.skills = skills;
 
+
 	var disclaimers = [];
+	if (typeof task.disclaimers != 'undefined')
+	{
 	for (i = 0; i < task.disclaimers.length; i++)
 	{
 		disclaimers.push(parseInt(task.disclaimers[i].id));
 	}
 
+}
 	task.disclaimers = disclaimers;
+}
+
+$(document).one('click', '#save-template', function(e){
+	e.preventDefault();
+
+	popSkillsAndDisc();
 
 	console.log(task);
 
@@ -1064,7 +1120,31 @@ $(document).on('click', '#save-template', function(e){
 	});
 });
 
-$(document).on('click', '#post-task', function(e){
+
+$(document).one('click', '#save-new-template', function(e){
+	e.preventDefault();
+
+	var id = $('#templateID').text();
+
+	if (typeof id != 'undefined' && id != '')
+	{
+		task.id = parseInt(id);
+	}
+	popSkillsAndDisc();
+
+	console.log(task);
+
+	$.ajax({
+		type: "POST",
+		url: "/save-new-template", 
+		data: task, 
+		success: function (res){
+			console.log(res);
+			window.location.href = '/templates';
+		}
+	});
+});
+$(document).one('click', '#post-task', function(e){
 	var skills = [];
 	for (i = 0; i < task.skills.length; i++)
 	{
@@ -1098,7 +1178,8 @@ $(document).on('click', '#post-task', function(e){
 	});
 });
 
-$(document).on('click', '#save-task', function(e){
+$(document).one('click', '#save-task', function(e){
+	e.preventDefault();
 	var id = $('#taskID').text();
 
 	if (typeof id != 'undefined' && id != '')

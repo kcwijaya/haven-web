@@ -9,24 +9,23 @@
 
 	<div style="width: 90%" class="form-card left-align">
 		<h7> Title </h7>
-		<div id="title" {{#if title}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> {{title}} </div>
+		<div id="title" {{#if title}} {{else}} style="height: 35px" {{/if}} class="text-placeholder"> {{title}} </div>
 
 		<br>
 
 		<h7> Location </h7>
-		<div id="location-words" {{#if location}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> </div>
+		<div id="location-words" {{#if location}} {{else}} style="height: 35px" {{/if}} class="text-placeholder"> </div>
 		<div style="margin-top: 1%; height: 300px" id="location-map"> </div>
 
 				<br>
 
 		<h7> Description </h7>
-		<div id="description" {{#if description}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{description}} </div>
-
-				<br>
+		<div id="description" {{#if description}} {{else}} style="height: 35px" {{/if}} class="text-placeholder">{{description}} </div>
+		<br>
 
 
 		<h7> Instructions </h7>
-		<div id="instructions" {{#if instructions}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{instructions}} </div>
+		<div id="instructions" {{#if instructions}} {{else}} style="height: 35px" {{/if}} class="text-placeholder">{{instructions}} </div>
 
 		<br>
 
@@ -34,21 +33,32 @@
 		<div class="row" >
 			<div class="col-md-4">
 				<h7> Severity of Impacted Region </h7>
-				<div id="severity" class="text-placeholder">{{severity}} </div>
+				<div id="severity" {{#if severity_id}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{severity_id}} </div>
 			</div>
-			<div class="col-md-3">
-				
-		<h7> Number of Volunteers</h7>
-		<div id="num_volunteers" {{#if num_volunters}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{num_volunteers}} </div>
-
+			<div class="col-md-4">	
+				<h7> Number of Volunteers</h7>
+				<div id="num_volunteers" {{#if num_volunteers}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{num_volunteers}}
+				</div>
 			</div>
-
-			<div class="col-md-5">
-				<h7> Date and Time </h7>
-				<div id="clock-text" class="text-placeholder"> {{start_time}}</div>
-			</div>
+			<div class="col-md-4">
+					<h7> Status </h7>
+					<div id="status" {{#if status}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{status}}
+					</div>
+			</div> 
 		</div>
 
+		<br>
+		<div class="row" >
+			<div class="col-md-6">
+				<h7> Point of Contact</h7>
+				<div id="contact_person" {{#if point_of_contact}} {{else}} style="height: 35px" {{/if}} class="text-placeholder">{{point_of_contact}} </div>
+			</div>
+
+			<div class="col-md-6">
+				<h7> Date and Time </h7>
+				<div id="clock-text" {{#if start_time}} {{else}} style="height: 35px" {{/if}} class="text-placeholder"> {{start_time}}</div>
+			</div>
+		</div>
 		<br>
 
 		<h7> Disclaimers </h7>

@@ -12,12 +12,106 @@ body
 	height: 100%;
 }
 
+#login-drop
+{
+	color: #33cccc;
+}
+
+#login-drop:hover
+{
+	text-decoration: none;
+}
+
+.login-button
+{
+	color: white;
+	text-align: center;
+	padding: 2%;
+}
+
+#login-buttons
+{
+	width: 28%;
+	margin-top: 6px;
+}
+
+#login-but
+{
+	color: white;
+	text-align: center;
+	padding: 2%;
+	background-color: #33cccc;
+	display: inline-block;
+}
+
+#login-dp{
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow:hidden;
+    background-color:rgba(255,255,255,.8);
+}
+
+#login-dp .help-block{
+    font-size:12px    
+}
+
+#login-dp .bottom{
+    background-color:rgba(255,255,255,.8);
+    border-top:1px solid #ddd;
+    clear:both;
+    padding:14px;
+}
+
+#login-dp .social-buttons{
+    margin:12px 0    
+}
+
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+
+.btn-fb{
+    color: #fff;
+    width: 100%;
+    background-color:#3b5998;
+}
+
+.btn-fb:hover{
+    color: #fff;
+    width: 100%;
+    background-color:#496ebc 
+}
+
+#fb
+{
+	background-color: #2671EC;
+}
+
+#fb:hover
+{
+	text-decoration: none;
+	background-color: #3F7FE9;
+	color: white;
+}
+
+#email-login:hover
+{
+	text-decoration: none;
+	background-color: #62DADA;
+	color:white;
+}
+
+#email-login
+{
+	background-color: #33cccc;
+	margin-right: 4%;
+}
+
 .right-vertical-line
 {
 	border-right: 1px solid #D4D8D8;
 	padding-right: 1%;
 }
-
 
 
 .input-group-addon:hover
@@ -111,10 +205,36 @@ body
 	text-align: center;
 }
 
+.dt-button
+{
+	background-color: #33cccc;
+	padding: 1% 2% 1% 2%;
+	color: white;
+	margin-right: 1%;
+	border-radius: 5px;
+}
+
+.dt-buttons
+{
+	margin-top: 3%;
+}
+
+
+#edits-wrapper > .dt-buttons > .dt-button
+{
+	background-color: black;
+}
+.dt-button:hover
+{
+	background-color: #48A7A7;
+	color: white;
+	text-decoration: none;
+}
 .task-item-group
 {
-	margin-left: 15%;
-	width: 70%;
+	margin-left: 10%;
+	width: 80%;
+	height: 80%;
 	margin-top: 5%;
 
 }
@@ -162,6 +282,29 @@ body
 	cursor: pointer;
 }
 
+#edit-card:hover
+{
+	border-color: #D33E20;
+	cursor: pointer;
+}
+
+#temp-card:hover
+{
+	border-color: #33cccc;
+	cursor: pointer;
+}
+
+.edit-button:hover
+{
+	color: #33cccc;
+}
+
+.card:hover
+{
+	border-color: #33cccc;
+	cursor: pointer;
+}
+
 
 .card-block
 {
@@ -181,6 +324,26 @@ body
 .btn-primary:hover
 {
 	cursor: pointer;
+}
+
+.border-row
+{
+	border: 1px solid #dddddd;
+}
+
+.form-checkbox:hover
+{
+	cursor: pointer;
+}
+.padded-row-starter
+{
+	text-align: center; 
+	padding: 5px;
+}
+
+.colored-bg
+{
+	background-color: #33cccc;
 }
 
 .user-input-h
@@ -314,6 +477,11 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
 	padding: 1%;
 }
 
+
+.save-button:hover
+{
+	color: #33cccc;
+}
 .btn-post
 {
 	width: 90%;
@@ -347,12 +515,12 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
 
 .slick-prev:before
 {
-	color: #33cccc;
+	color: black;
 }
 
 .slick-next:before
 {
-	color: #33cccc;
+	color: black;
 }
 
 .slick-slide

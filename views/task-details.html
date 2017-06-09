@@ -1,13 +1,23 @@
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
 	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
+	<script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
+
 	<script type="text/javascript" src="../scripts/taskview.js"></script>
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAej_Btkc_ko3TrAgYkLY52elkW6bahpgk&libraries=places"
     async defer></script>
+
 	<script id="render-navbar" type="text/x-handlebars-template">
 		{{> navbar task="active"}}
 	</script>
 
-	<div style="margin-bottom: 1%; margin-left: 7%" class="vertical-align-15 left-align">
+	<div style="margin-left: 14%; margin-bottom: 1%" class="vertical-align-15 left-align">
 		<h2> View your task. </h2>
 	</div>
 
@@ -15,16 +25,16 @@
 	<h5 id="latitude" style="display: none"> {{latitude}} </h5>
 	<h5 id="longitude" style="display: none"> {{longitude}} </h5>
 
-	<div style="margin-left: 7%; margin-top: 2%; width: 85%" class="form-card left-align">
+	<div style="margin-left: 14%; width: 72.2%" class="templates form-card left-align">
 		<div class="form-input-group">
-			<h6 class="user-input-h"> Title </h6>
+			<h5 class="user-input-h"> Title </h5>
 			<div id="title" class="text-placeholder">
 				<h5 class="user-input"> {{title}}</h5> 
 			</div>
 		</div>
 
 		<div class="form-input-group">
-			<h6 class="user-input-h"> Location </h6>
+			<h5 class="user-input-h"> Location </h5>
 			<div id="location" class="text-placeholder"> 
 				<h5 id="location-input" class="user-input">{{location}}</h5>
 			</div>
@@ -33,108 +43,122 @@
 		</div>
 
 		<div class="form-input-group">
-			<h6 class="user-input-h"> Description </h6>
+			<h5 class="user-input-h"> Description </h5>
 			<div id="description" class="text-placeholder">
 			<h5 class="user-input">{{description}}</h5>
 			</div>
 		</div>
 
 		<div class="form-input-group">
-			<h6 class="user-input-h">  Instructions </h6>
+			<h5 class="user-input-h">  Instructions </h5>
 			<div id="instructions" class="text-placeholder">	
 				<h5 class="user-input"> {{instructions}} </h5>
 			</div>
 		</div>
 
 		<div style="margin-bottom: 1%;" class="row">
-			<div class="col-md-4">
-				<h6 class="user-input-h"> Severity of Impacted Region </h6>
-				<div id="severity"  {{#unless severity}} style="padding: 3%" {{/unless}} class="text-placeholder">
-					<h5 class="user-input"> {{severity}}</h5>
+			<div class="col-md-4 form-input-group">
+				<h5 class="user-input-h"> Severity of Impacted Region </h5>
+				<div id="severity"  {{#unless severity_id}} style="padding: 3%" {{/unless}} class="text-placeholder">
+					<h5 style="padding-top: 1%; margin-left: 5%" class="user-input"> {{severity_id}}</h5>
 				</div>
 			</div>
 			<div class="col-md-4">
-				<h6 class="user-input-h">  Number of Volunteers </h6>
+				<h5 class="user-input-h form-input-group">  Number of Volunteers </h5>
 					<div id="num_volunteers" class="text-placeholder">	
-					<h5 class="user-input"> {{num_volunteers}} </h5>
+					<h5 {{#if num_volunteers}} style="padding-top: 1%; margin-left: 5%" {{else}} style="padding-top: 5%; margin-left: 5%" {{/if}} class="user-input"> {{num_volunteers}} </h5>
 			</div>
 			</div>
 
 			<div class="col-md-4">
-				<h6 class="user-input-h"> Date and Time </h6>
-				<div id="clock-text" {{#unless clock}} style="padding: 3%" {{/unless}}  class="text-placeholder"> <h5 class="user-input"> {{clock}}</h5></div>
+					<h5 class="user-input-h form-input-group"> Status </h5>
+					<div id="status" class="text-placeholder">	
+						<h5 style="margin-left: 5%" class="user-input"> {{status}} </h5>
+					</div>
 			</div>
+		</div>
+
+		<div style="margin-bottom: 1%;" class="row">
+			<div class="col-md-6 form-input-group">
+				<h5 class="user-input-h"> Point of Contact</h5>
+				<div id="contact_person" {{#if point_of_contact}} {{else}} style="padding: 3%" {{/if}} class="text-placeholder"> 
+					<h5 style="padding-top: 1%; margin-left: 3%" class="user-input"> {{point_of_contact}}</h5> 
+				</div>
+			</div>
+			<div class="col-md-6 form-input-group">
+				<h5 class="user-input-h"> Date and Time </h5>
+				<div id="clock-text" {{#unless clock}} style="padding: 3%" {{/unless}}  class="text-placeholder"> 
+					<h5 style="padding-top: 1%; margin-left: 3%" class="user-input"> {{clock}}</h5></div>
+				</div>
 		</div>
 
 
 		<div class="form-input-group">
-			<h6 class="user-input-h"> Disclaimers </h6>
+			<h5 class="user-input-h"> Disclaimers </h5>
 			<div id="disclaimers-text" class="text-placeholder"> 
 				{{#if disclaimers}}
 				{{#list disclaimers}}
-					<p>{{name}}</p>
+					<h5>{{name}}</h5>
 				{{/list}}
 				{{else}}
-				<p style="margin-left: 1%"> There are currenly no disclaimers. </p>
+				<h5 class="user-input"> There are currenly no disclaimers. </h5>
 				{{/if}}
 			</div>
 		</div>
 
 		<div class="form-input-group">
-			<h6 class="user-input-h">  Skills </h6>
+			<h5 class="user-input-h">  Skills </h5>
 			<div id="skills-text" class="text-placeholder">
 			{{#if skills}}
 				{{#each skills}}
-					<h6><u><b> {{groupName}}</b> </u></h6>
+					<h5><u><b> {{groupName}}</b></u></h5>
 					{{#list skills}}
-						<p> {{name}}
+						<h5> {{name}}
 
 						 {{#if extra}}
 						 	: {{extra}}
 						 {{/if}}
 
-						 </p>
+						 </h5>
 					{{/list}}
 				{{/each}}
 			{{else}}
-			<p style="margin-left: 1%"> There are currenly no required skills. </p>
+			<h5 class="user-input"> There are currenly no required skills. </h5>
 			{{/if}}
 			 </div>	
 		</div>
 
 
 		<div class="form-input-group">
-			<h6 class="user-input-h">  Volunteers </h6>
-			<div id="volunteer-text" style="padding: 0" class="text-placeholder">
+			<h5 class="user-input-h">  Volunteers </h5>
+			<div id="volunteer-text" class="text-placeholder">
 			{{#if volunteers}}
-					<table id="volunteers" style="width: 100%;">
+				<table id="volunteers" style="width: 100%;">
 					<thead>
-					<tr>
-							<th style="display: none"> </th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
-							</th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number 
-							</th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
-							</th>
+					<tr class="border-row colored-bg">
+							<th style="display: none">ID</th>
+							<th style="text-align: center; padding: 5px"> First Name </th>
+							<th style="text-align: center;"> Last Name </th>
+							<th style="text-align: center;"> Phone Number </th>
+							<th style="text-align: center;"> Email Address </th>
+							<th style="text-align: center;"> Hours </th>
 					</tr>
 					</thead>
 					<tbody>
 				{{#each volunteers}}
-						<tr style="background-color:white">
+						<tr style="text-align: center; background-color: white;">
 							<td style="display: none"> {{id}}</td>
-
-							<td style="border: 1px solid #dddddd;"> {{first_name}}</td>
-							<td style="border: 1px solid #dddddd;"> {{last_name}} </td>
-							<td style="border: 1px solid #dddddd;"> {{phone_number}} </td>
-							<td style="border: 1px solid #dddddd;"> {{email}} </td>
+							<td style="padding: 5px" class="border-row"> {{first_name}}</td>
+							<td class="border-row"> {{last_name}} </td>
+							<td class="border-row"> {{phone_number}} </td>
+							<td class="border-row"> {{email}} </td>
+							<td class="border-row"> {{#if hours}} {{hours}} {{else}} 0 {{/if}}</td>
 						</tr>
 					{{/each}}
 					</tbody>
 				</table>
 			{{else}}
-				<p style="margin-left: 1%"> There are currently no volunteers signed up. </p>
+				<h5 class="user-input"> There are currently no volunteers signed up. </h5>
 
 			{{/if}}
 			 </div>	
@@ -145,6 +169,8 @@
 	<div>
 	<center>
 		<button style="width: 20%" id="edit-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Edit Task</button>
+		<button style="width: 20%" id="log-hours" type="submit" class="btn-group-mem btn btn-primary btn-lg">Log Volunteer Hours</button>
+
 	</center>
 	</div>
 

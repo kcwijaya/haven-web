@@ -24,14 +24,17 @@ function makeTemplateGroup(hb, slick)
   }
 }
 
-function makeCardGroups(hb, slick)
+function makeCardGroups(task_hb, temp_hb, slick)
 {
-  var source = $(hb).html(); 
-  var template = Handlebars.compile(source); 
+  var task_source = $(task_hb).html(); 
+  var temp_source = $(temp_hb).html();
+  var task_template = Handlebars.compile(task_source);
+  var temp_template = Handlebars.compile(temp_source); 
 
-  $('#template-group').append(template(templateContext));
-  $('#edit-group').append(template(editContext));
+  $('#template-group').append(temp_template(templateContext));
+  $('#edit-group').append(task_template(editContext));
 
+  var editToShow = Math.floor(editContext.cards.length/3)+1;
   if (slick)
   {
     $('.templates').slick({
@@ -115,17 +118,20 @@ $(document).ready(function(){
       url: "/tasks/all",
       success: function (res){
         editCards = [];
+        orgs = [];
         for (i = 0; i < res.length; i++)
         {
           editCards.push({
             cardID: res[i].id,
             cardTitle: res[i].title,
-            cardText: res[i].description
+            cardText: res[i].description,
+            cardOrg: res[i].org_name,
+            cardTime: (typeof res[i].start_time != 'undefined') ? new Date(res[i].start_time) : 'Not Provided',
+            cardLoc: res[i].location
           });
         }
 
         editContext.cards = editCards;
-
         $.ajax({
           type: "GET",
           url: "/templates/all",
@@ -141,11 +147,11 @@ $(document).ready(function(){
             }
 
             templateContext.cards = templateCards;
-            makeCardGroups('#card-group', true);
+            makeCardGroups('#task-card-group', '#temp-card-group', true);
           }
-        });
+      });
       }
-     });
+    });
 });
 
 
@@ -154,22 +160,30 @@ $(document).on('click', '#template-search', function(){
 });
 
 $(document).on('click', '#template-list', function(){
-  makeTemplateGroup('#card-list', false);
-  $('#templates').DataTable();
+  makeTemplateGroup('#temp-card-list', false);
+  $('#templates').DataTable(
+    {
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+    }
+  );
 });
 
 $(document).on('click', '#edit-list', function(){
-  makeEditGroup('#card-list', false);
-  $('#edits').DataTable();
+  makeEditGroup('#task-card-list', false);
+  $('#edits').DataTable(
+    {
+      "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+    }
+  );
 
 });
 
 $(document).on('click', '#template-box', function(){
-  makeTemplateGroup('#card-group', true);
+  makeTemplateGroup('#temp-card-group', true);
 });
 
 $(document).on('click', '#edit-box', function(){
-  makeEditGroup('#card-group', true);
+  makeEditGroup('#task-card-group', true);
 
 });
 
