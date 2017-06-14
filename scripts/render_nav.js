@@ -23,10 +23,10 @@ $(document).ready(function(){
 					<a class="nav-link {{template}}" href="/templates">Browse Templates</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {{volunteers}}" href="/volunteers">View Volunteers</a>
+					<a class="nav-link {{volunteers}}" href="/volunteers">Volunteers</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {{volunteers}}" href="/properties">Create Skills/Disclaimers</a>
+					<a class="nav-link {{volunteers}}" href="/properties">Skills/Disclaimers</a>
 				</li>
 				{{/unless}}
 			</ul>
@@ -57,7 +57,7 @@ $(document).ready(function(){
 			{{else}}
 
 			<div id="login-buttons">
-			<div style="margin-right: 4%; float: right; width: 20%; text-align:center" class="social-buttons">
+			<div style="margin-right: 4%; float: right; text-align:center" class="social-buttons">
 				<a href="/logout" style="background-color: #D33E20" class="btn btn-fb">Logout</a>
 			</div>
 			</div>
