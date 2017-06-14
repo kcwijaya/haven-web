@@ -225,7 +225,7 @@ app.get('/home', function(req, res) {
   if (req.isAuthenticated())
   {
        var user = getUser(req);
-      res.render('home-auth', {pageTitle: 'Haven - Home', name: first_name});
+      res.render('home-auth', {pageTitle: 'Haven - Home', name: user.first_name});
   }
   else
   {
