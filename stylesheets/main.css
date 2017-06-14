@@ -67,7 +67,9 @@ body
     padding:14px;
 }
 
-
+#login-dp .social-buttons{
+    margin:12px 0    
+}
 
 #login-dp .form-group {
     margin-bottom: 10px;
@@ -267,9 +269,7 @@ body
 
 .card
 {
-	width: 10rem;
 	margin-bottom: 5%;
-	height: 15rem;
 }
 
 .click-icon:hover
