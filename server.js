@@ -210,7 +210,7 @@ app.get('/', function(req, res) {
     else
     {
        var user = getUser(req);
-       var firstName = user.split(" ")[0];
+       var firstName = user.name.split(" ")[0];
       res.render('home-auth', {pageTitle: 'Haven - Home', name: firstName});
     }
   }
@@ -225,7 +225,7 @@ app.get('/home', function(req, res) {
   if (req.isAuthenticated())
   {
        var user = getUser(req);
-       var firstName = user.split(" ")[0];
+       var firstName = user.name.split(" ")[0];
       res.render('home-auth', {pageTitle: 'Haven - Home', name: firstName});
   }
   else
