@@ -8,7 +8,7 @@ $(document).ready(function(){
 			<img src="../imgs/logo.png" id="logo"/>
 		</div>
 		<div class="row collapse navbar-collapse" id="navbarText">
-			<ul class="col-md-7 navbar-nav mr-auto right-align">
+			<ul class="col-md-10 navbar-nav mr-auto right-align">
 				<li class="nav-item">
 					<a class="nav-link {{home}}" href="/home">Home </a>
 				</li>
@@ -23,10 +23,10 @@ $(document).ready(function(){
 					<a class="nav-link {{template}}" href="/templates">Browse Templates</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {{volunteers}}" href="/volunteers">Volunteers</a>
+					<a class="nav-link {{volunteers}}" href="/volunteers">View Volunteers</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {{volunteers}}" href="/properties">Skills/Disclaimers</a>
+					<a class="nav-link {{volunteers}}" href="/properties">Create Skills/Disclaimers</a>
 				</li>
 				{{/unless}}
 			</ul>
