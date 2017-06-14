@@ -86,16 +86,21 @@
 		</div>
 
 		<div style="margin-bottom: 1%;" class="row">
-			<div class="col-md-6 form-input-group">
+			<div class="col-md-4 form-input-group">
 				<h5 class="user-input-h"> Point of Contact</h5>
 				<div id="contact_person" {{#if point_of_contact}} {{else}} style="padding: 3%" {{/if}} class="text-placeholder"> 
 					<h5 style="padding-top: 1%; margin-left: 3%" class="user-input"> {{point_of_contact}}</h5> 
 				</div>
 			</div>
-			<div class="col-md-6 form-input-group">
+			<div class="col-md-4 form-input-group">
 				<h5 class="user-input-h"> Date and Time </h5>
 				<div id="clock-text" {{#unless clock}} style="padding: 3%" {{/unless}}  class="text-placeholder"> 
 					<h5 style="padding-top: 1%; margin-left: 3%" class="user-input"> {{clock}}</h5></div>
+				</div>
+			<div class="col-md-4 form-input-group">
+				<h5 class="user-input-h">Background Check</h5>
+				<div id="backgroundcheck" {{#unless backgroundcheck}} style="padding: 3%" {{/unless}}  class="text-placeholder"> 
+					<h5 style="padding-top: 1%; margin-left: 3%" class="user-input"> {{backgroundcheck}}</h5></div>
 				</div>
 		</div>
 

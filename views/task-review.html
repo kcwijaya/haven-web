@@ -49,14 +49,18 @@
 
 		<br>
 		<div class="row" >
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<h7> Point of Contact</h7>
-				<div id="contact_person" {{#if point_of_contact}} {{else}} style="height: 35px" {{/if}} class="text-placeholder">{{point_of_contact}} </div>
+				<div id="contact_person" {{#if point_of_contact}} {{else}} style="height: 30px" {{/if}} class="text-placeholder">{{point_of_contact}} </div>
 			</div>
 
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<h7> Date and Time </h7>
-				<div id="clock-text" {{#if start_time}} {{else}} style="height: 35px" {{/if}} class="text-placeholder"> {{start_time}}</div>
+				<div id="clock-text" {{#if start_time}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> {{start_time}}</div>
+			</div>
+			<div class="col-md-4">
+				<h7> Background Check</h7>
+				<div id="backgroundcheck" {{#if backgroundcheck}} {{else}} style="height: 30px" {{/if}} class="text-placeholder"> {{backgroundcheck}}</div>
 			</div>
 		</div>
 		<br>
