@@ -77,6 +77,12 @@ exports.populateObject = function(task)
 {
   var taskToAdd = {};
   taskToAdd.id = task.id;
+
+  if (typeof task.backgroundcheck != 'undefined')
+  {
+    taskToAdd.backgroundcheck = task.backgroundcheck;
+  }
+  
   if (typeof task.title != 'undefined')
   {
     taskToAdd.title = task.title;
