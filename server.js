@@ -512,6 +512,7 @@ app.post('/post-task', function(req, res){
   console.log("Req body ");
   console.log(req.body);
   var taskToAdd =  parser.populateTask(req.body);
+  taskToAdd.id = undefined;
   console.log(taskToAdd);
 
   var task = req.body;
@@ -526,8 +527,8 @@ app.post('/post-task', function(req, res){
   }
 
   console.log(user);
-  task.admin_id = user.id;
-  taskToAdd.admin_id = user.id;
+  task.admin_id = parseInt(user.id);
+  taskToAdd.admin_id = parseInt(user.id);
 
   api.getSeverities(
     function(error, response, body){
@@ -623,7 +624,7 @@ app.post('/save-template', function(req, res){
 
   var template = parser.populateTemplate(req.body);
   var user = getUser(req);
-  template.admin_id = user.id;
+  template.admin_id = parseInt(user.id);
   template.start_time = parser.formatDate(new Date(Date.now()));
 
   template.organization_id = user.organization_id;
@@ -669,7 +670,7 @@ app.post('/save-new-template', function(req, res){
   template.start_time = parser.formatDate(new Date(Date.now()));
   console.log(req.session.passport.user);
   var user = getUser(req);
-  template.admin_id = user.id;
+  template.admin_id = parseInt(user.id);
 
   console.log(template);
 
