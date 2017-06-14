@@ -35,9 +35,9 @@ $(document).ready(function(){
 
 			{{#if signin}}
 				<div id="login-buttons">
-			<ul class="nav navbar-nav">
+			<ul class="col-md-6 nav navbar-nav">
 				<li style="margin-right: 2%; color:#87898A ">Already signed up?</li>
-				<div style="width:100%; text-align:center" class="social-buttons">
+				<div style="text-align:center" class="social-buttons">
 					<a href="/auth/facebook" class="btn btn-fb"><i class="fa fa-facebook"></i> Login </a>
 				</div>
 			</ul>
