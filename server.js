@@ -203,15 +203,15 @@ app.get('/', function(req, res) {
       api.editAdmin(edit, 
         function(error, response, body){
           console.log(body);
-          res.render('home-auth', {pageTitle: 'Haven-Home'});
+          var user = getUser(req);
+          res.render('home-auth', {pageTitle: 'Haven - Home', name: user.first_name});
         }
       );
     }
     else
     {
        var user = getUser(req);
-       var firstName = user.name.split(" ")[0];
-      res.render('home-auth', {pageTitle: 'Haven - Home', name: firstName});
+      res.render('home-auth', {pageTitle: 'Haven - Home', name: user.first_name});
     }
   }
   else
@@ -225,8 +225,7 @@ app.get('/home', function(req, res) {
   if (req.isAuthenticated())
   {
        var user = getUser(req);
-       var firstName = user.name.split(" ")[0];
-      res.render('home-auth', {pageTitle: 'Haven - Home', name: firstName});
+      res.render('home-auth', {pageTitle: 'Haven - Home', name: first_name});
   }
   else
   {
