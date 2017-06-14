@@ -583,6 +583,10 @@ app.post('/post-task', function(req, res){
           {
             apihelper.startWithAddingDisclaimersTask(task, res);
           }
+          else
+          {
+            res.status(200).json(taskToAdd);
+          }
         }
       );
 });
@@ -649,6 +653,10 @@ app.post('/save-template', function(req, res){
       else if (typeof req.body.disclaimers != 'undefined' && req.body.disclaimers.length > 0)
       {
         apihelper.startWithGettingDisclaimersTemplate(req.body, res);
+      }
+      else
+      {
+        res.status(200).json(task);
       }
    }
   );
