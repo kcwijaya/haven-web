@@ -39,7 +39,7 @@ function(accessToken, refreshToken, profile, done) {
             console.log('USER NOT FOUND!!!\n');
             var user = {
               id: profile.id, 
-              first_name: profile._json.first_name, 
+              first_name: profile._json.first_name,
               last_name: profile._json.last_name, 
               email: profile._json.email,
               organization_id: org
