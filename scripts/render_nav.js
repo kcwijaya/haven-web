@@ -35,25 +35,13 @@ $(document).ready(function(){
 
 			{{#if signin}}
 				<div id="login-buttons">
-					<ul class="nav navbar-nav">
-        <li style="margin-right: 2%; color:#87898A ">Already have an account?</li>
-        <li class="dropdown">
-          <a href="#" id="login-drop" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
-			<ul id="login-dp" class="dropdown-menu-right dropdown-menu">
-				<li>
-					 <div class="row">
-							<div class="col-md-12">
-								Login via
-								<div style="width:100%; text-align:center" class="social-buttons">
-									<a href="/auth/facebook" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
-								</div>
-							</div>
-					 </div>
-				</li>
-			</ul>
-        </li>
-      </ul>
+			<ul class="nav navbar-nav">
+				<li style="margin-right: 2%; color:#87898A ">Already have an account?</li>
+				<div style="width:100%; text-align:center" class="social-buttons">
+					<a href="/auth/facebook" class="btn btn-fb"><i class="fa fa-facebook"></i> Login via Facebook</a>
 				</div>
+			</ul>
+		</div>
 			{{else}}
 
 			<div id="login-buttons">
