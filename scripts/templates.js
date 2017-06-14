@@ -14,7 +14,7 @@ function makeTemplateGroup(hb, slick)
   if (slick)
   {
     $('.templates').slick({
-      slidesToShow: 3, 
+      slidesToShow: 2, 
       slidesToScroll: 1,
       dots: true,
       rows: 3,

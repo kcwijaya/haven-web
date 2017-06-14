@@ -14,7 +14,7 @@ function makeTaskGroup(hb, slick)
       slidesToShow: 3, 
       slidesToScroll: 1,
       dots: true,
-      rows: 3,
+      rows: 2,
       focusOnSelect: true,
       variableWidth: true
     });
