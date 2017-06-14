@@ -1127,7 +1127,7 @@ $(document).one('click', '#save-new-template', function(e){
 	popSkillsAndDisc();
 
 	console.log(task);
-
+	task.id = undefined;
 	$.ajax({
 		type: "POST",
 		url: "/save-new-template", 
