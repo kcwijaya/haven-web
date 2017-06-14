@@ -195,6 +195,19 @@ exports.startWithGettingSkillsTask = function(task, res)
   exports.startWithDeletingVolunteersTask = function(task, res, vols)
   {
     var volToDelete = 0;
+    if (typeof vols == 'undefined')
+    {
+      if (typeof task.volunteers != 'undefined' && task.volunteers.length > 0)
+        {
+          ths.startWithAddingVolunteersTask(task, res);
+        }
+        else
+        {
+          ths.startWithGettingSkillsTask(task, res);
+        }
+    }
+    else
+    {
     for (i = 0; i < vols.length; i++)
     {
       console.log("Deleting volunteer: " + vols[i].id);
@@ -216,6 +229,7 @@ exports.startWithGettingSkillsTask = function(task, res)
         }
       );
     }
+  }
   }
 
   exports.startWithGettingVolunteersTask = function(task, res)
