@@ -54,6 +54,12 @@ $(document).ready(function(){
 
         templateContext.cards = cards;
         makeTemplateGroup('#card-list', false);
+         $('#templates').DataTable( 
+    {
+      dom: '<"top"B<"space"l>f>rt<"bottom"ip>',
+      "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+    }
+  );
       }
   });
 

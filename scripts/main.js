@@ -148,6 +148,18 @@ $(document).ready(function(){
 
             templateContext.cards = templateCards;
             makeCardGroups('#task-card-list', '#temp-card-list', false);
+          
+                  $('#edits').DataTable(
+    {
+      "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+    }
+  );
+
+        $('#templates').DataTable(
+    {
+      "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+    }
+  );
           }
       });
       }
