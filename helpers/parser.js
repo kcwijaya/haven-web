@@ -47,9 +47,10 @@ exports.parseSkills = function(error, response, body, callback)
 
   var index = 0;
   var total = 0;
-  for (key in Object.keys(skillsGroup))
+  for (i = 0; i < Object.keys(skillsGroup).length; i++)
   {
-    console.log(key);
+    var key = Object.keys(skillsGroup)[i];
+    console.log("Key: " + key);
     total += skillsGroup[key].length;
     index++;
     if (total >= rawSkills.length/2)
