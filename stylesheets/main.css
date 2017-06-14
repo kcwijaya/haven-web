@@ -244,6 +244,11 @@ body
 
 }
 
+.vertical-align-5
+{
+	margin-top: 5%;
+}
+
 .hover
 {
 	cursor: pointer;
