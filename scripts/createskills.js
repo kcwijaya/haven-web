@@ -3,6 +3,8 @@ $(document).ready(function(){
 
 	refreshSelect();
 	$('#create-skill').click(function (e){
+		e.preventDefault();
+
 		var name = $("#skill-name").val();
 		var category = $("#skill-category option:selected").text();
 
@@ -24,7 +26,8 @@ $(document).ready(function(){
 			name: name
 		}
 
-		
+
+
 		if (confirm("Are you sure you want to create the skill '" + name + "' with category '" + category + "'?")){
 			$.ajax({
 		      type: "POST",
@@ -33,6 +36,14 @@ $(document).ready(function(){
 		      success: function(res)
 		      {
 		      	alert("Successfully created skill named " + name);
+
+		      	var add = $("#skills").DataTable().row.add([res.id, res.category, res.name]).draw().node();
+				var cells = $(add).find("td");
+				cells.each(function(){
+					$(this).css('border', '1px solid #dddddd');
+				});
+
+				$(cells[0]).css('display', 'none');
 		      } 
 		    });
 		}
@@ -40,6 +51,8 @@ $(document).ready(function(){
 	});
 
 		$('#create-disclaimer').click(function (e){
+		e.preventDefault();
+
 		var name = $("#disclaimer-name").val();
 
 		if (name == '' || typeof name == 'undefined')
@@ -67,6 +80,13 @@ $(document).ready(function(){
 		      success: function(res)
 		      {
 		      	alert("Successfully created disclaimer named " + name);
+		      	var add = $("#disclaimers").DataTable().row.add([res.id, res.disclaimer]).draw().node();
+				var cells = $(add).find("td");
+				cells.each(function(){
+					$(this).css('border', '1px solid #dddddd');
+				});
+
+				$(cells[0]).css('display', 'none');
 		      } 
 		    });
 		}

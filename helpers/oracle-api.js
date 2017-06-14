@@ -74,7 +74,7 @@ exports.getSkills = function( callback){
 exports.addSkill = function(skill, callback)
 {
 	var options ={
-		uri: hosts + "/skills", 
+		uri: host + "/skills", 
 		method: "POST", 
 		json: true, 
 		body: skill
@@ -87,7 +87,7 @@ exports.addSkill = function(skill, callback)
 exports.addDisclaimer = function(disclaimer, callback)
 {
 	var options ={
-		uri: hosts + "/disclaimers", 
+		uri: host + "/disclaimers", 
 		method: "POST", 
 		json: true, 
 		body: disclaimer

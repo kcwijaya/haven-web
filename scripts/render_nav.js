@@ -23,7 +23,10 @@ $(document).ready(function(){
 					<a class="nav-link {{template}}" href="/templates">Browse Templates</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {{volunteers}}" href="/volunteers">View Task Volunteers</a>
+					<a class="nav-link {{volunteers}}" href="/volunteers">View Volunteers</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link {{volunteers}}" href="/properties">Create Skills/Disclaimers</a>
 				</li>
 				{{/unless}}
 			</ul>
