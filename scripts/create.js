@@ -200,7 +200,7 @@ function makeForm()
 	$("#title").val(task.title);
 	$("#contact_person").val(task.point_of_contact);
 	$("#location").val(task.location);
-
+	$("#backgroundcheck").val(task.backgroundcheck);
 
 	makeMap(task.latitude, task.longitude);
 
@@ -244,6 +244,7 @@ function makeTemplateForm()
 	$("#description").val(task.description);
 	$("#instructions").val(task.instructions);
 	$("#num_volunteers").val(task.num_volunteers);
+
 	console.log("CURREN TEMPLATE: ");
 	console.log(task);
 	for (i = 0; i < task.disclaimers.length; i++)
@@ -493,6 +494,8 @@ $(document).one('click', '#save-review-task', function(e){
 	var title = $("#title").val();
 	var address = $("#location").val();
 	var clock = $("#clock-input").val();
+	var backgroundcheck = $("#backgroundcheck").val();
+
 	if (title == '' || typeof title == 'undefined')
 	{
 		$("#title-req").show();
@@ -629,6 +632,7 @@ $(document).one('click', '#save-review-task', function(e){
 				instructions: instructions,
 				severity_id: severity,
 				start_time: clock,
+				backgroundcheck: backgroundcheck,
 				num_volunteers: num_volunteers,
 				disclaimers: disc,
 				skills: skills,
@@ -684,6 +688,7 @@ $(document).one('click', '#save-review-task', function(e){
 				longitude: longitude,
 				description: description,
 				instructions: instructions,
+				backgroundcheck: backgroundcheck,
 				severity_id: severity,
 				start_time: clock,
 				num_volunteers: num_volunteers,
@@ -721,6 +726,7 @@ $(document).one('click', '#save-review', function(e){
 	var id = $("#taskID").text();
 	var title = $("#title").val();
 	var address = $("#location").val();
+	var backgroundcheck = $('#backgroundcheck').val();
 
 	if (title == '' || typeof title == 'undefined')
 	{
@@ -848,6 +854,7 @@ $(document).one('click', '#save-review', function(e){
 				longitude: longitude,
 				description: description,
 				instructions: instructions,
+				backgroundcheck: backgroundcheck,
 				severity_id: severity,
 				start_time: clock,
 				num_volunteers: num_volunteers,
@@ -903,6 +910,7 @@ $(document).one('click', '#save-review', function(e){
 				description: description,
 				instructions: instructions,
 				severity_id: severity,
+				backgroundcheck: backgroundcheck,
 				start_time: clock,
 				num_volunteers: num_volunteers,
 				status: status,
