@@ -38,7 +38,7 @@ $(document).ready(function(){
 			<ul class="nav navbar-nav">
 				<li style="margin-right: 2%; color:#87898A ">Already have an account?</li>
 				<div style="width:100%; text-align:center" class="social-buttons">
-					<a href="/auth/facebook" class="btn btn-fb"><i class="fa fa-facebook"></i> Login via Facebook</a>
+					<a href="/auth/facebook" class="btn btn-fb"><i class="fa fa-facebook"></i> Login </a>
 				</div>
 			</ul>
 		</div>
