@@ -1,66 +1,119 @@
 $(document).ready(function (){
 	$('#create-account').click(function (e){
-		var first = $("#firstName").val();
-		var last = $('#lastName').val();
-		var email = $('#email').val();
-		var org = $('#organization').val();
+		var name = $("#name").val();
+		var website = $('#website').val();
+		var desc = $('#description').val();
 
-		if (first == '' || typeof first == 'undefined')
+		if (name == '' || typeof name == 'undefined')
 		{
 			e.preventDefault();
 			e.stopPropagation();
-			$('#first-req').show();
-			$('#first-container').addClass('has-danger');
+			$('#name-req').show();
+			$('#name-container').addClass('has-danger');
 		}
 		else
 		{
-			$('#first-req').hide();
-			$('#first-container').removeClass('has-danger');
+			$('#name-req').hide();
+			$('#name-container').removeClass('has-danger');
 
 		}
 
 
-		if (last == '' || typeof last == 'undefined')
+		if (website == '' || typeof website == 'undefined')
 		{
 			e.preventDefault();
 			e.stopPropagation();
-			$('#last-req').show();
-			$('#last-container').addClass('has-danger');
+			$('#website-req').show();
+			$('#website-container').addClass('has-danger');
 
 		}
 		else
 		{
-			$('#last-req').hide();
-			$('#last-container').removeClass('has-danger');
+			$('#website-req').hide();
+			$('#website-container').removeClass('has-danger');
 		}
 
 
-		if (email == '' || typeof email == 'undefined')
+		if (desc == '' || typeof desc == 'undefined')
 		{
 			e.preventDefault();
 			e.stopPropagation();
 
-			$('#email-req').show();
-			$('#email-container').addClass('has-danger');
+			$('#desc-req').show();
+			$('#desc-container').addClass('has-danger');
 		}
 		else
 		{
-			$('#email-req').hide();
-			$('#email-container').removeClass('has-danger');
-		}
-
-
-		if (org == '' || typeof org == 'undefined')
-		{
-			e.preventDefault();
-			e.stopPropagation();
-			$('#org-req').show();
-			$('#org-container').addClass('has-danger');
-		}
-		else
-		{
-			$('#last-container').removeClass('has-danger');
-			$('#org-req').hide();
+			$('#desc-req').hide();
+			$('#desc-container').removeClass('has-danger');
 		}
 	});
+
+	
+	refreshSelect();
+
+	$('#create-org').click(function(e){
+		var name = $('#name').val();
+		var web = $('#website').val();
+		var desc = $('#description').val();
+
+		var org = {
+			name: name,
+			website: web,
+			description: desc
+		}
+
+		console.log(org);
+
+		$.ajax({
+			type: "POST",
+			url: "/orgs", 
+			data: org, 
+			success: function(res)
+			{
+				console.log("GOT HERE THOUGH");
+				console.log(res);
+				alert("Organization " + org.name + " has been created.");
+				refreshSelect();
+			}
+		});
+	});
 });
+
+
+$(document).one('click', '#sign-up', function(e){
+	e.preventDefault();
+	var org = $("#org-select option:selected" ).val();
+	console.log(org);
+
+	var params = $.param({
+		org: org
+	});
+
+	window.location.href = '/signup?' + params;
+});
+
+function refreshSelect()
+{
+	$.ajax({
+      type: "GET",
+      url: "/orgs",
+      success: function(res)
+      {
+      	var select = document.getElementById('org-select');
+      	$(select).html("");
+        console.log(res);
+        for(i = 0; i < res.length; i ++)
+		{
+			var org = res[i];
+		   var opt = document.createElement("option");
+		   opt.value= org.id;
+		   opt.innerHTML = org.name; // whatever property it has
+
+		   // then append it to the select element
+		   select.appendChild(opt);
+		}
+
+      } 
+    });
+}

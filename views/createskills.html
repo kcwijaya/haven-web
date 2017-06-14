@@ -1,0 +1,109 @@
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
+	<script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
+
+	<script type="text/javascript" src="../scripts/createskills.js"></script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAej_Btkc_ko3TrAgYkLY52elkW6bahpgk&libraries=places"
+    async defer></script>
+
+	<script id="render-navbar" type="text/x-handlebars-template">
+		{{> navbar volunteer="active"}}
+	</script>
+
+	<div style="margin-top: 5%; margin-bottom: 2%; text-align: center">
+		<h2> Skills and Disclaimers 
+		</h2>
+	</div>
+	<hr class="mid-size-line"> 
+
+	<h4 style="margin-left: 15%"> View and Edit Skills </h4>
+
+	<div style="margin-left: 15%; width: 70%" class="form-card">
+
+	
+
+	<h5> Current Skills </h5>
+	<table id="skills" style="width: 100%;">
+		<thead>
+		<tr class="border-row colored-bg">
+				<th style="display: none">ID</th>
+				<th style="text-align: center; padding: 5px"> Category</th>
+				<th style="text-align: center; padding: 5px"> Name </th>
+
+		</tr>
+		</thead>
+		<tbody>
+		{{#each skills}}
+				<tr style="background-color: white;">
+					<td style="display: none"> {{id}}</td>
+					<td class="border-row"> {{category}} </td>
+					<td class="border-row"> {{name}} </td>
+				</tr>
+		{{/each}}
+			</tbody>
+	</table>
+
+	<form style="margin-top: 5%" id="add-skill-form">
+		<h5> Create Skill </h5>
+		<div class="form-group row">
+			<div class="col-md-4">
+			<select style="margin-top: 1%; font-size: 1.2rem; width:100%" id="skill-category"> </select>
+			</div>
+
+			<div id="skill-name-container" class="col-md-4">
+				<input type="text" name="skill-name" class="form-control" id="skill-name" placeholder="Name">
+				</label>
+				<div id="skill-name-req" style="display: none" class="form-control-feedback">This field is required. </div>
+			</div>
+
+			<div class="col-md-4">
+				<button style="text-align: center; float:right; width: 100%;" id="create-skill"  class="btn btn-primary">Create Skill</button>
+			</div>
+		</div>
+	
+	</form>
+
+	</div>
+
+	<h4 style="margin-left: 15%"> View and Edit Disclaimers </h4>
+	<div style="margin-left: 15%; width: 70%" class="form-card">
+	<h6> Current Disclaimers </h6>
+	<table id="disclaimers" style="width: 100%;">
+		<thead>
+		<tr class="border-row colored-bg">
+				<th style="display: none">ID</th>
+				<th style="text-align: center; padding: 5px"> Disclaimer </th>
+		</tr>
+		</thead>
+		<tbody>
+		{{#each disclaimers}}
+				<tr style="background-color: white;">
+					<td style="display: none"> {{id}}</td>
+					<td class="border-row"> {{disclaimer}} </td>
+				</tr>
+		{{/each}}
+			</tbody>
+	</table>
+
+	<form style="margin-top: 5%" id="add-disclaimer-form">
+		<h5> Create Disclaimer </h5>
+		<div class="form-group row">
+
+			<div id="disclaimer-name-container" class="col-md-8">
+				<input type="text" name="disclaimer-name" class="form-control" id="disclaimer-name" placeholder="Name">
+				<div id="disclaimer-name-req" style="display: none" class="form-control-feedback">This field is required. </div>
+			</div>
+			<div class="col-md-4">
+				<button style="text-align: center; float:right; width: 100%;" id="create-disclaimer"  class="btn btn-primary">Create Disclaimer</button>
+			</div>
+		</div>
+	</form>
+
+	</div>

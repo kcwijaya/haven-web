@@ -86,9 +86,15 @@
 				<div class="col-md-4">
 					<label for="severity">Severity of Impacted Region</label>
 					<select name="severity" class="form-control" id="severity">
+						{{#if severity_level}}
 						<option value="Low" {{#equal severity_level 'Low'}} selected {{/equal}}>Low</option>
 						<option value="Medium" {{#equal severity_level 'Medium'}} selected {{/equal}} >Medium</option>
 						<option value="High" {{#equal severity_level 'High'}} selected {{/equal}}>High</option>
+						{{else}}
+						<option value="Low" selected>Low</option>
+						<option value="Medium">Medium</option>
+						<option value="High">High</option>
+						{{/if}}
 					</select>
 				</div>
 
@@ -103,10 +109,17 @@
 				<div class="col-md-4">
 					<label for="status">Status</label>
 					<select name="status" class="form-control" id="status">
+						{{#if status}}
 						<option value="Scheduled" {{#equal status 'Scheduled'}} selected {{/equal}}>Scheduled</option>
 						<option value="In Progress" {{#equal status 'In Progress'}} selected {{/equal}} >In Progress</option>
 						<option value="Completed" {{#equal status 'Completed'}} selected {{/equal}}>Completed</option>
 						<option value="Cancelled" {{#equal status 'Cancelled'}} selected {{/equal}}>Cancelled</option>
+						{{else}}
+						<option value="Scheduled"  selected >Scheduled</option>
+						<option value="In Progress"  >In Progress</option>
+						<option value="Completed" >Completed</option>
+						<option value="Cancelled" >Cancelled</option>
+						{{/if}}
 					</select>
 					<!-- <label for="background_check">Volunteer Background Check Required: </label>
 					<input style="margin-left: 5px" class="form-checkbox" type="checkbox" name="background_check" id="background_check" {{#if background_check}} value="{{background_check}}" {{/if}} />   -->
@@ -211,11 +224,7 @@
 					<thead>
 					<tr>
 							<th style="display: none"></th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
-							</th>
-							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number
-							</th>
+							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Name</th>
 							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
 							</th>
 							<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Hours </th>
@@ -226,9 +235,7 @@
 				{{#each volunteers}}
 					<tr>
 						<td style="display: none">{{id}}</td>
-						<td style="border: 1px solid #dddddd;"> {{first_name}}</td>
-						<td style="border: 1px solid #dddddd;"> {{last_name}} </td>
-						<td style="border: 1px solid #dddddd;"> {{phone_number}} </td>
+						<td style="border: 1px solid #dddddd;"> {{name}} </td>
 						<td style="border: 1px solid #dddddd;"> {{email}} </td>
 						<td style="border: 1px solid #dddddd;"> {{hours}} </td>
 						<td style="text-align: center; border: 1px solid #dddddd;"></i> <i style="font-size: 25px" class="delete-button fa fa-trash"></i> </td>

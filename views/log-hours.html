@@ -38,11 +38,7 @@ async defer></script>
 				<thead>
 				<tr>
 						<th style="display: none"></th>
-						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> First Name </th>
-						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Last Name 
-						</th>
-						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Phone Number
-						</th>
+						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Name </th>
 						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Email Address 
 						</th>
 						<th style="background-color: #33cccc; border: 1px solid #dddddd;"> Hours </th>
@@ -53,9 +49,7 @@ async defer></script>
 			{{#each volunteers}}
 				<tr>
 					<td style="display: none">{{id}}</td>
-					<td style="border: 1px solid #dddddd;"> {{first_name}}</td>
-					<td style="border: 1px solid #dddddd;"> {{last_name}} </td>
-					<td style="border: 1px solid #dddddd;"> {{phone_number}} </td>
+					<td style="border: 1px solid #dddddd;"> {{name}}</td>
 					<td style="border: 1px solid #dddddd;"> {{email}} </td>
 					<td style="border: 1px solid #dddddd;"> {{#if hours}} {{hours}} {{else}} 0 {{/if}} </td>
 					<td style="border: 1px solid #dddddd;"></i> <i style="font-size: 30px;" class="edit-button fa fa-pencil"></i><i style="font-size: 30px; display: none;" class="save-button fa fa-save"></i> </td>

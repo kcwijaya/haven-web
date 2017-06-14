@@ -30,6 +30,8 @@ function(accessToken, refreshToken, profile, done) {
     {
       if (response.statusCode == 404)
       {
+        console.log("DOESN'T EXIST");
+
         api.getOrganizations(
           function(error, response, body){
             body = JSON.parse(body);
@@ -102,7 +104,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email', 'u
 // access was granted, the user will be logged in.  Otherwise,
 // authentication has failed.
 app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { successRedirect: '/create',
+  passport.authenticate('facebook', { successRedirect: '/',
     failureRedirect: '/' }));
 
 
@@ -154,7 +156,6 @@ app.use(express.static('public'));
 
 //   if (req.isAuthenticated())
 //   {
-//     console.log("AUTHENTICATED!!!");
 //     return next();
 //   }
 //   else
@@ -167,14 +168,53 @@ app.use(express.static('public'));
 // app.use(AuthMiddleware);
 
 
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
+
+function getUser(req)
+{
+  var user = req.session.passport.user;
+  if (typeof user == 'string')
+  {
+    user = JSON.parse(user);
+  }
+
+  return user;
+}
 app.get('/', function(req, res) {
   if (req.isAuthenticated())
   {
-    res.render('home-auth', {pageTitle: 'Haven - Home'});
+    if (typeof req.session.org != 'undefined')
+    {
+      var user = getUser(req);
+      console.log(user);
+
+      req.session.passport.user.organization_id = req.session.org; 
+      var edit = {
+        organization_id: req.session.org,
+        id: user.id
+      }
+
+      console.log("editing organization...");
+      console.log(edit);
+      api.editAdmin(edit, 
+        function(error, response, body){
+          console.log(body);
+          res.render('home-auth', {pageTitle: 'Haven-Home'});
+        }
+      );
+    }
+    else
+    {
+      res.render('home-auth', {pageTitle: 'Haven - Home'});
+    }
   }
   else
   {
-    res.sendFile(__dirname+'/Homepage.html');
+    res.sendFile(__dirname+ '/Homepage.html');
   }
 });
 
@@ -182,11 +222,12 @@ app.get('/', function(req, res) {
 app.get('/home', function(req, res) {
   if (req.isAuthenticated())
   {
+
     res.render('home-auth', {pageTitle: 'Haven - Home'});
   }
   else
   {
-    res.sendFile(__dirname+'/Homepage.html');
+    res.sendFile(__dirname+ '/Homepage.html');
   }});
 
 app.post('/review-new', function(req, res) {
@@ -198,6 +239,7 @@ app.post('/review-new', function(req, res) {
 app.post('/review-task', function(req, res) {
   req.body.pageTitle = "Haven - Review Task";
   req.body.layout = false;
+  console.log(req.body);
   return res.render('task-review', req.body);
 });
 
@@ -248,34 +290,41 @@ app.get('/tasks/view', function(req, res){
           }
           task.severity_id = dict[task.severity_id];
 
-
-        api.getTaskVolunteers( req.query.id, 
+        api.getOrganizationByID(task.organization_id, 
           function(error, response, body)
           {
-            if (error)
-            {
-              console.log(error);
-              res.status(404).send('Not Found');
-            }
-
             body = JSON.parse(body);
-            task.volunteers = body[0];
-            if (typeof task.volunteers != 'undefined')
-            {
-              for (i = 0; i < task.volunteers.length; i++)
+            task.organization = body.name;
+            api.getTaskVolunteers(req.query.id, 
+              function(error, response, body)
               {
-                console.log(body[1][i]);
-                task.volunteers[i].hours = body[1][i].hours;
-                if (task.volunteers[i].hours == null)
+                if (error)
                 {
-                  task.volunteers[i].hours = 0;
+                  console.log(error);
+                  res.status(404).send('Not Found');
                 }
-              }
-            }
 
-            console.log(task.volunteers);
-            res.render('task-details', task);
+                body = JSON.parse(body);
+                task.volunteers = body[0];
+                if (typeof task.volunteers != 'undefined')
+                {
+                  for (i = 0; i < task.volunteers.length; i++)
+                  {
+                    console.log(body[1][i]);
+                    task.volunteers[i].hours = body[1][i].hours;
+                    if (task.volunteers[i].hours == null)
+                    {
+                      task.volunteers[i].hours = 0;
+                    }
+                  }
+                }
+
+                console.log(task.volunteers);
+                res.render('task-details', task);
+              }
+            )
           }
+
         )
       }
       );
@@ -293,8 +342,16 @@ app.get('/favicons/*', function(req, res){
 });
 
 app.get('/create', function(req, res) {
-  console.log(req.session.passport.user);
   res.sendFile(__dirname + '/TaskCreationHome.html');
+});
+
+app.get('/signup', function(req, res){
+  console.log('org: ' + req.query.org);
+  var org = req.query.org;
+  req.session.org = org;
+
+  res.redirect("/auth/facebook");
+
 });
 
 app.get('/views/*', function(req, res) {
@@ -317,32 +374,42 @@ app.get('/tasks', function(req, res){
 
 app.post('/save-task', function(req, res){
   console.log("Saving task from edit!");
+
+  console.log(req.body);
   var task = parser.populateTask(req.body);
 
-
+  var user = getUser(req);
    api.getSeverities(
     function(error, response, body){
       var sevs = JSON.parse(body);
-      console.log(sevs);
       var dict = {};
       for (i = 0; i < sevs.length; i++)
       {
         dict[sevs[i].severity_level] = sevs[i].id;
       }
+
+      console.log("OLD SEVERITY " + task.severity_id);
+
       task.severity_id = dict[task.severity_id];
 
+      task.organization_id = parseInt(user.organization_id);
       if (typeof task.num_volunteers != 'undefined')
       {
         task.num_volunteers = parseInt(task.num_volunteers);
       }
       if (typeof task.latitude != 'undefined')
       {
-        task.latitude = parseInt(task.longitude);
+        task.latitude = parseFloat(task.latitude);
       }
       if (typeof task.longitude != 'undefined')
       {
-        task.latitude = parseInt(task.longitude);
+        task.longitude = parseFloat(task.longitude);
       }
+
+
+      console.log("SAVING TASK!!!!!!!!!!!!");
+
+      console.log(task);
 
       api.editTask(task, 
         function(error, response, body)
@@ -353,8 +420,10 @@ app.post('/save-task', function(req, res){
             console.log(error);
             res.status(404).send("Not Found");
           }
+
+          console.log(body);
           console.log("volunteers");
-          console.log(task.volunteers);
+          console.log(req.body.volunteers);
 
           apihelper.startWithGettingVolunteersTask(req.body, res);
 
@@ -365,13 +434,83 @@ app.post('/save-task', function(req, res){
   );
 });
 
+app.get("/volunteers", function(req, res){
+  var user = getUser(req);
+  console.log("#########GETTING ALL TASKS FOR: " + user.organization_id);
+  api.getAllTasks(
+    function(error, response, body)
+    {
+      var result = [];
+      var tasks = parser.parseAllTasks(JSON.parse(body));
+      var actualTasks = [];
+      for (i = 0; i < tasks.length; i++)
+      {
+        if (!tasks[i].is_template)
+        {
+          actualTasks.push(tasks[i]);
+        }
+      }
+
+      var volunteersToGet = 0;
+      for (i = 0; i < actualTasks.length; i++)
+      {
+
+        console.log("#### GETTING VOLUNTEERS FOR " + actualTasks[i].id);
+        api.getTaskVolunteers(actualTasks[i].id, 
+          function(error, response, body)
+          {
+            if (error)
+            {
+              console.log(error);
+              res.status(404).send("Not Found.");
+            }
+
+
+            var volunteers = [];
+            var volunteerResult = JSON.parse(body);
+            var vols = volunteerResult[0];
+            var volHours = volunteerResult[1];
+
+             for (j = 0; j < vols.length; j++)
+             {
+              volunteers.push({
+                vol_name: vols[j].name, 
+                vol_email: vols[j].email, 
+                vol_hours: volHours[j].hours
+              });
+             }
+
+             result.push({
+                task_id: actualTasks[volunteersToGet].id, 
+                task_name: actualTasks[volunteersToGet].title,
+                task_description: actualTasks[volunteersToGet].description,
+                volunteers: volunteers
+             });
+
+             volunteersToGet++;
+
+             if (volunteersToGet == actualTasks.length)
+             {
+              var toSend =
+              {
+                pageTitle: 'Haven - View Volunteers', 
+                taskList: result
+              }
+              res.render('volunteers', toSend);
+             }
+          }
+        );
+      }
+    }
+    );  
+});
 
 
 app.post('/post-task', function(req, res){
   var taskToAdd =  parser.populateTask(req.body);
   var task = req.body;
 
-  var user = req.session.passport.user;
+  var user = getUser(req);
 
   console.log(user);
 
@@ -387,7 +526,6 @@ app.post('/post-task', function(req, res){
   api.getSeverities(
     function(error, response, body){
       var sevs = JSON.parse(body);
-      console.log(sevs);
       var dict = {};
       for (i = 0; i < sevs.length; i++)
       {
@@ -400,55 +538,50 @@ app.post('/post-task', function(req, res){
 
       if (typeof task.num_volunteers != 'undefined')
       {
-        task.num_volunteers = parseInt(task.num_volunteers);
+        taskToAdd.num_volunteers = parseInt(task.num_volunteers);
       }
       if (typeof task.latitude != 'undefined')
       {
-        task.latitude = parseInt(task.longitude);
+        taskToAdd.latitude = parseFloat(task.latitude);
       }
       if (typeof task.longitude != 'undefined')
       {
-        task.latitude = parseInt(task.longitude);
+        taskToAdd.longitude = parseFloat(task.longitude);
       }
 
-      api.getOrganizations(
+      taskToAdd.organization_id = user.organization_id;
+
+
+      console.log("#####ADDING TASK: ");
+      console.log(taskToAdd);
+      api.addNewTask(taskToAdd, 
         function(error, response, body){
-          body = JSON.parse(body);
-          task.organization_id = body[0].id;
-          taskToAdd.organization_id = body[0].id;
-
-          console.log("Adding task...");
-          console.log(taskToAdd);
-          api.addNewTask(taskToAdd, 
-            function(error, response, body){
-              if (error)
-              {
-                console.log(error);
-                res.status(404).send("Not Found");
-              }
+          if (error)
+          {
+            console.log(error);
+            res.status(404).send("Not Found");
+          }
 
 
-              console.log("Just added task.");
-              console.log(body);
-              var id = body.id;
+          console.log("Just added task.");
+          console.log(body);
+          var id = body.id;
 
-              console.log("NEWLY ADDED ID: " + id);
+          console.log("NEWLY ADDED ID: " + id);
 
-              task.id = id;
+          task.id = id;
 
-              if (typeof task.skills != 'undefined' && task.skills.length >0)
-              {
-                apihelper.startWithAddingSkillsTask(task, res);
-              }
-              else if (typeof task.disclaimers != 'undefined' && task.disclaimers.length > 0)
-              {
-                apihelper.startWithAddingDisclaimersTask(task, res);
-              }
-            }
-          );
-        });
-      }
-    );
+          if (typeof task.skills != 'undefined' && task.skills.length >0)
+          {
+            apihelper.startWithAddingSkillsTask(task, res);
+          }
+          else if (typeof task.disclaimers != 'undefined' && task.disclaimers.length > 0)
+          {
+            apihelper.startWithAddingDisclaimersTask(task, res);
+          }
+        }
+      );
+});
 });
 
 app.post('/save-changes', function(req, res){
@@ -456,12 +589,34 @@ app.post('/save-changes', function(req, res){
   res.json(req.body);
 });
 
+
+app.get('/properties', function(req, res){
+  var result = { pageTitle: 'Haven - Create Skills and Disclaimers'};
+  api.getSkills(
+  function(error, response, body)
+  {
+    var skills = JSON.parse(body);
+    api.getDisclaimers(
+      function(error, response, body){
+        var disclaimers = JSON.parse(body);
+
+        result.skills = skills;
+        result.disclaimers = disclaimers;
+        res.render('createskills', result);
+
+    });
+  }
+  );
+});
+
 app.post('/save-template', function(req, res){
 
   var template = parser.populateTemplate(req.body);
-  var user = req.session.passport.user;
+  var user = getUser(req);
   template.admin_id = user.id;
   template.start_time = parser.formatDate(new Date(Date.now()));
+
+  template.organization_id = user.organization_id;
 
   if (typeof template.num_volunteers != 'undefined')
   {
@@ -469,14 +624,14 @@ app.post('/save-template', function(req, res){
   }
   if (typeof template.latitude != 'undefined')
   {
-    template.latitude = parseInt(template.longitude);
+    template.latitude = parseFloat(template.latitude);
   }
   if (typeof template.longitude != 'undefined')
   {
-    template.latitude = parseInt(template.longitude);
+    template.longitude = parseFloat(template.longitude);
   }
 
-  api.editTemplate(req.body, 
+  api.editTemplate(template, 
     function(error, response, body)
     {
       if (error)
@@ -498,10 +653,8 @@ app.post('/save-template', function(req, res){
 app.post('/save-new-template', function(req, res){
   var template = parser.populateTemplate(req.body);
   template.start_time = parser.formatDate(new Date(Date.now()));
-  var user = JSON.parse(req.session.passport.user);
-  console.log(req.session);
-  console.log(req.session.passport);
-  console.log(user);
+  console.log(req.session.passport.user);
+  var user = getUser(req);
   template.admin_id = user.id;
 
   console.log(template);
@@ -512,50 +665,42 @@ app.post('/save-new-template', function(req, res){
   }
   if (typeof template.latitude != 'undefined')
   {
-    template.latitude = parseInt(template.longitude);
+    template.latitude = parseFloat(template.latitude);
   }
   if (typeof template.longitude != 'undefined')
   {
-    template.latitude = parseInt(template.longitude);
+    template.longitude = parseFloat(template.longitude);
   }
 
   api.getSeverities(
     function(error, response, body){
       var sevs = JSON.parse(body);
       template.severity_id = sevs[0].id;
+      template.organization_id = user.organization_id;
+      api.addNewTemplate(template, 
+        function(error, response, body)
+        {
+          if (error)
+          {
+            console.log(error)
+            res.status(404).send("Not Found");
+          }
 
-      api.getOrganizations(
-        function(error, response, body){
-          body = JSON.parse(body);
-          template.organization_id = body[0].id;
+          console.log(body);
+          console.log(response.statusCode);
+          console.log("TEMPLATE ID: " + body.id);
 
-          console.log("Adding template...");
-          console.log(template);
-          api.addNewTemplate(template, 
-            function(error, response, body)
-            {
-              if (error)
-              {
-                console.log(error)
-                res.status(404).send("Not Found");
-              }
+          req.body.id = body.id;
 
-              console.log(body);
-              console.log(response.statusCode);
-              console.log("TEMPLATE ID: " + body.id);
-
-              req.body.id = body.id;
-
-              if (typeof req.body.skills != 'undefined' && req.body.skills.length > 0) {
-                apihelper.startWithGettingSkillsTemplate(req.body, res);
-              }
-              else if (typeof req.body.disclaimers != 'undefined' && req.body.disclaimers.length > 0)
-              {
-                apihelper.startWithGettingDisclaimersTemplate(req.body, res);
-              }
-            }
-            );
-        });
+          if (typeof req.body.skills != 'undefined' && req.body.skills.length > 0) {
+            apihelper.startWithGettingSkillsTemplate(req.body, res);
+          }
+          else if (typeof req.body.disclaimers != 'undefined' && req.body.disclaimers.length > 0)
+          {
+            apihelper.startWithGettingDisclaimersTemplate(req.body, res);
+          }
+        }
+        );
       }
     );
 });
@@ -591,7 +736,8 @@ app.get('/create/new', function(req, res) {
     getFields(req.query, function(result){
       result.pageTitle = "Haven - Create";
       result.newBtn = true;
-      result.username = req.session.passport.user.displayName;
+      var user = getUser(req);
+      result.username = user.name;
       console.log("Username: " + result.username);
       res.render('task-create', result);
     });
@@ -639,6 +785,20 @@ app.get('/create/new', function(req, res) {
     });
 }
 
+});
+
+app.get('/templates/view', function(req, res){
+  var templateID = req.query.id;
+  console.log("templateID: " + templateID);
+
+  api.getTemplateByID(templateID,
+    function(error, response, body)
+    {
+      var template = parser.parseOneTemplate(body);
+      template.pageTitle = "Haven - View Template";
+      res.render('template-details', template);
+    }
+  );
 });
 
 app.get('/templates/edit', function(req, res) {
@@ -715,7 +875,8 @@ app.post('/tasks/hours', function(req, res){
   var hours = req.query.hours;
   var taskID = req.query.taskID;
 
-  api.logVolunteerHours(volunteerID, hours, taskID, 
+
+  api.logVolunteerHours(volunteerID, taskID, hours, 
     function(error, response, body){
       if (error)
       {
@@ -747,6 +908,17 @@ app.get('/tasks/edit', function(req, res) {
           body = JSON.parse(body);
           task.volunteers = body[0];
           console.log(task.volunteers);
+
+          for (i = 0; i < task.volunteers.length; i++)
+          {
+            var hours = body[1][i].hours;
+            if (hours == null)
+            {
+              hours = 0;
+            }
+
+            task.volunteers[i].hours = hours;
+          }
           getFields(task, function(result){
             result.taskBtn = true;
             result.oldTask = true;
@@ -816,6 +988,7 @@ app.post('/signup', function(req, res){
     );
 });
 
+
 app.get('/imgs/*', function(req, res)
 {
   res.sendFile(__dirname + req.url);
@@ -839,6 +1012,8 @@ app.get('/tasks/id', function(req, res) {
 });
 
 app.get('/tasks/all', function(req, res) {
+  var user = getUser(req);
+  console.log("#########GETTING ALL TASKS FOR: " + user.organization_id);
   api.getAllTasks( 
     function(error, response, body)
     {
@@ -857,8 +1032,10 @@ app.get('/tasks/all', function(req, res) {
 });
 
 app.get('/templates/all', function(req, res){
-  console.log("Here");
-  api.getAllTemplates( 
+  var user = getUser(req);
+  console.log("#########GETTING ALL TEMPLATES FOR: " + user.organization_id);
+
+  api.getAllTemplates(
     function(error, response, body)
     {
       if (error)
@@ -963,6 +1140,22 @@ app.get('/users/all', function(req, res){
     );
 });
 
+app.get('/tasks/delete', function(req, res){
+  var id = req.query.id;
+  api.deleteTask(id,
+    function(error, response, body)
+    {
+      if (error)
+      {
+        console.log(error);
+        res.status(404).send("Not Found.");
+      }
+
+      res.json(JSON.parse(body));
+    }
+  )
+});
+
 app.get('/tasks/volunteers', function(req, res){
  api.getTaskVolunteers( req.query.id, 
   function(error, response, body)
@@ -976,6 +1169,39 @@ app.get('/tasks/volunteers', function(req, res){
     res.json(body);
   }
   );
+});
+
+app.post('/orgs', function(req, res){
+  console.log(req.body);
+  api.addOrganization(req.body, 
+    function(error, response, body)
+    {
+      if (error)
+      {
+        console.log(error);
+        res.status(404).send("Not Found.");
+      }
+
+      console.log(body);
+      res.json(body);
+    }
+    );
+});
+
+app.get('/orgs', function(req, res){
+  api.getOrganizations(
+    function(error, response, body){
+      if (error)
+      {
+        console.log(error);
+        res.status(404).send("Not Found");
+      }
+
+      body = JSON.parse(body);
+      console.log(body);
+      console.log(body.length);
+      res.json(body);
+    });
 });
 
 app.get('/org', function(req, res){
@@ -992,6 +1218,41 @@ app.get('/org', function(req, res){
       res.json(body);
     })
 });
+
+app.get('/skillCategories', function(req, res){
+  api.getSkills(
+    function(error, response, body){
+      var skills = JSON.parse(body);
+      var categories = [];
+      for (i = 0; i < skills.length; i++)
+      {
+        if (categories.indexOf(skills[i].category) == -1)
+        {
+          categories.push(skills[i].category);
+        }
+      }
+
+      res.json(categories);
+    }
+  );
+});
+
+app.post('/createSkill', function(req, res){
+  api.addSkill(req.body, 
+    function(error, response, body)
+    {
+      res.json(body);
+    });
+})
+
+app.post('/createDisclaimer', function(req, res){
+  api.addDisclaimer(req.body, 
+    function(error, response, body)
+    {
+      res.json(body);
+    });
+})
+
 
 http.listen(process.env.PORT || 5000, function() {
   console.log('listening on ' + process.env.PORT || 5000);

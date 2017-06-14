@@ -70,7 +70,7 @@ $(document).on('click', '#templates tbody tr', function (){
   var params = $.param({
     id: task[0], 
   });
-  window.location.href = '/templates/edit?' + params;
+  window.location.href = '/templates/view?' + params;
 
 });
 
@@ -80,14 +80,35 @@ $(document).on('click', '.card', function (){
     id: id
   });
 
-  window.location.href = '/templates/edit?' + params;
+  window.location.href = '/templates/view?' + params;
 
+});
+
+$(document).on('click', '.delete-button', function(){
+   e.preventDefault();
+  var data = $('#templates').DataTable().row($(this).parents('tr')).data();
+
+  if (confirm("Are you sure you want to delete the template '" + data[1] + "'?")){
+    var id = data[0];
+    console.log("DELETING " + id);
+
+    $.ajax({
+      type: "GET",
+      url: "/tasks/delete?id=" + id,
+      success: function(res)
+      {
+        alert("Successfully deleted the template '" + res.title + "'.");
+        $('#templates').DataTable().row($(this).parents('tr')).remove().draw();
+      } 
+    });
+  }
 });
 
 $(document).on('click', '#template-list', function(){
   makeTemplateGroup('#card-list', false);
   $('#templates').DataTable( 
     {
+      dom: '<"top"B<"space"l>f>rt<"bottom"ip>',
       "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
     }
   );

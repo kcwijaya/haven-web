@@ -62,6 +62,7 @@ exports.parseSkills = function(error, response, body, callback)
 exports.populateObject = function(task)
 {
   var taskToAdd = {};
+  taskToAdd.id = task.id;
   if (typeof task.title != 'undefined')
   {
     taskToAdd.title = task.title;
@@ -119,6 +120,11 @@ if (typeof task.status != 'undefined')
   {
     taskToAdd.status = task.status;
   } 
+
+if (typeof task.severity_id != 'undefined')
+{
+  taskToAdd.severity_id = task.severity_id;
+}
 
   return taskToAdd;
 }

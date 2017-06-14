@@ -168,4 +168,22 @@ $(document).ready(function (){
 		});
 		window.location.href = "/tasks/hours?" + params;
 	});
+
+	$('#delete-button').click(function(e){
+		e.preventDefault();
+	  	if (confirm("Are you sure you want to delete the task '" + $('#title').text().trim() + "'?")){
+		var id = $("#id").text().trim();
+	    console.log("DELETING " + id);
+
+	    $.ajax({
+	      type: "GET",
+	      url: "/tasks/delete?id=" + id,
+	      success: function(res)
+	      {
+	        alert("Successfully deleted the task '" + res.title + "'.");
+	      	window.location.href = "/tasks";
+	      } 
+	    });
+	  }
+	});
 });

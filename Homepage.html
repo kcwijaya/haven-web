@@ -55,7 +55,51 @@
 		<div style="margin-top: 5%" class="col-md-5">
 			<h2> Sign Up</h2>
 			<p> Join us in helping our communities </p>
-			<form action="/signup" id="signup-form" method="post">
+				
+
+			<form id="signup-form">
+				<div class="form-card">
+				<p> Pick the organization that you are a member of: </p>
+				<select style="font-size: 1.2rem; width: 100%; padding: 2%" id="org-select"> </select>
+
+				
+
+				<button style="font-size: 1rem; margin-top: 3%; text-align: center; width:100%" id="sign-up" class="btn-group-mem btn btn-primary btn-lg">Sign up  </button>
+
+				<hr class="mid-size-line"> 
+
+				<p style="margin-top: 1%"> If your organization is not listed, please create it: </p>
+
+				<form id="signup-form">
+					<div class="form-group row">
+						<div id="name-container" class="col-md-6">
+							<input type="text" name="name" class="form-control" id="name" placeholder="Name">
+							<div id="name-req" style="display: none" class="form-control-feedback">This field is required. </div>
+						</div>
+						<div id="website-container" class="col-md-6">
+							<input type="url" name="website" class="form-control" id="website" placeholder="Website">
+							<div id="website-req" style="display: none" class="form-control-feedback">This field is required. </div>
+						</div>
+					</div>
+					<div>
+					    <textarea  name="description" class="form-control" id="description" placeholder="Description" rows="2" /></textarea>
+					    <div id="desc-req" style="display: none" class="form-control-feedback">This field is required. </div>					
+					    </div>
+
+					<div style="margin-top: 1%" class="row">
+						<div class="col-md-6"> </div>
+						<div class="col-md-6">
+							<button style="text-align: center; float:right; width: 100%;" id="create-org"  class="btn btn-primary">Create Organization</button>
+						</div>
+					</div>
+			</form>
+
+				<!-- <button style="font-size: 1rem; text-align: center; width:100%" id="create-org" type="submit" class="btn-group-mem btn btn-primary btn-lg">Create Organization</button>
+ -->
+				</div>
+			</form>
+
+			<!-- <form action="/signup" id="signup-form" method="post">
 				<div class="form-card">
 					<div class="form-group row">
 						<div id="first-container" class="col-md-6">
@@ -85,7 +129,7 @@
 						</div>
 					</div>
 				</div>
-			</form>
+			</form> -->
 		</div>
 	</div>
 	

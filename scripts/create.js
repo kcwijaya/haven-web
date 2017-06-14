@@ -384,17 +384,9 @@ function getUsers(id)
 						'visible': false
 					},
 					{ 
-						'title': 'First Name',
-					 	'data': 'first_name'
+						'title': 'Name',
+					 	'data': 'name'
 					}, 
-					{ 
-						'title': 'Last Name',
-						'data': 'last_name'
-					}, 
-					{ 
-						'title': 'Phone Number',
-						'data': 'phone_number'
-					},
 					{ 
 						'title': 'Email',
 						'data': 'email'
@@ -406,7 +398,7 @@ function getUsers(id)
         		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 				'columnDefs': [
 					{
-						"targets": 5,
+						"targets": 3,
 						"render": function (data, type, full, meta){
 							return '<center><i style="font-size:25px" class="add-volunteer fa fa-plus-square"></i>'
 						},
@@ -458,16 +450,16 @@ $(document).ready(function(){
 		if (typeof volunteerTable == 'undefined' || volunteerTable == null)
 		{
 
-		volunteerTable = $('#volunteers').DataTable({
-			'columnDefs': [
-			{
-				'targets': 5,
-				'orderable': false
-			}
-			],
-			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
-		});
-	}
+			volunteerTable = $('#volunteers').DataTable({
+				'columnDefs': [
+				{
+					'targets': 4,
+					'orderable': false
+				}
+				],
+				"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+			});
+		}
 	}
   
 
@@ -609,7 +601,7 @@ $(document).one('click', '#save-review-task', function(e){
 		for (i = 0; i < volunteers.length; i++)
 		{
 			volunteer = volunteers[i];
-			volunteerO.push({id: parseInt(volunteer[0]), first_name: volunteer[1], last_name: volunteer[2], phone_number: volunteer[3], email: volunteer[4]});
+			volunteerO.push({id: parseInt(volunteer[0]), name: volunteer[1], email: volunteer[2]});
 		}
 	}
 
@@ -970,11 +962,11 @@ $(document).on('click', '.add-volunteer', function(e){
 	{
 		if (parseInt(currVolunteers[i][0]) == vol['id'])
 		{
-			alert(vol['first_name'] + " " + vol['last_name'] + " is already signed up.");
+			alert(vol['name'] + " is already signed up.");
 			return;
 		}
 	}
-	var add = volunteerTable.row.add([vol['id'], vol['first_name'], vol['last_name'], vol['phone_number'], vol['email'], 0, '<center><i style="font-size: 25px" class="delete-button fa fa-trash"></i></center>']).draw().node();
+	var add = volunteerTable.row.add([vol['id'], vol['name'], vol['email'], 0, '<center><i style="font-size: 25px" class="delete-button fa fa-trash"></i></center>']).draw().node();
 	$(add).css('background-color', 'white');
 	var cells = $(add).find("td");
 	cells.each(function(){
@@ -982,7 +974,7 @@ $(document).on('click', '.add-volunteer', function(e){
 	});
 
 	$(cells[0]).css('display', 'none');
-	alert(vol['first_name'] + " " + vol['last_name'] + " has been added.");
+	alert(vol['name'] + " has been added.");
 
 });
 

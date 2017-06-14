@@ -43,6 +43,13 @@
 		</div>
 
 		<div class="form-input-group">
+			<h5 class="user-input-h"> Organization </h5>
+			<div id="organization" class="text-placeholder">
+				<h5 class="user-input"> {{organization}}</h5> 
+			</div>
+		</div>
+
+		<div class="form-input-group">
 			<h5 class="user-input-h"> Description </h5>
 			<div id="description" class="text-placeholder">
 			<h5 class="user-input">{{description}}</h5>
@@ -137,9 +144,7 @@
 					<thead>
 					<tr class="border-row colored-bg">
 							<th style="display: none">ID</th>
-							<th style="text-align: center; padding: 5px"> First Name </th>
-							<th style="text-align: center;"> Last Name </th>
-							<th style="text-align: center;"> Phone Number </th>
+							<th style="text-align: center; padding: 5px"> Name </th>
 							<th style="text-align: center;"> Email Address </th>
 							<th style="text-align: center;"> Hours </th>
 					</tr>
@@ -148,9 +153,7 @@
 				{{#each volunteers}}
 						<tr style="text-align: center; background-color: white;">
 							<td style="display: none"> {{id}}</td>
-							<td style="padding: 5px" class="border-row"> {{first_name}}</td>
-							<td class="border-row"> {{last_name}} </td>
-							<td class="border-row"> {{phone_number}} </td>
+							<td class="border-row"> {{name}} </td>
 							<td class="border-row"> {{email}} </td>
 							<td class="border-row"> {{#if hours}} {{hours}} {{else}} 0 {{/if}}</td>
 						</tr>
@@ -166,10 +169,11 @@
 	</div>
 
 
-	<div>
+	<div style="margin-left: 7%">
 	<center>
+		<button style="border-color: #D33E20; background-color:#D33E20; width: 20%" id="delete-button" type="submit" class="btn-group-mem btn btn-primary btn-lg">Delete Task</button>
 		<button style="width: 20%" id="edit-task" type="submit" class="btn-group-mem btn btn-primary btn-lg">Edit Task</button>
-		<button style="width: 20%" id="log-hours" type="submit" class="btn-group-mem btn btn-primary btn-lg">Log Volunteer Hours</button>
+		<button style="width: 20%" id="log-hours" type="submit" class="btn-group-mem btn btn-primary btn-lg">Log Hours</button>
 
 	</center>
 	</div>

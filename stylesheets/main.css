@@ -22,6 +22,11 @@ body
 	text-decoration: none;
 }
 
+.space
+{
+	margin-top: 2%;
+}
+
 .login-button
 {
 	color: white;
@@ -142,7 +147,7 @@ body
 
 .delete-button:hover
 {
-	color: #33cccc;
+	color: #D33E20;
 	cursor: pointer;
 }
 

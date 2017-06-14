@@ -4,7 +4,7 @@ $(document).ready(function(){
 	table = $("#volunteers").DataTable({
 		'columnDefs': [
 			{
-				"targets": 6,
+				"targets": 4,
 				"orderable": false
 			},
 			{
@@ -19,9 +19,9 @@ $(document).ready(function(){
 $(document).on('click', '.edit-button', function(e){
 	e.preventDefault();
 	var data = table.row($(this).parents('tr')).data();
-	var hours = data[5];
+	var hours = data[3];
 	var row = $(this).parents('tr');
-	data[5] = '<input type="number" style="text-align: center; color: #33cccc; background-color: white; border-color: #33cccc; width: 80%" min=0 name="hours" value="' + hours + '" class="form-control" id="hours">';
+	data[3] = '<input type="number" style="text-align: center; color: #33cccc; background-color: white; border-color: #33cccc; width: 80%" min=0 name="hours" value="' + hours + '" class="form-control" id="hours">';
 	table.row($(this).parents('tr')).data(data).draw();
 	table.row($(this).parents())
 	$(row).find('.edit-button').hide();
@@ -42,12 +42,14 @@ $(document).on('click', '.save-button', function(e){
 	var title = $('#title').text();
 	var row = 	$(this).parents('tr');
 	var rowData = table.row($(row)).data();
-	var name = rowData[1] + " " + rowData[2];
+	var name = rowData[1];
 	var hours = $(row).find('#hours').val();
+	console.log(rowData);
 	var volID = rowData[0];
 	var taskID = $('#taskID').text();
 
-	rowData[5] = hours;
+
+	rowData[3] = hours;
 
 	var params = $.param({
     	hours: parseInt(hours),
@@ -55,6 +57,7 @@ $(document).on('click', '.save-button', function(e){
     	taskID: parseInt(taskID)
   	});
 
+  	console.log(params);
 
 
 	$.ajax({

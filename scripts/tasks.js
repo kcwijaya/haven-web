@@ -154,11 +154,33 @@ $(document).on('click', '.card', function (){
   window.location.href = '/tasks/view?' + params;
 });
 
+$(document).on('click', '.delete-button', function(e){
+  e.preventDefault();
+  var data = $('#tasks').DataTable().row($(this).parents('tr')).data();
+
+  if (confirm("Are you sure you want to delete the task '" + data[1] + "'?")){
+    var id = data[0];
+    console.log("DELETING " + id);
+
+    $.ajax({
+      type: "GET",
+      url: "/tasks/delete?id=" + id,
+      success: function(res)
+      {
+        alert("Successfully deleted the task '" + res.title + "'.");
+        $('#tasks').DataTable().row($(this).parents('tr')).remove().draw();
+      } 
+    });
+  }
+
+});
+
+
 $(document).on('click', '#task-list', function(){
   makeTaskGroup('#card-list', false);
   $('#tasks').DataTable(
       {
-        dom: 'Bfrtip',
+        dom: '<"top"B<"space"l>f>rt<"bottom"ip>',        
         buttons: [
             'copy', 'csv', 'excel', 'pdf'
         ],

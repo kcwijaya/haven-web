@@ -7,7 +7,7 @@ exports.editAdmin = function(admin, callback){
 	var options = {
 		json: true, 
 		body: admin,
-		uri: hosts + "/admins/" + admin.id, 
+		uri: host + "/admins/" + admin.id, 
 		method: "PATCH"
 	}
 
@@ -53,6 +53,16 @@ exports.getOrganizationByID = function( id, callback){
 	request.get(host + "/organizations/" + id, callback);	
 }
 
+exports.addOrganization = function(org, callback){
+	var options = {
+		uri: host + "/organizations", 
+		method: 'POST', 
+		json: true, 
+		body: org
+	}
+
+	request(options, callback);
+}
 exports.getSeverities = function(callback){
 	request.get(host + "/severities", callback);	
 }
@@ -61,11 +71,46 @@ exports.getSkills = function( callback){
  request.get(host + "/skills", callback);	
 }
 
-exports.getAllTasks = function( callback){
+exports.addSkill = function(skill, callback)
+{
+	var options ={
+		uri: hosts + "/skills", 
+		method: "POST", 
+		json: true, 
+		body: skill
+	}
+
+	request(options, callback);
+}
+
+
+exports.addDisclaimer = function(disclaimer, callback)
+{
+	var options ={
+		uri: hosts + "/disclaimers", 
+		method: "POST", 
+		json: true, 
+		body: disclaimer
+	}
+
+	request(options, callback);
+}
+
+exports.getAllTasks = function(callback){
  	request.get(host + "/tasks", callback);
 }
 
-exports.addNewTask = function( task, callback){
+
+exports.deleteTask = function(id, callback){
+	var options = {
+		uri: host + "/tasks/" + id, 
+		method: 'DELETE'
+	}
+
+	request(options, callback);
+}
+
+exports.addNewTask = function(task, callback){
 	var options = {
 		json: true,
 	    body: task,
@@ -172,12 +217,15 @@ exports.deleteTaskVolunteer = function( userID, taskID, callback){
 }
 
 
-
 exports.logVolunteerHours = function(userID, taskID, hours, callback){
 	
 	console.log(taskID);
 	console.log(userID);
 	console.log(hours);
+
+	taskID = parseInt(taskID);
+	userID = parseInt(userID);
+	hours = parseInt(hours);
 	var options = {
 		uri: host + "/tasks/" + taskID + "/users/" + userID,
 		json: true,
@@ -188,6 +236,8 @@ exports.logVolunteerHours = function(userID, taskID, hours, callback){
 		},
 		method: 'PATCH'
 	}
+
+	console.log(options);
 
 	request(options,callback);
 }

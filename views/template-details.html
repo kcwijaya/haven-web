@@ -1,0 +1,101 @@
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
+	<script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
+
+	<script type="text/javascript" src="../scripts/templateview.js"></script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAej_Btkc_ko3TrAgYkLY52elkW6bahpgk&libraries=places"
+    async defer></script>
+
+	<script id="render-navbar" type="text/x-handlebars-template">
+		{{> navbar template="active"}}
+	</script>
+
+	<div style="margin-left: 14%; margin-bottom: 1%" class="vertical-align-15 left-align">
+		<h2> View your template. </h2>
+	</div>
+
+	<h5 id="id" style="display: none"> {{id}} </h5>
+	<h5 id="latitude" style="display: none"> {{latitude}} </h5>
+	<h5 id="longitude" style="display: none"> {{longitude}} </h5>
+
+	<div style="margin-left: 14%; width: 72.2%" class="templates form-card left-align">
+		<div class="form-input-group">
+			<h5 class="user-input-h"> Title </h5>
+			<div id="title" class="text-placeholder">
+				<h5 class="user-input"> {{title}}</h5> 
+			</div>
+		</div>
+
+		<div class="form-input-group">
+			<h5 class="user-input-h"> Description </h5>
+			<div id="description" class="text-placeholder">
+			<h5 class="user-input">{{description}}</h5>
+			</div>
+		</div>
+
+		<div class="form-input-group">
+			<h5 class="user-input-h"> Instructions </h5>
+			<div id="instruction" class="text-placeholder">
+			<h5 class="user-input">{{instructions}}</h5>
+			</div>
+		</div>
+
+		<div class="form-input-group">
+			<h5 class="user-input-h"> Number of Volunteers </h5>
+			<div id="num_volunteers" class="text-placeholder">
+			<h5 class="user-input"> {{#if num_volunteers}} {{num_volunteers}} {{else}} 0 {{/if}}</h5>
+			</div>
+		</div>
+		<div class="form-input-group">
+			<h5 class="user-input-h"> Disclaimers </h5>
+			<div id="disclaimers-text" class="text-placeholder"> 
+				{{#if disclaimers}}
+				{{#list disclaimers}}
+					<h5>{{name}}</h5>
+				{{/list}}
+				{{else}}
+				<h5 class="user-input"> There are currenly no disclaimers. </h5>
+				{{/if}}
+			</div>
+		</div>
+
+		<div class="form-input-group">
+			<h5 class="user-input-h">  Skills </h5>
+			<div id="skills-text" class="text-placeholder">
+			{{#if skills}}
+				{{#each skills}}
+					<h5><u><b> {{groupName}}</b></u></h5>
+					{{#list skills}}
+						<h5> {{name}}
+
+						 {{#if extra}}
+						 	: {{extra}}
+						 {{/if}}
+
+						 </h5>
+					{{/list}}
+				{{/each}}
+			{{else}}
+			<h5 class="user-input"> There are currenly no required skills. </h5>
+			{{/if}}
+			 </div>	
+		</div>
+	</div>
+
+
+	<div style="margin-left: 7%">
+	<center>
+		<button style="border-color: #D33E20; background-color:#D33E20; width: 20%" id="delete-button" type="submit" class="btn-group-mem btn btn-primary btn-lg">Delete Template</button>
+		<button style="width: 20%" id="edit-template" type="submit" class="btn-group-mem btn btn-primary btn-lg">Edit Template</button>
+
+	</center>
+	</div>
+
+	
