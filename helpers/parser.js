@@ -45,12 +45,25 @@ exports.parseSkills = function(error, response, body, callback)
 
   var numKeys = Object.keys(skillsGroup).length;
 
-  for (i = 0; i < Math.floor(numKeys/2); i++)
+  var index = 0;
+  var total = 0;
+  for (key in Object.keys(skillsGroup))
+  {
+    console.log(key);
+    total += skillsGroup[key].length;
+    index++;
+    if (total >= rawSkills.length/2)
+    {
+      break;
+    }
+  }
+
+  for (i = 0; i < index; i++)
   {
     var groupName = Object.keys(skillsGroup)[i];
     skillGroupOne.push({groupName: groupName, skills: skillsGroup[groupName]});
   }
-  for (i = Math.floor(numKeys/2); i < numKeys; i++)
+  for (i = index; i < numKeys; i++)
   {
     var groupName = Object.keys(skillsGroup)[i];
     skillGroupTwo.push({groupName: groupName, skills: skillsGroup[groupName]});
