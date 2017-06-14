@@ -507,7 +507,11 @@ app.get("/volunteers", function(req, res){
 
 
 app.post('/post-task', function(req, res){
+  console.log("Req body ");
+  console.log(req.body);
   var taskToAdd =  parser.populateTask(req.body);
+  console.log(taskToAdd);
+
   var task = req.body;
 
   var user = getUser(req);

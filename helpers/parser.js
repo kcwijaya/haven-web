@@ -76,7 +76,10 @@ exports.parseSkills = function(error, response, body, callback)
 exports.populateObject = function(task)
 {
   var taskToAdd = {};
-  taskToAdd.id = task.id;
+  if (typeof task.id != 'undefined')
+  {
+      taskToAdd.id = task.id;
+  }
 
   if (typeof task.backgroundcheck != 'undefined')
   {
