@@ -209,7 +209,9 @@ app.get('/', function(req, res) {
     }
     else
     {
-      res.render('home-auth', {pageTitle: 'Haven - Home'});
+       var user = getUser(req);
+       var firstName = user.split(" ")[0];
+      res.render('home-auth', {pageTitle: 'Haven - Home', name: firstName});
     }
   }
   else
@@ -222,8 +224,9 @@ app.get('/', function(req, res) {
 app.get('/home', function(req, res) {
   if (req.isAuthenticated())
   {
-
-    res.render('home-auth', {pageTitle: 'Haven - Home'});
+       var user = getUser(req);
+       var firstName = user.split(" ")[0];
+      res.render('home-auth', {pageTitle: 'Haven - Home', name: firstName});
   }
   else
   {

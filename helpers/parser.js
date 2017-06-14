@@ -174,10 +174,14 @@ exports.populateTemplate = function(template)
 
 exports.formatDate = function(date)
 {
+  if (typeof date == undefined)
+  {
+    return date;
+  }
 
   date = new Date(date);
   var monthNames = [
-    "false", "Jan", "Feb", "Mar",
+    "Jan", "Feb", "Mar",
     "Apr", "May", "Jun", "Jul",
     "Aug", "Sep", "Oct",
     "Nov", "Dec"
@@ -194,6 +198,7 @@ exports.formatDate = function(date)
 
   return day + ' ' + monthNames[monthIndex] + ' ' + year + " " + hours + ":" + minutes;
 }
+
 exports.convertSeverity = function(level, toString)
 {
 
