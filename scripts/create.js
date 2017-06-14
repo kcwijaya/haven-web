@@ -1124,12 +1124,6 @@ $(document).one('click', '#save-template', function(e){
 $(document).one('click', '#save-new-template', function(e){
 	e.preventDefault();
 
-	var id = $('#templateID').text();
-
-	if (typeof id != 'undefined' && id != '')
-	{
-		task.id = parseInt(id);
-	}
 	popSkillsAndDisc();
 
 	console.log(task);

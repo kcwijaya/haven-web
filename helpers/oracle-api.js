@@ -385,9 +385,9 @@ exports.addTemplateDisclaimer = function(templateID, disclaimerID, callback)
 	
 // }
 
-exports.deleteTemplateDisclaimers = function(templateID, disclaimerID, callback)
+exports.deleteTemplateDisclaimer = function(templateID, disclaimerID, callback)
 {
-	ths.deleteTemplateDisclaimers(templateID, disclaimerID, callback);
+	ths.deleteTaskDisclaimer(templateID, disclaimerID, callback);
 }
 // exports.deleteTemplateDisclaimer = function( templateID, disclaimerID, callback){
 // 	var options = {
