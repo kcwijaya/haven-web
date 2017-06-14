@@ -126,7 +126,7 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<div id="contact-container" class="has-warning form-group">
 						<label for="contact_person">Point of Contact</label>
 						<input type="text" name="contact_person" {{#if point_of_contact}} value="{{point_of_contact}}" {{/if}} class="form-control" id="contact_person">
@@ -134,7 +134,7 @@
 					</div>
 
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<div id="clock-container">
 					<label for="clock">Time</label>
 						<div id="clock" style="width: 100%" class=" input-group">
@@ -144,6 +144,12 @@
 	                    	</span>
 						</div>
 						<div id="clock-req" style="display: none" class="form-control-feedback">This field is required. </div>
+					</div>
+				</div>
+				<div class="col-md-4">
+				<div id="background-container" class="has-warning form-group">
+						<label for="backgroundcheck">Background Check</label>
+						<input type="text" name="backgroundcheck" {{#if backgroundcheck}} value="{{backgroundcheck}}" {{/if}} class="form-control" id="backgroundcheck">
 					</div>
 				</div>
 		</div>
