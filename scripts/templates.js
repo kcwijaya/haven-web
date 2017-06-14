@@ -53,7 +53,7 @@ $(document).ready(function(){
         }
 
         templateContext.cards = cards;
-        makeTemplateGroup('#card-group', true);
+        makeTemplateGroup('#card-list', false);
       }
   });
 

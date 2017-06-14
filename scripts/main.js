@@ -147,7 +147,7 @@ $(document).ready(function(){
             }
 
             templateContext.cards = templateCards;
-            makeCardGroups('#task-card-group', '#temp-card-group', true);
+            makeCardGroups('#task-card-list', '#temp-card-list', false);
           }
       });
       }

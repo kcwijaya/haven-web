@@ -51,7 +51,7 @@ $(document).ready(function(){
         }
 
         taskContext.cards = cards;
-        makeTaskGroup('#card-group', true);
+        makeTaskGroup('#card-list', false);
       }
   });
 });
