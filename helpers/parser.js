@@ -2,6 +2,41 @@ var api = require(__dirname + "/oracle-api.js");
 
 var ths = this;
 
+exports.getUser = function getUser(req)
+{
+  var user = req.session.passport.user;
+  if (typeof user == 'string')
+  {
+    user = JSON.parse(user);
+  }
+
+  return user;
+}
+
+exports.getFields = function getFields(input, callback)
+{
+  console.log("beginning");
+  console.log(input);
+  api.getSkills( function(error, response, body){
+    ths.parseSkills(error, response, body, 
+      function(one, two){
+        api.getDisclaimers( function (error, response, body){
+          ths.parseDisclaimers(error, response, body, 
+            function(disclaimers){
+              input.skillGroupsOne = one;
+              input.skillGroupsTwo = two;
+              input.disclaimers = disclaimers;
+              console.log("GET FIELDS");
+              console.log(input);
+              callback(input);
+            }
+            );
+        })
+      });
+  });
+}
+
+
 exports.parseSkills = function(error, response, body, callback)
 {
   if (error)
