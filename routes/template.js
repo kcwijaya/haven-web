@@ -50,18 +50,15 @@ router.post('/save-template', function(req, res){
       {
         res.status(200).json(task);
       }
-   }
-  );
+    }
+    );
 });
 
 router.post('/save-new-template', function(req, res){
   var template = parser.populateTemplate(req.body);
   template.start_time = parser.formatDate(new Date(Date.now()));
-  console.log(req.session.passport.user);
   var user = parser.getUser(req);
   template.admin_id = parseInt(user.id);
-
-  console.log(template);
 
   if (typeof template.num_volunteers != 'undefined')
   {
@@ -90,10 +87,6 @@ router.post('/save-new-template', function(req, res){
             res.status(404).send("Not Found");
           }
 
-          console.log(body);
-          console.log(response.statusCode);
-          console.log("TEMPLATE ID: " + body.id);
-
           req.body.id = body.id;
 
           if (typeof req.body.skills != 'undefined' && req.body.skills.length > 0) {
@@ -105,15 +98,13 @@ router.post('/save-new-template', function(req, res){
           }
         }
         );
-      }
+    }
     );
 });
 
 
 router.get('/templates/view', function(req, res){
   var templateID = req.query.id;
-  console.log("templateID: " + templateID);
-
   api.getTemplateByID(templateID,
     function(error, response, body)
     {
@@ -121,14 +112,12 @@ router.get('/templates/view', function(req, res){
       template.pageTitle = "Haven - View Template";
       res.render('template-details', template);
     }
-  );
+    );
 });
 
 router.get('/templates/edit', function(req, res) {
   var templateID = req.query.id;
   
-  console.log("templateID: " + templateID);
-
   api.getTemplateByID(templateID, 
     function(error, response, body){
       if (error)
@@ -136,15 +125,10 @@ router.get('/templates/edit', function(req, res) {
         console.log(error);
         res.status(404).send('Not Found');
       }
-      console.log("TEMPLATES");
-      console.log(body);
-
       var template = parser.parseOneTemplate(body);
 
-      console.log(template);
       parser.getFields(template, function(result){
         result.pageTitle = "Haven - Edit Template";
-        console.log(result);
         res.render('template-edit', result);
       });
 

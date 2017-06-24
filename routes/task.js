@@ -16,24 +16,16 @@ router.get('/create', function(req, res) {
 });
 
 router.post('/post-task', function(req, res){
-  console.log("Req body ");
-  console.log(req.body);
   var taskToAdd =  parser.populateTask(req.body);
   taskToAdd.id = undefined;
-  console.log(taskToAdd);
-
   var task = req.body;
-
   var user = parser.getUser(req);
-
-  console.log(user);
 
   if (typeof user == 'string')
   {
     user = JSON.parse(req.session.passport.user);
   }
 
-  console.log(user);
   task.admin_id = parseInt(user.id);
   taskToAdd.admin_id = parseInt(user.id);
 
@@ -64,9 +56,6 @@ router.post('/post-task', function(req, res){
       }
 
       taskToAdd.organization_id = user.organization_id;
-
-
-      console.log(taskToAdd);
       api.addNewTask(taskToAdd, 
         function(error, response, body){
           if (error)
@@ -74,14 +63,7 @@ router.post('/post-task', function(req, res){
             console.log(error);
             res.status(404).send("Not Found");
           }
-
-
-          console.log("Just added task.");
-          console.log(body);
           var id = body.id;
-
-          console.log("NEWLY ADDED ID: " + id);
-
           task.id = id;
 
           if (typeof task.skills != 'undefined' && task.skills.length >0)
@@ -97,13 +79,11 @@ router.post('/post-task', function(req, res){
             res.status(200).json(taskToAdd);
           }
         }
-      );
+        );
+    });
 });
-});
-
 
 router.get('/tasks/view', function(req, res){
-  console.log("ID:" + req.query.id);
   api.getTaskByID( req.query.id,
     function(error, response, body)
     {
@@ -118,7 +98,6 @@ router.get('/tasks/view', function(req, res){
       api.getSeverities(
         function(error, response, body){
           var sevs = JSON.parse(body);
-          console.log(sevs);
           var dict = {};
           for (i = 0; i < sevs.length; i++)
           {
@@ -126,44 +105,41 @@ router.get('/tasks/view', function(req, res){
           }
           task.severity_id = dict[task.severity_id];
 
-        api.getOrganizationByID(task.organization_id, 
-          function(error, response, body)
-          {
-            body = JSON.parse(body);
-            task.organization = body.name;
-            api.getTaskVolunteers(req.query.id, 
-              function(error, response, body)
-              {
-                if (error)
+          api.getOrganizationByID(task.organization_id, 
+            function(error, response, body)
+            {
+              body = JSON.parse(body);
+              task.organization = body.name;
+              api.getTaskVolunteers(req.query.id, 
+                function(error, response, body)
                 {
-                  console.log(error);
-                  res.status(404).send('Not Found');
-                }
-
-                body = JSON.parse(body);
-                task.volunteers = body[0];
-                if (typeof task.volunteers != 'undefined')
-                {
-                  for (i = 0; i < task.volunteers.length; i++)
+                  if (error)
                   {
-                    console.log(body[1][i]);
-                    task.volunteers[i].hours = body[1][i].hours;
-                    if (task.volunteers[i].hours == null)
+                    console.log(error);
+                    res.status(404).send('Not Found');
+                  }
+
+                  body = JSON.parse(body);
+                  task.volunteers = body[0];
+                  if (typeof task.volunteers != 'undefined')
+                  {
+                    for (i = 0; i < task.volunteers.length; i++)
                     {
-                      task.volunteers[i].hours = 0;
+                      task.volunteers[i].hours = body[1][i].hours;
+                      if (task.volunteers[i].hours == null)
+                      {
+                        task.volunteers[i].hours = 0;
+                      }
                     }
                   }
+                  res.render('task-details', task);
                 }
+                )
+            }
 
-                console.log(task.volunteers);
-                res.render('task-details', task);
-              }
             )
-          }
-
-        )
-      }
-      );
+        }
+        );
     }
     );
 });
@@ -179,7 +155,6 @@ router.post('/review-new', function(req, res) {
 router.post('/review-task', function(req, res) {
   req.body.pageTitle = "Haven - Review Task";
   req.body.layout = false;
-  console.log(req.body);
   return res.render('task-review', req.body);
 });
 
@@ -193,7 +168,7 @@ router.post('/save-task', function(req, res){
   var task = parser.populateTask(req.body);
 
   var user = parser.getUser(req);
-   api.getSeverities(
+  api.getSeverities(
     function(error, response, body){
       var sevs = JSON.parse(body);
       var dict = {};
@@ -230,9 +205,9 @@ router.post('/save-task', function(req, res){
           apihelper.startWithGettingVolunteersTask(req.body, res);
 
         }
-      );
+        );
     }
-  );
+    );
 });
 
 router.get('/create/new', function(req, res) {
@@ -243,7 +218,6 @@ router.get('/create/new', function(req, res) {
       result.newBtn = true;
       var user = parser.getUser(req);
       result.username = user.name;
-      console.log("Username: " + result.username);
       res.render('task-create', result);
     });
   }
@@ -307,7 +281,6 @@ router.get('/tasks/hours', function(req, res){
       {
         for (i = 0; i < task.volunteers.length; i++)
         {
-          console.log(body[1][i]);
           task.volunteers[i].hours = body[1][i].hours;
           if (task.volunteers[i].hours == null)
           {
@@ -315,9 +288,6 @@ router.get('/tasks/hours', function(req, res){
           }
         }
       }
-
-      console.log("VOLUNTEERS: ");
-      console.log(task.volunteers);
       task.pageTitle = "Haven - Log Hours";
       res.render('log-hours', task);
     }
@@ -337,8 +307,6 @@ router.post('/tasks/hours', function(req, res){
         console.log(error);
         res.status(404).render('error', {error: error});
       }
-      console.log(body);
-      console.log("Adding " + hours + " to V#" + volunteerID + " for T#" + taskID);
       res.json(body);
     });
   
@@ -361,8 +329,6 @@ router.get('/tasks/edit', function(req, res) {
         {
           body = JSON.parse(body);
           task.volunteers = body[0];
-          console.log(task.volunteers);
-
           for (i = 0; i < task.volunteers.length; i++)
           {
             var hours = body[1][i].hours;

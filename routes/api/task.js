@@ -18,7 +18,6 @@ router.get('/tasks/id', function(req, res) {
 
 router.get('/tasks/all', function(req, res) {
   var user = parser.getUser(req);
-  console.log("#########GETTING ALL TASKS FOR: " + user.organization_id);
   api.getAllTasks( 
     function(error, response, body)
     {
@@ -45,6 +44,7 @@ router.get('/tasks/skills', function(req, res){
       if (error)
       {
         console.log(error);
+        res.status(404).send("Not Found");
       }
 
       body = JSON.parse(body);
@@ -62,6 +62,7 @@ router.get('/tasks/disclaimers', function(req, res){
       if (error)
       {
         console.log(error);
+        res.status(404).send("Not Found");
       }
       body = JSON.parse(body);
       res.json(body);

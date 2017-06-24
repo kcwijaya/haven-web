@@ -15,25 +15,23 @@ router.get('/', function(req, res) {
         organization_id: req.session.org,
         id: user.id
       }
-
       api.editAdmin(edit, 
         function(error, response, body){
-          console.log(body);
           var user = parser.getUser(req);
           res.render('home-auth', {pageTitle: 'Haven - Home', name: user.first_name});
         }
-      );
+        );
     }
     else
     {
-       var user = parser.getUser(req);
-      res.render('home-auth', {pageTitle: 'Haven - Home', name: user.first_name});
-    }
-  }
-  else
-  {
+     var user = parser.getUser(req);
+     res.render('home-auth', {pageTitle: 'Haven - Home', name: user.first_name});
+   }
+ }
+ else
+ {
   res.sendFile(path.join(__dirname, '../views/Homepage.html'));
-  }
+}
 });
 
 router.post('/signup', function(req, res){
@@ -51,7 +49,6 @@ router.post('/signup', function(req, res){
         console.log(error);
         res.status(404).render('error', {error: error});
       }
-
       res.redirect("/create");
     }
     );
@@ -61,13 +58,13 @@ router.post('/signup', function(req, res){
 router.get('/home', function(req, res) {
   if (req.isAuthenticated())
   {
-       var user = parser.getUser(req);
-      res.render('home-auth', {pageTitle: 'Haven - Home', name: user.first_name});
-  }
-  else
-  {
-    res.sendFile(path.join(__dirname, '../views/Homepage.html'));
-  }});
+   var user = parser.getUser(req);
+   res.render('home-auth', {pageTitle: 'Haven - Home', name: user.first_name});
+ }
+ else
+ {
+  res.sendFile(path.join(__dirname, '../views/Homepage.html'));
+}});
 
 router.get('/logout', function(req, res){
   req.logout();
@@ -75,12 +72,10 @@ router.get('/logout', function(req, res){
 });
 
 router.get('/signup', function(req, res){
-  console.log('org: ' + req.query.org);
   var org = req.query.org;
   req.session.org = org;
 
   res.redirect("/auth/facebook");
 });
-
 
 module.exports = router;

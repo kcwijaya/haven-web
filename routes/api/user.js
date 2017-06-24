@@ -11,6 +11,7 @@ router.get('/users/all', function(req, res){
       if (error)
       {
         console.log(error);
+        res.status(404).send("Not Found");
       }
       body = JSON.parse(body);
       res.json(body);

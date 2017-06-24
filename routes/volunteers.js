@@ -7,7 +7,6 @@ var path = require('path');
 
 router.get("/volunteers", function(req, res){
   var user = parser.getUser(req);
-  console.log("#########GETTING ALL TASKS FOR: " + user.organization_id);
   api.getAllTasks(
     function(error, response, body)
     {
@@ -26,7 +25,6 @@ router.get("/volunteers", function(req, res){
       for (i = 0; i < actualTasks.length; i++)
       {
 
-        console.log("#### GETTING VOLUNTEERS FOR " + actualTasks[i].id);
         api.getTaskVolunteers(actualTasks[i].id, 
           function(error, response, body)
           {
@@ -42,35 +40,35 @@ router.get("/volunteers", function(req, res){
             var vols = volunteerResult[0];
             var volHours = volunteerResult[1];
 
-             for (j = 0; j < vols.length; j++)
-             {
+            for (j = 0; j < vols.length; j++)
+            {
               volunteers.push({
                 vol_name: vols[j].name, 
                 vol_email: vols[j].email, 
                 vol_hours: volHours[j].hours
               });
-             }
+            }
 
-             result.push({
-                task_id: actualTasks[volunteersToGet].id, 
-                task_name: actualTasks[volunteersToGet].title,
-                task_description: actualTasks[volunteersToGet].description,
-                volunteers: volunteers
-             });
+            result.push({
+              task_id: actualTasks[volunteersToGet].id, 
+              task_name: actualTasks[volunteersToGet].title,
+              task_description: actualTasks[volunteersToGet].description,
+              volunteers: volunteers
+            });
 
-             volunteersToGet++;
+            volunteersToGet++;
 
-             if (volunteersToGet == actualTasks.length)
-             {
+            if (volunteersToGet == actualTasks.length)
+            {
               var toSend =
               {
                 pageTitle: 'Haven - View Volunteers', 
                 taskList: result
               }
               res.render('volunteers', toSend);
-             }
+            }
           }
-        );
+          );
       }
     }
     );  
